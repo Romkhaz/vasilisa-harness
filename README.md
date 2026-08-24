@@ -95,3 +95,4 @@ cd ui/desktop && pnpm lint:check && pnpm test:run
   их в релиз.
 - [I18N.md](I18N.md) — как устроена локализация интерфейса.
 - [AGENTS.md](AGENTS.md) — соглашения по коду, унаследованные от upstream.
+- [SECURITY.md](SECURITY.md) — риски работы агента на машине и как сообщить об уязвимости.
