@@ -156,8 +156,12 @@ jobs:
           rustup show
           rustup target add x86_64-pc-windows-msvc
 
+      # Собираем то, что выпускаем, а не всю рабочую область: сборка всех пакетов
+      # тянет vendor/v8, который на Windows требует предсобранной rusty_v8 и падает
+      # с «could not find native static library rusty_v8». Clippy этот пакет тоже
+      # исключает.
       - name: Build
-        run: cargo build --target x86_64-pc-windows-msvc
+        run: cargo build --target x86_64-pc-windows-msvc -p goose-cli --bin goose
         env:
           CARGO_INCREMENTAL: "0"
 
