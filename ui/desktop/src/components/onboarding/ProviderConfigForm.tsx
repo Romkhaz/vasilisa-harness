@@ -10,11 +10,12 @@ import ProviderLogo from '../settings/providers/modal/subcomponents/ProviderLogo
 import { SecureStorageNotice } from '../settings/providers/modal/subcomponents/SecureStorageNotice';
 import AcpReadinessPanel from '../settings/providers/AcpReadinessPanel';
 import { Button } from '../ui/button';
+import { Input } from '../ui/input';
 import { ChevronRight, LogIn } from 'lucide-react';
 import { defineMessages, useIntl } from '../../i18n';
 import { errorMessage } from '../../utils/conversionUtils';
 
-type OnConfigured = (name: string) => void | Promise<void>;
+type OnConfigured = (name: string, modelId?: string) => void | Promise<void>;
 
 const i18n = defineMessages({
   browserWindowOpen: {
@@ -45,6 +46,22 @@ const i18n = defineMessages({
   continue: {
     id: 'providerConfigForm.continue',
     defaultMessage: 'Continue',
+  },
+  modelLabel: {
+    id: 'providerConfigForm.modelLabel',
+    defaultMessage: 'Model',
+  },
+  modelPlaceholder: {
+    id: 'providerConfigForm.modelPlaceholder',
+    defaultMessage: 'GLM-5.2',
+  },
+  modelHint: {
+    id: 'providerConfigForm.modelHint',
+    defaultMessage: 'Name of the model as the inference service calls it',
+  },
+  modelRequired: {
+    id: 'providerConfigForm.modelRequired',
+    defaultMessage: 'Enter the model name',
   },
   deviceCodeVisit: {
     id: 'providerConfigForm.deviceCodeVisit',
@@ -175,6 +192,8 @@ function ApiKeyForm({
   const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSetupHelp, setShowSetupHelp] = useState(false);
+  const [model, setModel] = useState('');
+  const [modelError, setModelError] = useState('');
   const setupSteps = provider.metadata.setup_steps;
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -193,7 +212,12 @@ function ApiKeyForm({
       }
     });
 
-    if (Object.keys(errors).length > 0) {
+    // Список моделей у корпоративного сервиса свой, поэтому имя вводится руками
+    // и сразу становится моделью по умолчанию.
+    const trimmedModel = model.trim();
+    setModelError(trimmedModel ? '' : intl.formatMessage(i18n.modelRequired));
+
+    if (Object.keys(errors).length > 0 || !trimmedModel) {
       setValidationErrors(errors);
       return;
     }
@@ -207,7 +231,7 @@ function ApiKeyForm({
     setIsSubmitting(true);
     try {
       await providerConfigSubmitHandler(provider, toSubmit);
-      await onConfigured(provider.name);
+      await onConfigured(provider.name, trimmedModel);
     } catch (err) {
       onError(errorMessage(err));
     } finally {
@@ -224,6 +248,19 @@ function ApiKeyForm({
         validationErrors={validationErrors}
         showOptions={false}
       />
+      <div className="mt-4">
+        <label htmlFor="vasilisa-model" className="block text-sm font-medium text-text-default mb-1">
+          {intl.formatMessage(i18n.modelLabel)} <span className="text-red-500">*</span>
+        </label>
+        <Input
+          id="vasilisa-model"
+          value={model}
+          onChange={(e) => setModel(e.target.value)}
+          placeholder={intl.formatMessage(i18n.modelPlaceholder)}
+        />
+        <p className="text-xs text-text-muted mt-1">{intl.formatMessage(i18n.modelHint)}</p>
+        {modelError && <p className="text-xs text-red-500 mt-1">{modelError}</p>}
+      </div>
       {provider.metadata.config_keys.some((k) => k.required && k.secret) && <SecureStorageNotice />}
       {setupSteps && setupSteps.length > 0 && (
         <div className="mt-3">

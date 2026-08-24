@@ -1278,7 +1278,15 @@ const createChat = async (
       minWidth: 480,
       minHeight: 400,
       resizable: true,
-      icon: path.join(__dirname, '../images/icon.icns'),
+      // На Windows и Linux строка меню «Файл / Правка / Вид / Окно» не показывается:
+      // всё нужное есть в самом интерфейсе. Меню остаётся доступным по Alt и живёт
+      // как источник горячих клавиш. На macOS меню приложения обязательно и скрыть
+      // его нельзя.
+      autoHideMenuBar: process.platform !== 'darwin',
+      icon:
+        process.platform === 'win32'
+          ? path.join(__dirname, '../images/icon.ico')
+          : path.join(__dirname, '../images/icon.icns'),
       webPreferences: {
         spellcheck: settings.spellcheckEnabled ?? true,
         preload: path.join(__dirname, 'preload.js'),

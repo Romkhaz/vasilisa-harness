@@ -23,7 +23,7 @@ const i18n = defineMessages({
   },
   welcomeDescription: {
     id: 'onboardingGuard.welcomeDescription',
-    defaultMessage: 'Enter the access key and inference URL you were given to get started.',
+    defaultMessage: 'Enter the access key, inference URL and model name you were given to get started.',
   },
   checkProviderErrorTitle: {
     id: 'onboardingGuard.checkProviderErrorTitle',

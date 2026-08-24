@@ -418,7 +418,7 @@ export default function BaseChat({
 
         {/* Chat container with sticky recipe header */}
         <div className="flex flex-col flex-1 min-h-0 relative">
-          {/* Goose watermark - top right */}
+          {/* Знак Василисы — правый верхний угол */}
           <div className="absolute top-[14px] right-4 z-[60] flex flex-row items-center gap-1">
             <a
               href="https://github.com/Romkhaz/vasilisa-harness"
@@ -428,7 +428,7 @@ export default function BaseChat({
             >
               <Goose className="size-5 goose-icon-animation" />
               <span className="text-sm leading-none text-text-secondary -translate-y-px">
-                goose
+                Василиса
               </span>
             </a>
             <EnvironmentBadge className="translate-y-px" />

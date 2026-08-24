@@ -2421,7 +2421,7 @@
     "defaultMessage": "Retry"
   },
   "onboardingGuard.welcomeDescription": {
-    "defaultMessage": "Enter the access key and inference URL you were given to get started."
+    "defaultMessage": "Enter the access key, inference URL and model name you were given to get started."
   },
   "onboardingGuard.welcomeTitle": {
     "defaultMessage": "Welcome to Vasilisa"
@@ -2779,6 +2779,18 @@
   },
   "providerConfigForm.deviceCodeVisit": {
     "defaultMessage": "Visit"
+  },
+  "providerConfigForm.modelHint": {
+    "defaultMessage": "Name of the model as the inference service calls it"
+  },
+  "providerConfigForm.modelLabel": {
+    "defaultMessage": "Model"
+  },
+  "providerConfigForm.modelPlaceholder": {
+    "defaultMessage": "GLM-5.2"
+  },
+  "providerConfigForm.modelRequired": {
+    "defaultMessage": "Enter the model name"
   },
   "providerConfigForm.noApiKey": {
     "defaultMessage": "How do I connect?"
