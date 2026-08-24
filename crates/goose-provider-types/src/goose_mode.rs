@@ -20,11 +20,13 @@ use strum::{Display, EnumMessage, EnumString, IntoStaticStr, VariantNames};
 #[serde(rename_all = "snake_case")]
 #[strum(serialize_all = "snake_case")]
 pub enum GooseMode {
-    #[default]
     #[strum(message = "Automatically approve tool calls")]
     Auto,
     #[strum(message = "Ask before every tool call")]
     Approve,
+    // Василиса по умолчанию спрашивает подтверждение на чувствительные действия:
+    // полностью автономный режим на незнакомом проекте слишком рискован.
+    #[default]
     #[strum(message = "Ask only for sensitive tool calls")]
     SmartApprove,
     #[strum(message = "Chat only, no tool calls")]

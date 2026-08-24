@@ -8,7 +8,9 @@ use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use std::collections::HashMap;
 
-pub const DEFAULT_CONTEXT_LIMIT: usize = 128_000;
+// Модели корпоративного сервиса инференса не описаны в справочнике, поэтому для них
+// берётся это значение.
+pub const DEFAULT_CONTEXT_LIMIT: usize = 250_000;
 
 /// Request param keys that describe model-family-agnostic reasoning behavior and
 /// are therefore safe to carry across a model switch or subagent delegation.

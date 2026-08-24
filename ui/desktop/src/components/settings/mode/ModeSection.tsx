@@ -4,7 +4,9 @@ import { useConfig } from '../../ConfigContext';
 import { ConversationLimitsDropdown } from './ConversationLimitsDropdown';
 
 export const ModeSection = () => {
-  const [currentMode, setCurrentMode] = useState('auto');
+  // Пока значение не пришло из конфигурации, показываем тот же режим, что стоит
+  // по умолчанию в backend (GooseMode::SmartApprove).
+  const [currentMode, setCurrentMode] = useState('smart_approve');
   const [maxTurns, setMaxTurns] = useState<number>(1000);
   const { config, read, upsert } = useConfig();
 
