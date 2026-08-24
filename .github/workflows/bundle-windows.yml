@@ -87,6 +87,11 @@ jobs:
         uses: Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6  # v2.9.2
         with:
           key: windows-msvc-desktop-${{ inputs.windows_variant }}
+          cache-directories: |
+            target/debug/gn_out
+            target/release/gn_out
+            target/x86_64-pc-windows-msvc/debug/gn_out
+            target/x86_64-pc-windows-msvc/release/gn_out
 
       - name: Setup Rust
         shell: bash

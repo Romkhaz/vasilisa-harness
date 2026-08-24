@@ -145,10 +145,19 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
 
+      # V8 (его тянет фича code-mode) скачивает готовую rusty_v8.lib в target/**/gn_out.
+      # rust-cache вычищает из target всё, что не является пакетом, поэтому библиотека
+      # пропадала, а сборочный скрипт из-за восстановленного отпечатка не перезапускался —
+      # линковка падала с «could not find native static library rusty_v8».
       - name: Cache Cargo artifacts
         uses: Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6  # v2.9.2
         with:
           key: windows-ci
+          cache-directories: |
+            target/debug/gn_out
+            target/release/gn_out
+            target/x86_64-pc-windows-msvc/debug/gn_out
+            target/x86_64-pc-windows-msvc/release/gn_out
 
       - name: Setup Rust
         shell: bash

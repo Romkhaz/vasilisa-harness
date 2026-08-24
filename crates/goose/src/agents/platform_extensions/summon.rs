@@ -2931,9 +2931,9 @@ You review code."#;
         assert!(task_config.extensions.is_empty());
     }
 
-    const PARENT_MODEL: &str = "claude-3-5-sonnet-20241022";
-    const OVERRIDE_MODEL: &str = "claude-opus-4-6";
-    const PROVIDER: &str = "anthropic";
+    const PARENT_MODEL: &str = "gpt-4o";
+    const OVERRIDE_MODEL: &str = "gpt-5";
+    const PROVIDER: &str = "openai";
 
     fn session_with(parent: goose_providers::model::ModelConfig) -> crate::session::Session {
         crate::session::Session {
@@ -3147,18 +3147,18 @@ You review code."#;
             ("GOOSE_MAX_TOKENS", None::<&str>),
             ("GOOSE_SUBAGENT_PROVIDER", Some(PROVIDER)),
             ("GOOSE_SUBAGENT_MODEL", None::<&str>),
-            ("ANTHROPIC_API_KEY", Some("test-key")),
+            ("OPENAI_API_KEY", Some("test-key")),
         ]);
 
         let client = SummonClient::new(create_test_context()).unwrap();
         let params = DelegateParams {
-            provider: Some("openai".to_string()),
+            provider: Some("another-provider".to_string()),
             model: Some("model-for-another-provider".to_string()),
             ..Default::default()
         };
         let mut recipe = empty_recipe();
         recipe.settings = Some(crate::recipe::Settings {
-            goose_provider: Some("openai".to_string()),
+            goose_provider: Some("another-provider".to_string()),
             goose_model: Some("recipe-model-for-another-provider".to_string()),
             temperature: None,
             max_turns: None,
@@ -3170,7 +3170,7 @@ You review code."#;
             .default_model
             .clone();
         let session = crate::session::Session {
-            provider_name: Some("openai".to_string()),
+            provider_name: Some("another-provider".to_string()),
             model_config: Some(goose_providers::model::ModelConfig::new(
                 "parent-openai-model",
             )),
@@ -3192,7 +3192,7 @@ You review code."#;
             ("GOOSE_MAX_TOKENS", None::<&str>),
             ("GOOSE_SUBAGENT_PROVIDER", Some(PROVIDER)),
             ("GOOSE_SUBAGENT_MODEL", None::<&str>),
-            ("ANTHROPIC_API_KEY", Some("test-key")),
+            ("OPENAI_API_KEY", Some("test-key")),
         ]);
 
         let client = SummonClient::new(create_test_context()).unwrap();
@@ -3216,20 +3216,12 @@ You review code."#;
 
     #[tokio::test]
     #[serial]
-    async fn test_resolve_model_config_dynamic_provider_requires_model() {
+    async fn test_resolve_model_config_requires_model_when_provider_has_no_default() {
         let _env = env_lock::lock_env([
             ("GOOSE_CONTEXT_LIMIT", None::<&str>),
             ("GOOSE_MAX_TOKENS", None::<&str>),
             ("GOOSE_SUBAGENT_MODEL", None::<&str>),
         ]);
-
-        let default_model = providers::get_from_registry("lmstudio")
-            .await
-            .unwrap()
-            .metadata()
-            .default_model
-            .clone();
-        assert!(default_model.is_empty());
 
         let client = SummonClient::new(create_test_context()).unwrap();
         let params = DelegateParams {
@@ -3245,18 +3237,12 @@ You review code."#;
             ..Default::default()
         };
         let error = client
-            .resolve_model_config(
-                &params,
-                &empty_recipe(),
-                &session,
-                "lmstudio",
-                Some(&default_model),
-            )
+            .resolve_model_config(&params, &empty_recipe(), &session, "unconfigured", Some(""))
             .unwrap_err();
 
         assert!(error
             .to_string()
-            .contains("No model configured for provider 'lmstudio'"));
+            .contains("No model configured for provider 'unconfigured'"));
     }
 
     fn test_tool_notification(request_id: &str, subagent_id: &str) -> ServerNotification {
