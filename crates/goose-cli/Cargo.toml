@@ -87,11 +87,12 @@ winapi = { workspace = true, features = [
 libc = { version = "0.2.182", default-features = false, features = ["std"] }
 
 [features]
+# Василиса ходит к модели только через OpenAI-совместимый endpoint, поэтому локальный
+# инференс и провайдеры AWS в сборку по умолчанию не входят: они тянут за собой тяжёлые
+# зависимости и показывают в интерфейсе пути подключения, которых у продукта нет.
 default = [
     "code-mode",
-    "local-inference",
     "tui",
-    "aws-providers",
     "telemetry",
     "nostr",
     "otel",

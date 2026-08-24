@@ -20,8 +20,10 @@ export const configLabels: Record<string, string> = {
   SECURITY_PROMPT_CLASSIFIER_ENDPOINT: 'ML Classification Endpoint',
   SECURITY_PROMPT_CLASSIFIER_TOKEN: 'ML Classification API Token',
 
-  // openai
-  OPENAI_API_KEY: 'OpenAI API Key',
+  // Сервис инференса Василисы: пользователю выдают ключ и адрес, названия
+  // переменных окружения остаются прежними ради совместимости с upstream.
+  OPENAI_API_KEY: 'Ключ доступа',
+  OPENAI_BASE_URL: 'Адрес сервиса инференса',
   OPENAI_HOST: 'OpenAI Host',
   OPENAI_BASE_PATH: 'OpenAI Base Path',
 
@@ -68,6 +70,7 @@ export const configLabels: Record<string, string> = {
 };
 
 export const configPlaceholders: Record<string, string> = {
+  OPENAI_BASE_URL: 'https://inference.example.ru/v1',
   GITHUB_COPILOT_HOST: 'my-enterprise.ghe.com',
   GITHUB_COPILOT_CLIENT_ID: 'Iv1.xxxxxxxxxxxxxxxx',
   GITHUB_COPILOT_TOKEN_URL: 'https://my-enterprise.ghe.com/api/copilot_internal/v2/token',

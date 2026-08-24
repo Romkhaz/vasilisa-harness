@@ -1,15 +1,10 @@
 import { useState, useEffect, useMemo } from 'react';
-import {
-  acpCreateCustomProviderFromRequest,
-  acpListSetupProviderDetails,
-} from '../../acp/providers';
-import type { ProviderDetails, UpdateCustomProviderRequest } from '../../types/providers';
+import { acpListSetupProviderDetails } from '../../acp/providers';
+import type { ProviderDetails } from '../../types/providers';
 import { Select } from '../ui/Select';
 import ProviderConfigForm from './ProviderConfigForm';
 import LocalModelPicker from './LocalModelPicker';
-import CustomProviderForm from '../settings/providers/modal/subcomponents/forms/CustomProviderForm';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog';
-import { HardDrive, Key, Plus } from 'lucide-react';
+import { HardDrive, Key } from 'lucide-react';
 import { defineMessages, useIntl } from '../../i18n';
 import { useFeatures } from '../../contexts/FeaturesContext';
 
@@ -28,19 +23,11 @@ const i18n = defineMessages({
   },
   connectProviderDescription: {
     id: 'providerSelector.connectProviderDescription',
-    defaultMessage: 'Connect OpenAI, Anthropic, Google, etc',
+    defaultMessage: 'Enter the access key and inference URL you were given',
   },
   selectProvider: {
     id: 'providerSelector.selectProvider',
     defaultMessage: 'Select a provider',
-  },
-  addCustomProvider: {
-    id: 'providerSelector.addCustomProvider',
-    defaultMessage: 'Add a custom provider',
-  },
-  addCustomProviderTitle: {
-    id: 'providerSelector.addCustomProviderTitle',
-    defaultMessage: 'Add Custom Provider',
   },
 });
 
@@ -69,7 +56,6 @@ export default function ProviderSelector({
   const [providerList, setProviderList] = useState<ProviderDetails[]>([]);
   const [selectedOption, setSelectedOption] = useState<ProviderOption | null>(null);
   const [selectedPath, setSelectedPath] = useState<SelectedPath>(null);
-  const [showCustomModal, setShowCustomModal] = useState(false);
 
   useEffect(() => {
     const load = async () => {
@@ -97,6 +83,17 @@ export default function ProviderSelector({
       }));
   }, [providerList]);
 
+  // Василиса ходит к модели через единственный провайдер, поэтому выбирать не из чего:
+  // как только список загружен, сразу показываем его форму настройки. Ветка со списком
+  // ниже остаётся на случай сборки, где провайдеров зарегистрировано больше одного.
+  const singleProvider = options.length === 1;
+
+  useEffect(() => {
+    if (singleProvider) {
+      setSelectedOption(options[0]);
+    }
+  }, [singleProvider, options]);
+
   const fuzzyFilterOption = (option: { label: string; value: string }, inputValue: string) => {
     const normalize = (s: string) => s.toLowerCase().replace(/[\s_-]/g, '');
     return (
@@ -107,7 +104,7 @@ export default function ProviderSelector({
 
   const handleLocalModelClick = () => {
     setSelectedPath(LOCAL_MODEL);
-    setSelectedOption(null);
+    if (!singleProvider) setSelectedOption(null);
     onFirstSelection?.();
   };
 
@@ -121,37 +118,43 @@ export default function ProviderSelector({
     if (option) onFirstSelection?.();
   };
 
-  const handleCreateCustomProvider = async (data: UpdateCustomProviderRequest) => {
-    const result = await acpCreateCustomProviderFromRequest(data);
-    setShowCustomModal(false);
-    if (result.provider_name) {
-      await onConfigured(result.provider_name);
-    }
-  };
-
   const selectedProvider = selectedOption?.provider ?? null;
+
+  // Без локального инференса выбирать способ подключения не из чего — сразу форма
+  // с двумя полями: ключ доступа и адрес сервиса инференса.
+  if (!localInference) {
+    return (
+      <div>
+        {selectedProvider && (
+          <ProviderConfigForm
+            key={selectedProvider.name}
+            provider={selectedProvider}
+            onConfigured={onConfigured}
+          />
+        )}
+      </div>
+    );
+  }
 
   return (
     <div>
-      <div className={`grid ${localInference ? 'grid-cols-2' : 'grid-cols-1'} gap-3 mb-6`}>
-        {localInference && (
-          <div
-            onClick={handleLocalModelClick}
-            className={`p-4 border rounded-xl transition-all duration-200 cursor-pointer group ${
-              selectedPath === LOCAL_MODEL
-                ? 'border-blue-400 bg-background-muted'
-                : 'border-border-default bg-background-muted hover:border-blue-400'
-            }`}
-          >
-            <HardDrive size={20} className="text-text-muted mb-2" />
-            <span className="font-medium text-text-default text-base block">
-              {intl.formatMessage(i18n.useLocalModel)}
-            </span>
-            <p className="text-text-muted text-sm mt-1">
-              {intl.formatMessage(i18n.localModelDescription)}
-            </p>
-          </div>
-        )}
+      <div className="grid grid-cols-2 gap-3 mb-6">
+        <div
+          onClick={handleLocalModelClick}
+          className={`p-4 border rounded-xl transition-all duration-200 cursor-pointer group ${
+            selectedPath === LOCAL_MODEL
+              ? 'border-blue-400 bg-background-muted'
+              : 'border-border-default bg-background-muted hover:border-blue-400'
+          }`}
+        >
+          <HardDrive size={20} className="text-text-muted mb-2" />
+          <span className="font-medium text-text-default text-base block">
+            {intl.formatMessage(i18n.useLocalModel)}
+          </span>
+          <p className="text-text-muted text-sm mt-1">
+            {intl.formatMessage(i18n.localModelDescription)}
+          </p>
+        </div>
 
         <div
           onClick={handleOwnProviderClick}
@@ -171,7 +174,7 @@ export default function ProviderSelector({
         </div>
       </div>
 
-      {localInference && selectedPath === LOCAL_MODEL && (
+      {selectedPath === LOCAL_MODEL && (
         <div className="animate-in fade-in slide-in-from-top-2 duration-300">
           <LocalModelPicker onConfigured={onConfigured} />
         </div>
@@ -179,26 +182,20 @@ export default function ProviderSelector({
 
       {selectedPath === OWN_PROVIDER && (
         <div className="animate-in fade-in slide-in-from-top-2 duration-300">
-          <div className="mb-4">
-            <Select
-              options={options}
-              value={selectedOption}
-              onChange={(option) => handleProviderSelect(option as ProviderOption | null)}
-              placeholder={intl.formatMessage(i18n.selectProvider)}
-              isClearable
-              isSearchable
-              autoFocus
-              filterOption={fuzzyFilterOption}
-            />
-          </div>
-
-          <button
-            onClick={() => setShowCustomModal(true)}
-            className="flex items-center gap-1 text-sm text-text-muted hover:text-text-default transition-colors mb-6"
-          >
-            <Plus size={14} />
-            <span>{intl.formatMessage(i18n.addCustomProvider)}</span>
-          </button>
+          {!singleProvider && (
+            <div className="mb-4">
+              <Select
+                options={options}
+                value={selectedOption}
+                onChange={(option) => handleProviderSelect(option as ProviderOption | null)}
+                placeholder={intl.formatMessage(i18n.selectProvider)}
+                isClearable
+                isSearchable
+                autoFocus
+                filterOption={fuzzyFilterOption}
+              />
+            </div>
+          )}
 
           {selectedProvider && (
             <ProviderConfigForm
@@ -209,20 +206,6 @@ export default function ProviderSelector({
           )}
         </div>
       )}
-
-      <Dialog open={showCustomModal} onOpenChange={setShowCustomModal}>
-        <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle>{intl.formatMessage(i18n.addCustomProviderTitle)}</DialogTitle>
-          </DialogHeader>
-          <CustomProviderForm
-            initialData={null}
-            isEditable={true}
-            onSubmit={handleCreateCustomProvider}
-            onCancel={() => setShowCustomModal(false)}
-          />
-        </DialogContent>
-      </Dialog>
     </div>
   );
 }

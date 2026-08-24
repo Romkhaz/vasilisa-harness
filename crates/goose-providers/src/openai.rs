@@ -638,39 +638,25 @@ impl ProviderDescriptor for OpenAiProvider {
             .collect();
         ProviderMetadata::with_models(
             OPEN_AI_PROVIDER_NAME,
-            "OpenAI",
-            "GPT-4 and other OpenAI models, including OpenAI compatible ones",
+            "Сервис инференса",
+            "Подключение к OpenAI-совместимому сервису по выданным вам ключу и адресу",
             OPEN_AI_DEFAULT_MODEL,
             models,
             OPEN_AI_DOC_URL,
+            // Пользователь Василисы вводит ровно две вещи: ключ и адрес. Остальные
+            // параметры upstream'а (host, base path, организация, проект, заголовки,
+            // таймаут) по-прежнему читаются из переменных окружения и config.yaml, но в
+            // интерфейсе не показываются: base path выводится из адреса автоматически
+            // (см. resolve_base_url в crates/goose/src/providers/openai_def.rs).
             vec![
-                ConfigKey::new("OPENAI_API_KEY", false, true, None, true),
-                ConfigKey::new("OPENAI_BASE_URL", false, false, None, false),
-                ConfigKey::new(
-                    "OPENAI_HOST",
-                    true,
-                    false,
-                    Some("https://api.openai.com"),
-                    false,
-                ),
-                ConfigKey::new(
-                    "OPENAI_BASE_PATH",
-                    true,
-                    false,
-                    Some("v1/chat/completions"),
-                    false,
-                ),
-                ConfigKey::new("OPENAI_ORGANIZATION", false, false, None, false),
-                ConfigKey::new("OPENAI_PROJECT", false, false, None, false),
-                ConfigKey::new("OPENAI_CUSTOM_HEADERS", false, true, None, false),
-                ConfigKey::new("OPENAI_TIMEOUT", false, false, Some("600"), false),
+                ConfigKey::new("OPENAI_API_KEY", true, true, None, true),
+                ConfigKey::new("OPENAI_BASE_URL", true, false, None, true),
             ],
         )
         .with_setup_steps(vec![
-            "Go to https://platform.openai.com and sign up or log in",
-            "Navigate to API Keys in the left sidebar",
-            "Click 'Create new secret key'",
-            "Copy the key and paste it above",
+            "Введите ключ доступа, который вам выдали",
+            "Введите адрес сервиса инференса, например https://inference.example.ru/v1",
+            "Нажмите «Сохранить» — Василиса проверит подключение и подтянет список моделей",
         ])
     }
 }
