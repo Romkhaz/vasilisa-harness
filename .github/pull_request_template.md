@@ -1,16 +1,16 @@
-## Summary
-<!-- Describe your change -->
+## Что меняется
+<!-- Коротко: что делает правка и зачем -->
 
-### Testing
-<!-- How have this change been tested? Unit/integration tests? Manual testing? -->
+### Как проверено
+<!-- Тесты, ручная проверка, запуск приложения -->
 
-### Related Issues
-Relates to #ISSUE_ID  
-Discussion: LINK (if any)
+### Связанные задачи
+<!-- Ссылки на задачи или обсуждения, если есть -->
 
+### Скриншоты
+<!-- Для правок интерфейса: до и после -->
 
-### Screenshots/Demos (for UX changes)
-Before:  
-
-After:   
-
+### Перед отправкой
+- [ ] `cargo test -p goose` проходит
+- [ ] `cd ui/desktop && pnpm lint:check` проходит
+- [ ] Если менялись `defaultMessage`, пересобран `en.json` (`pnpm i18n:extract`) и дописан перевод в `ru.json`
