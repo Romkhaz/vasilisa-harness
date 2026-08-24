@@ -23,11 +23,11 @@ const i18n = defineMessages({
   },
   deeplinkPlaceholder: {
     id: 'importRecipeForm.deeplinkPlaceholder',
-    defaultMessage: 'Paste your goose://recipe?config=... deeplink here',
+    defaultMessage: 'Paste your vasilisa://recipe?config=... deeplink here',
   },
   deeplinkHint: {
     id: 'importRecipeForm.deeplinkHint',
-    defaultMessage: 'Paste a recipe deeplink starting with "goose://recipe?config="',
+    defaultMessage: 'Paste a recipe deeplink starting with "vasilisa://recipe?config="',
   },
   or: {
     id: 'importRecipeForm.or',
@@ -47,7 +47,8 @@ const i18n = defineMessages({
   },
   reviewWarning: {
     id: 'importRecipeForm.reviewWarning',
-    defaultMessage: 'Ensure you review contents of recipe files before adding them to your goose interface.',
+    defaultMessage:
+      'Ensure you review contents of recipe files before adding them to your Vasilisa interface.',
   },
   cancel: {
     id: 'importRecipeForm.cancel',
@@ -67,7 +68,8 @@ const i18n = defineMessages({
   },
   schemaDescription: {
     id: 'importRecipeForm.schemaDescription',
-    defaultMessage: 'Your YAML or JSON file should follow this structure. Required fields are: title, description, and either instructions or prompt.',
+    defaultMessage:
+      'Your YAML or JSON file should follow this structure. Required fields are: title, description, and either instructions or prompt.',
   },
 });
 
@@ -83,8 +85,8 @@ const importRecipeSchema = z
     deeplink: z
       .string()
       .refine(
-        (value) => !value || value.trim().startsWith('goose://recipe?config='),
-        'Invalid deeplink format. Expected: goose://recipe?config=...'
+        (value) => !value || value.trim().startsWith('vasilisa://recipe?config='),
+        'Invalid deeplink format. Expected: vasilisa://recipe?config=...'
       ),
     recipeUploadFile: z
       .instanceof(File)

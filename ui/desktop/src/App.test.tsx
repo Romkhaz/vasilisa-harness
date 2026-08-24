@@ -270,7 +270,7 @@ describe('App Component - Brand New State', () => {
       expect(mockElectron.reactReady).toHaveBeenCalled();
     });
 
-    expect(screen.getByText(/^Welcome to goose/)).toBeInTheDocument();
+    expect(screen.getByText(/^Welcome to Vasilisa/)).toBeInTheDocument();
   });
 
   it('should not redirect when provider is configured', async () => {
@@ -295,7 +295,7 @@ describe('App Component - Brand New State', () => {
   it('shows the scoped-parameter incompatibility before returning home', async () => {
     mockAppConfig.get.mockImplementation((key: string): string | null => {
       if (key === 'GOOSE_WORKING_DIR') return '/test/dir';
-      if (key === 'recipeDeeplink') return 'goose://recipe?url=example';
+      if (key === 'recipeDeeplink') return 'vasilisa://recipe?url=example';
       return null;
     });
     vi.mocked(createSession).mockRejectedValueOnce(new RecipeParameterScopesUnsupportedError());
@@ -306,7 +306,7 @@ describe('App Component - Brand New State', () => {
 
     await waitFor(() => {
       expect(mockToastError).toHaveBeenCalledWith(
-        'The connected Goose server does not support securely scoped deeplink recipe parameters. Update the server and try again.'
+        'The connected Vasilisa server does not support securely scoped deeplink recipe parameters. Update the server and try again.'
       );
     });
     expect(mockNavigate).toHaveBeenCalledWith('/');

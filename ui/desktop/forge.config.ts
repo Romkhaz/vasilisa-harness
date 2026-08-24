@@ -6,8 +6,20 @@ const isLinuxVulkanBuild = process.env.GOOSE_DESKTOP_LINUX_VARIANT === 'vulkan';
 
 let cfg = {
   asar: true,
+  // Явный bundle id: иначе Electron вывел бы его из имени пакета и он совпал бы
+  // с идентификатором оригинального goose.
+  appBundleId: 'ru.vasilisa.agent',
   extraResource: ['src/bin', 'src/images', 'src/app-update.yml'],
   icon: 'src/images/icon',
+  // Метаданные exe: без них Windows показывает в свойствах файла заготовку Electron
+  // («GitHub, Inc.»).
+  win32metadata: {
+    CompanyName: 'Агент Василиса',
+    FileDescription: 'Агент Василиса',
+    ProductName: 'Агент Василиса',
+    InternalName: 'Vasilisa',
+    OriginalFilename: 'Vasilisa.exe',
+  },
   // Windows specific configuration
   win32: {
     icon: 'src/images/icon.ico',
@@ -19,12 +31,15 @@ let cfg = {
   // Protocol registration
   protocols: [
     {
-      name: 'GooseProtocol',
-      schemes: ['goose'],
+      name: 'VasilisaProtocol',
+      schemes: ['vasilisa'],
     },
   ],
   // macOS Info.plist extensions for drag-and-drop support
   extendInfo: {
+    // Имя бандла остаётся латиницей (Vasilisa.app), а в Dock и Finder macOS
+    // показывает отображаемое имя.
+    CFBundleDisplayName: 'Агент Василиса',
     // Document types for drag-and-drop support onto dock icon
     CFBundleDocumentTypes: [
       {
@@ -35,10 +50,9 @@ let cfg = {
       },
     ],
     // Usage descriptions for macOS TCC (Transparency, Consent, and Control)
-    NSMicrophoneUsageDescription:
-      'Goose needs access to your microphone for voice dictation.',
+    NSMicrophoneUsageDescription: 'Василисе нужен доступ к микрофону для голосового ввода.',
     NSAppleEventsUsageDescription:
-      'Goose needs access to send Apple Events to control other apps on your behalf.',
+      'Василисе нужен доступ к Apple Events, чтобы управлять другими приложениями от вашего имени.',
   },
 };
 
@@ -65,8 +79,8 @@ module.exports = {
       name: '@electron-forge/publisher-github',
       config: {
         repository: {
-          owner: process.env.GITHUB_OWNER || 'aaif-goose',
-          name: process.env.GITHUB_REPO || 'goose',
+          owner: process.env.GITHUB_OWNER || 'Romkhaz',
+          name: process.env.GITHUB_REPO || 'vasilisa-harness',
         },
         prerelease: false,
         draft: true,
@@ -74,6 +88,20 @@ module.exports = {
     },
   ],
   makers: [
+    {
+      // Установщик для Windows. Приложение уже умеет отрабатывать события Squirrel
+      // (см. electron-squirrel-startup в src/main.ts), не хватало только мейкера.
+      name: '@electron-forge/maker-squirrel',
+      platforms: ['win32'],
+      config: {
+        name: 'Vasilisa',
+        authors: 'Агент Василиса',
+        description: 'Агент Василиса — десктоп-агент для работы с кодом',
+        setupIcon: 'src/images/icon.ico',
+        setupExe: 'Vasilisa-setup.exe',
+        noMsi: true,
+      },
+    },
     {
       name: '@electron-forge/maker-zip',
       platforms: ['darwin', 'win32', 'linux'],
@@ -87,10 +115,10 @@ module.exports = {
     {
       name: '@electron-forge/maker-deb',
       config: {
-        name: 'Goose',
-        bin: 'Goose',
-        maintainer: 'AAIF (Agentic AI Foundation)',
-        homepage: 'https://goose-docs.ai/',
+        name: 'Vasilisa',
+        bin: 'Vasilisa',
+        maintainer: 'Агент Василиса',
+        homepage: 'https://github.com/Romkhaz/vasilisa-harness',
         categories: ['Development'],
         desktopTemplate: './forge.deb.desktop',
         options: {
@@ -103,10 +131,10 @@ module.exports = {
     {
       name: '@electron-forge/maker-rpm',
       config: {
-        name: 'Goose',
-        bin: 'Goose',
-        maintainer: 'AAIF (Agentic AI Foundation)',
-        homepage: 'https://goose-docs.ai/',
+        name: 'Vasilisa',
+        bin: 'Vasilisa',
+        maintainer: 'Агент Василиса',
+        homepage: 'https://github.com/Romkhaz/vasilisa-harness',
         categories: ['Development'],
         desktopTemplate: './forge.rpm.desktop',
         options: {
@@ -120,17 +148,17 @@ module.exports = {
       name: '@electron-forge/maker-flatpak',
       config: {
         options: {
-          id: 'io.github.block.Goose', // NOTE: kept for backwards compat with existing installs
+          id: 'ru.vasilisa.Agent',
           categories: ['Development'],
-          mimeType: ['x-scheme-handler/goose'],
+          mimeType: ['x-scheme-handler/vasilisa'],
           icon: {
             scalable: 'src/images/icon.svg',
             '512x512': 'src/images/icon-512.png',
           },
-          homepage: 'https://goose-docs.ai/',
+          homepage: 'https://github.com/Romkhaz/vasilisa-harness',
           runtimeVersion: '25.08',
           baseVersion: '25.08',
-          bin: 'Goose',
+          bin: 'Vasilisa',
           modules: [
             {
               name: 'libbz2-shim',

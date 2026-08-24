@@ -132,11 +132,11 @@ describe('createSession ACP session extensions', () => {
   });
 
   it('scopes startup parameters to recipe deeplink session creation', async () => {
-    await createSession('/tmp', { recipeDeeplink: 'goose://recipe?url=example' });
+    await createSession('/tmp', { recipeDeeplink: 'vasilisa://recipe?url=example' });
 
     expect(mockedBeginConfiguredRecipeParameterScope).toHaveBeenCalledOnce();
     expect(mockedCreateAcpSession).toHaveBeenCalledWith('/tmp', [], {
-      recipeDeeplink: 'goose://recipe?url=example',
+      recipeDeeplink: 'vasilisa://recipe?url=example',
       recipeId: undefined,
       recipeParameterScopeId: 'scope-1',
     });
@@ -147,7 +147,7 @@ describe('createSession ACP session extensions', () => {
     mockedCreateAcpSession.mockRejectedValueOnce(new Error('session creation failed'));
 
     await expect(
-      createSession('/tmp', { recipeDeeplink: 'goose://recipe?url=example' })
+      createSession('/tmp', { recipeDeeplink: 'vasilisa://recipe?url=example' })
     ).rejects.toThrow('session creation failed');
 
     expect(mockedBeginConfiguredRecipeParameterScope).toHaveBeenCalledOnce();
@@ -159,7 +159,7 @@ describe('createSession ACP session extensions', () => {
 
     await expect(
       createSession('/tmp', {
-        recipeDeeplink: 'goose://recipe?url=example',
+        recipeDeeplink: 'vasilisa://recipe?url=example',
         extensionConfigs: [extensionConfig('developer')],
       })
     ).rejects.toThrow('extension lookup failed');
@@ -176,9 +176,9 @@ describe('createSession ACP session extensions', () => {
     });
 
     await expect(
-      createSession('/tmp', { recipeDeeplink: 'goose://recipe?url=example' })
+      createSession('/tmp', { recipeDeeplink: 'vasilisa://recipe?url=example' })
     ).rejects.toThrow(
-      'The connected Goose server does not support securely scoped deeplink recipe parameters. Update the server and try again.'
+      'The connected Vasilisa server does not support securely scoped deeplink recipe parameters. Update the server and try again.'
     );
 
     expect(mockedCreateAcpSession).not.toHaveBeenCalled();

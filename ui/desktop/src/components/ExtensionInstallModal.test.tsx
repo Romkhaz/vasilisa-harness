@@ -60,7 +60,7 @@ describe('ExtensionInstallModal', () => {
       const eventHandler = getAddExtensionEventHandler();
 
       await act(async () => {
-        await eventHandler({}, 'goose://extension?cmd=npx&arg=test-extension&name=TestExt');
+        await eventHandler({}, 'vasilisa://extension?cmd=npx&arg=test-extension&name=TestExt');
       });
 
       expect(screen.getByRole('dialog')).toBeInTheDocument();
@@ -77,7 +77,7 @@ describe('ExtensionInstallModal', () => {
       const eventHandler = getAddExtensionEventHandler();
 
       await act(async () => {
-        await eventHandler({}, 'goose://extension?cmd=npx&arg=test-extension&name=AllowedExt');
+        await eventHandler({}, 'vasilisa://extension?cmd=npx&arg=test-extension&name=AllowedExt');
       });
 
       expect(screen.getByText('Confirm Extension Installation')).toBeInTheDocument();
@@ -97,7 +97,7 @@ describe('ExtensionInstallModal', () => {
       await act(async () => {
         await eventHandler(
           {},
-          'goose://extension?cmd=npx&arg=untrusted-extension&name=UntrustedExt'
+          'vasilisa://extension?cmd=npx&arg=untrusted-extension&name=UntrustedExt'
         );
       });
 
@@ -114,7 +114,7 @@ describe('ExtensionInstallModal', () => {
       const eventHandler = getAddExtensionEventHandler();
 
       await act(async () => {
-        await eventHandler({}, 'goose://extension?cmd=npx&arg=blocked-extension&name=BlockedExt');
+        await eventHandler({}, 'vasilisa://extension?cmd=npx&arg=blocked-extension&name=BlockedExt');
       });
 
       expect(screen.getByText('Extension Installation Blocked')).toBeInTheDocument();
@@ -133,7 +133,7 @@ describe('ExtensionInstallModal', () => {
       const eventHandler = getAddExtensionEventHandler();
 
       await act(async () => {
-        await eventHandler({}, 'goose://extension?cmd=npx&arg=test&name=Test');
+        await eventHandler({}, 'vasilisa://extension?cmd=npx&arg=test&name=Test');
       });
 
       expect(screen.getByRole('dialog')).toBeInTheDocument();
@@ -154,7 +154,7 @@ describe('ExtensionInstallModal', () => {
       const eventHandler = getAddExtensionEventHandler();
 
       await act(async () => {
-        await eventHandler({}, 'goose://extension?cmd=npx&arg=test&name=Test');
+        await eventHandler({}, 'vasilisa://extension?cmd=npx&arg=test&name=Test');
       });
 
       await act(async () => {
@@ -162,7 +162,7 @@ describe('ExtensionInstallModal', () => {
       });
 
       expect(addExtensionFromDeepLink).toHaveBeenCalledWith(
-        'goose://extension?cmd=npx&arg=test&name=Test',
+        'vasilisa://extension?cmd=npx&arg=test&name=Test',
         mockAddExtension,
         expect.any(Function)
       );

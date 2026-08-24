@@ -40,6 +40,25 @@ struct SystemPromptContext {
     include_extensions: bool,
     #[serde(skip_serializing_if = "Option::is_none")]
     moim_system_prompt_block: Option<String>,
+    /// Язык, на котором Василиса должна отвечать пользователю. Берётся из GOOSE_LOCALE,
+    /// который десктоп-приложение прокидывает в backend-процесс.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    response_language: Option<String>,
+}
+
+/// Человекочитаемое название языка ответа для системного промпта.
+///
+/// Десктоп передаёт локаль в backend через переменную окружения `GOOSE_LOCALE`
+/// (см. ui/desktop/src/main.ts). Для английского возвращаем `None`, чтобы не добавлять
+/// в промпт лишнюю инструкцию — модели и так отвечают по-английски.
+fn response_language_from_env() -> Option<String> {
+    let locale = std::env::var("GOOSE_LOCALE").ok()?;
+    let tag = locale.replace('_', "-").to_lowercase();
+    match tag.split('-').next()? {
+        "ru" => Some("Russian".to_string()),
+        "en" => None,
+        _ => None,
+    }
 }
 
 pub struct SystemPromptBuilder<'a, M> {
@@ -148,6 +167,7 @@ impl<'a> SystemPromptBuilder<'a, PromptManager> {
             code_execution_mode: self.code_execution_mode,
             include_extensions: self.include_extensions,
             moim_system_prompt_block: moim::system_prompt_block(),
+            response_language: response_language_from_env(),
         };
 
         let base_prompt = if let Some(override_prompt) = &self.manager.system_prompt_override {
@@ -157,7 +177,7 @@ impl<'a> SystemPromptBuilder<'a, PromptManager> {
             prompt_template::render_template("system.md", &context)
         }
         .unwrap_or_else(|_| {
-            "You are a general-purpose AI agent called goose, created by Block".to_string()
+            "You are a general-purpose AI agent called Vasilisa (Агент Василиса)".to_string()
         });
 
         let mut system_prompt_extras = self.manager.system_prompt_extras.clone();

@@ -16,15 +16,16 @@ impl Paths {
                 DirType::AgentsHome => base.join(".agents"),
             }
         } else {
-            // NOTE: "Block" is kept here for backwards compatibility with existing
-            // user config/data directories (e.g. ~/Library/Application Support/Block/goose/).
-            // Changing this would orphan existing installations.
+            // Василиса намеренно не делит каталоги с оригинальным goose: иначе при
+            // установленных рядом продуктах они перетирали бы друг другу config.yaml,
+            // сессии и список провайдеров. Даёт ~/.config/vasilisa,
+            // ~/Library/Application Support/Vasilisa/vasilisa/, %APPDATA%\Vasilisa\vasilisa\.
             let strategy = choose_app_strategy(AppStrategyArgs {
-                top_level_domain: "Block".to_string(),
-                author: "Block".to_string(),
-                app_name: "goose".to_string(),
+                top_level_domain: "Vasilisa".to_string(),
+                author: "Vasilisa".to_string(),
+                app_name: "vasilisa".to_string(),
             })
-            .expect("goose requires a home dir");
+            .expect("Василисе нужен домашний каталог пользователя");
 
             match dir_type {
                 DirType::Config => strategy.config_dir(),
