@@ -137,11 +137,6 @@ run-ui-windows:
     @just copy-binary-windows
     @powershell.exe -Command "Write-Host 'Running UI...'; Set-Location ui/desktop; pnpm install; pnpm run start-gui"
 
-# Run Docusaurus server for documentation
-run-docs:
-    @echo "Running docs server..."
-    cd documentation && yarn && yarn start
-
 # Run server
 run-server:
     @echo "Running external ACP backend..."
@@ -224,7 +219,6 @@ run-dev:
 # Install all dependencies (run once after fresh clone)
 install-deps:
     cd ui/desktop && pnpm install
-    cd documentation && yarn
 
 ensure-release-branch:
     #!/usr/bin/env bash
