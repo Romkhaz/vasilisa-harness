@@ -293,10 +293,18 @@ export function registerUpdateIpcHandlers() {
         // Improved dialog with clearer instructions
         const dialogResult = (await dialog.showMessageBox({
           type: 'info',
-          title: 'Update Ready to Install',
-          message: `Version ${githubUpdateInfo.latestVersion} is ready to install.`,
-          detail: `The update has been downloaded and extracted. To complete the installation:\n\n1. Click "Open Folder" to view the new Goose.app\n2. Quit Goose (this app will close)\n3. Drag the new Goose.app to your Applications folder\n4. Replace the existing app when prompted\n\nThe update will be available the next time you launch Goose.`,
-          buttons: ['Open Folder & Quit', 'Open Folder Only', 'Cancel'],
+          title: 'Обновление готово к установке',
+          message: `Версия ${githubUpdateInfo.latestVersion} готова к установке.`,
+          detail:
+            `Обновление скачано и распаковано. Чтобы завершить установку:
+
+1. Нажмите «Открыть папку» — увидите новый Vasilisa.app
+2. Завершите Василису (приложение закроется)
+3. Перетащите новый Vasilisa.app в папку «Программы»
+4. Подтвердите замену существующего приложения
+
+Обновление применится при следующем запуске Василисы.`,
+          buttons: ['Открыть папку и выйти', 'Только открыть папку', 'Отмена'],
           defaultId: 0,
           cancelId: 2,
         })) as unknown as { response: number };
@@ -674,8 +682,8 @@ export function setupAutoUpdater(tray?: Tray) {
 
     // Show native notification
     const notification = new Notification({
-      title: 'Update Ready',
-      body: `Version ${info.version} will be installed when you quit Goose. Click to install now.`,
+      title: 'Обновление готово',
+      body: `Версия ${info.version} установится, когда вы завершите работу Василисы. Нажмите, чтобы установить сейчас.`,
     });
     notification.show();
 
@@ -766,7 +774,7 @@ function updateTrayIcon(hasUpdate: boolean) {
     } else {
       iconPath = path.join(process.resourcesPath, 'images', 'iconTemplateUpdate.png');
     }
-    trayRef.setToolTip('Goose - Update Available');
+    trayRef.setToolTip('Василиса — доступно обновление');
   } else {
     // Use normal icon
     if (isDev) {
@@ -774,7 +782,7 @@ function updateTrayIcon(hasUpdate: boolean) {
     } else {
       iconPath = path.join(process.resourcesPath, 'images', 'iconTemplate.png');
     }
-    trayRef.setToolTip('Goose');
+    trayRef.setToolTip('Василиса');
   }
 
   const icon = nativeImage.createFromPath(iconPath);

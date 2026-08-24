@@ -29,10 +29,13 @@ export type DefaultKeyboardShortcuts = {
   [K in keyof KeyboardShortcuts]: string;
 };
 
+/**
+ * Василиса — русскоязычный продукт, поэтому варианта «язык системы» здесь нет: на
+ * англоязычной Windows он давал бы английский интерфейс. Английский остаётся как
+ * запасной язык, который можно выбрать вручную.
+ */
 // prettier-ignore
-export type LanguageSetting =
-  | 'system' | 'en' | 'es' | 'fr' | 'de' | 'it' | 'pt' | 'id' | 'ms' | 'vi'
-  | 'hi' | 'ja' | 'ko' | 'ru' | 'tr' | 'zh-CN' | 'zh-TW';
+export type LanguageSetting = 'ru' | 'en';
 
 export interface Settings {
   // Desktop app settings
@@ -91,7 +94,7 @@ export const defaultSettings: Settings = {
   // UI preferences
   theme: 'light',
   useSystemTheme: true,
-  language: 'system',
+  language: 'ru',
   responseStyle: 'concise',
   showPricing: true,
   seenAnnouncementIds: [],

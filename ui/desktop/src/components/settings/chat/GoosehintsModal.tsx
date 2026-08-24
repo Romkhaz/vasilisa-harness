@@ -20,12 +20,12 @@ const i18n = defineMessages({
   dialogDescription: {
     id: 'goosehintsModal.dialogDescription',
     defaultMessage:
-      'Provide additional context about your project to improve communication with Goose',
+      'Provide additional context about your project to improve communication with Vasilisa',
   },
   helpText1: {
     id: 'goosehintsModal.helpText1',
     defaultMessage:
-      '.goosehints is a text file used to provide additional context about your project and improve the communication with Goose.',
+      '.goosehints is a text file used to provide additional context about your project and improve the communication with Vasilisa.',
   },
   helpText2: {
     id: 'goosehintsModal.helpText2',
@@ -105,7 +105,7 @@ const HelpText = () => {
               className="text-blue-500 hover:text-blue-600 p-0 h-auto"
               onClick={() =>
                 window.open(
-                  'https://goose-docs.ai/docs/guides/using-goosehints/',
+                  'https://github.com/Romkhaz/vasilisa-harness',
                   '_blank'
                 )
               }

@@ -20,7 +20,8 @@ const i18n = defineMessages({
   },
   partiallyLoaded: {
     id: 'groupedExtensionLoadingToast.partiallyLoaded',
-    defaultMessage: 'Loaded {successCount}/{totalCount, plural, one {# extension} other {# extensions}}',
+    defaultMessage:
+      'Loaded {successCount}/{totalCount, plural, one {# extension} other {# extensions}}',
   },
   failedToLoad: {
     id: 'groupedExtensionLoadingToast.failedToLoad',
@@ -32,7 +33,7 @@ const i18n = defineMessages({
   },
   askGoose: {
     id: 'groupedExtensionLoadingToast.askGoose',
-    defaultMessage: 'Ask goose',
+    defaultMessage: 'Ask Vasilisa',
   },
   copied: {
     id: 'groupedExtensionLoadingToast.copied',

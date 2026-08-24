@@ -26,7 +26,7 @@ const i18n = defineMessages({
   appearanceTitle: { id: 'settings.appearance.title', defaultMessage: 'Appearance' },
   appearanceDesc: {
     id: 'settings.appearance.description',
-    defaultMessage: 'Configure how goose appears on your system',
+    defaultMessage: 'Configure how Vasilisa appears on your system',
   },
   notifications: { id: 'settings.notifications.title', defaultMessage: 'Notifications' },
   notificationsDesc: {
@@ -41,20 +41,20 @@ const i18n = defineMessages({
   },
   taskNotificationsDesc: {
     id: 'settings.notifications.task.description',
-    defaultMessage: 'Notify when Goose finishes a task while the window is in the background',
+    defaultMessage: 'Notify when Vasilisa finishes a task while the window is in the background',
   },
   menuBarIcon: { id: 'settings.menuBarIcon.title', defaultMessage: 'Menu bar icon' },
   menuBarIconDesc: {
     id: 'settings.menuBarIcon.description',
-    defaultMessage: 'Show goose in the menu bar',
+    defaultMessage: 'Show Vasilisa in the menu bar',
   },
   dockIcon: { id: 'settings.dockIcon.title', defaultMessage: 'Dock icon' },
-  dockIconDesc: { id: 'settings.dockIcon.description', defaultMessage: 'Show goose in the dock' },
+  dockIconDesc: { id: 'settings.dockIcon.description', defaultMessage: 'Show Vasilisa in the dock' },
   preventSleep: { id: 'settings.preventSleep.title', defaultMessage: 'Prevent Sleep' },
   preventSleepDesc: {
     id: 'settings.preventSleep.description',
     defaultMessage:
-      'Keep your computer awake while goose is running a task (screen can still lock)',
+      'Keep your computer awake while Vasilisa is running a task (screen can still lock)',
   },
   costTracking: { id: 'settings.costTracking.title', defaultMessage: 'Cost Tracking' },
   costTrackingDesc: {
@@ -64,40 +64,19 @@ const i18n = defineMessages({
   themeTitle: { id: 'settings.theme.title', defaultMessage: 'Theme' },
   themeDesc: {
     id: 'settings.theme.description',
-    defaultMessage: 'Customize the look and feel of goose',
+    defaultMessage: 'Customize the look and feel of Vasilisa',
   },
   languageTitle: { id: 'settings.language.title', defaultMessage: 'Language' },
   languageDesc: {
     id: 'settings.language.description',
-    defaultMessage: 'Choose the display language for goose',
+    defaultMessage: 'Choose the display language for Vasilisa',
   },
-  languageSystem: { id: 'settings.language.systemDefault', defaultMessage: 'System Default' },
   languageEnglish: { id: 'settings.language.english', defaultMessage: 'English' },
-  languageChineseSimplified: {
-    id: 'settings.language.zhCN',
-    defaultMessage: 'Chinese (Simplified)',
-  },
   languageRussian: { id: 'settings.language.russian', defaultMessage: 'Russian' },
-  languageTurkish: { id: 'settings.language.turkish', defaultMessage: 'Turkish' },
-  languageHindi: { id: 'settings.language.hindi', defaultMessage: 'Hindi' },
-  languageJapanese: { id: 'settings.language.japanese', defaultMessage: 'Japanese' },
-  languageSpanish: { id: 'settings.language.spanish', defaultMessage: 'Spanish' },
-  languageKorean: { id: 'settings.language.korean', defaultMessage: 'Korean' },
-  languageFrench: { id: 'settings.language.french', defaultMessage: 'French' },
-  languageGerman: { id: 'settings.language.german', defaultMessage: 'German' },
-  languageItalian: { id: 'settings.language.italian', defaultMessage: 'Italian' },
-  languagePortuguese: { id: 'settings.language.portuguese', defaultMessage: 'Portuguese' },
-  languageIndonesian: { id: 'settings.language.indonesian', defaultMessage: 'Indonesian' },
-  languageMalay: { id: 'settings.language.malay', defaultMessage: 'Malay' },
-  languageVietnamese: { id: 'settings.language.vietnamese', defaultMessage: 'Vietnamese' },
-  languageChineseTraditional: {
-    id: 'settings.language.zhTW',
-    defaultMessage: 'Chinese (Traditional)',
-  },
   helpTitle: { id: 'settings.help.title', defaultMessage: 'Help & feedback' },
   helpDesc: {
     id: 'settings.help.description',
-    defaultMessage: 'Help us improve goose by reporting issues or requesting new features',
+    defaultMessage: 'Help us improve Vasilisa by reporting issues or requesting new features',
   },
   reportBug: { id: 'settings.help.reportBug', defaultMessage: 'Report a Bug' },
   requestFeature: { id: 'settings.help.requestFeature', defaultMessage: 'Request a Feature' },
@@ -105,7 +84,7 @@ const i18n = defineMessages({
   updatesTitle: { id: 'settings.updates.title', defaultMessage: 'Updates' },
   updatesDesc: {
     id: 'settings.updates.description',
-    defaultMessage: 'Check for and install updates to keep goose running at its best',
+    defaultMessage: 'Check for and install updates to keep Vasilisa running at its best',
   },
   notificationsModalTitle: {
     id: 'settings.notifications.modal.title',
@@ -125,7 +104,7 @@ const i18n = defineMessages({
   },
   notificationsMacStep3: {
     id: 'settings.notifications.modal.macStep3',
-    defaultMessage: 'Find and select goose in the application list',
+    defaultMessage: 'Find and select Vasilisa in the application list',
   },
   notificationsMacStep4: {
     id: 'settings.notifications.modal.macStep4',
@@ -145,7 +124,7 @@ const i18n = defineMessages({
   },
   notificationsWinStep3: {
     id: 'settings.notifications.modal.winStep3',
-    defaultMessage: 'Find and select goose in the application list',
+    defaultMessage: 'Find and select Vasilisa in the application list',
   },
   notificationsWinStep4: {
     id: 'settings.notifications.modal.winStep4',
@@ -155,23 +134,8 @@ const i18n = defineMessages({
 });
 
 const LANGUAGE_OPTIONS: Array<{ value: LanguageSetting; message: keyof typeof i18n }> = [
-  { value: 'system', message: 'languageSystem' },
-  { value: 'en', message: 'languageEnglish' },
-  { value: 'es', message: 'languageSpanish' },
-  { value: 'fr', message: 'languageFrench' },
-  { value: 'de', message: 'languageGerman' },
-  { value: 'it', message: 'languageItalian' },
-  { value: 'pt', message: 'languagePortuguese' },
-  { value: 'id', message: 'languageIndonesian' },
-  { value: 'ms', message: 'languageMalay' },
-  { value: 'vi', message: 'languageVietnamese' },
-  { value: 'hi', message: 'languageHindi' },
-  { value: 'ja', message: 'languageJapanese' },
-  { value: 'ko', message: 'languageKorean' },
   { value: 'ru', message: 'languageRussian' },
-  { value: 'tr', message: 'languageTurkish' },
-  { value: 'zh-CN', message: 'languageChineseSimplified' },
-  { value: 'zh-TW', message: 'languageChineseTraditional' },
+  { value: 'en', message: 'languageEnglish' },
 ];
 
 interface AppSettingsSectionProps {
@@ -187,7 +151,7 @@ export default function AppSettingsSection({ scrollToSection }: AppSettingsSecti
   const [isDockSwitchDisabled, setIsDockSwitchDisabled] = useState(false);
   const [showNotificationModal, setShowNotificationModal] = useState(false);
   const [showPricing, setShowPricing] = useState(true);
-  const [language, setLanguage] = useState<LanguageSetting>('system');
+  const [language, setLanguage] = useState<LanguageSetting>('ru');
   const [isDarkMode, setIsDarkMode] = useState(false);
   const updateSectionRef = useRef<HTMLDivElement>(null);
   const shouldShowUpdates = !window.appConfig.get('GOOSE_VERSION');
@@ -214,7 +178,7 @@ export default function AppSettingsSection({ scrollToSection }: AppSettingsSecti
 
   useEffect(() => {
     window.electron.getSetting('showPricing').then(setShowPricing);
-    window.electron.getSetting('language').then((value) => setLanguage(value ?? 'system'));
+    window.electron.getSetting('language').then((value) => setLanguage(value ?? 'ru'));
   }, []);
 
   useEffect(() => {
@@ -511,7 +475,7 @@ export default function AppSettingsSection({ scrollToSection }: AppSettingsSecti
             <Button
               onClick={() => {
                 window.open(
-                  'https://github.com/aaif-goose/goose/issues/new?template=bug_report.md',
+                  'https://github.com/Romkhaz/vasilisa-harness/issues/new?template=bug_report.md',
                   '_blank'
                 );
               }}
@@ -523,7 +487,7 @@ export default function AppSettingsSection({ scrollToSection }: AppSettingsSecti
             <Button
               onClick={() => {
                 window.open(
-                  'https://github.com/aaif-goose/goose/issues/new?template=feature_request.md',
+                  'https://github.com/Romkhaz/vasilisa-harness/issues/new?template=feature_request.md',
                   '_blank'
                 );
               }}

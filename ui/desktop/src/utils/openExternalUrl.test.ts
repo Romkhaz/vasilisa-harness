@@ -40,9 +40,9 @@ describe('openExternalUrl', () => {
       expect.objectContaining({
         defaultId: 0,
         cancelId: 0,
-        title: 'Open External Link',
-        message: 'Open ms-msdt: link?',
-        detail: 'This will open: ms-msdt:exploit',
+        title: 'Открыть внешнюю ссылку',
+        message: 'Открыть ссылку ms-msdt:?',
+        detail: 'Будет открыто: ms-msdt:exploit',
       })
     );
     expect(shell.openExternal).not.toHaveBeenCalled();
@@ -59,14 +59,14 @@ describe('openExternalUrl', () => {
   it('uses the configured locale for an unknown-protocol confirmation', async () => {
     vi.mocked(dialog.showMessageBox).mockResolvedValue({ response: 0, checkboxChecked: false });
 
-    await openExternalUrl('custom-handler:resource', undefined, 'es-ES');
+    await openExternalUrl('custom-handler:resource', undefined, 'en-US');
 
     expect(dialog.showMessageBox).toHaveBeenCalledWith(
       expect.objectContaining({
-        buttons: ['Cancelar', 'Abrir'],
-        title: 'Abrir enlace externo',
-        message: '¿Abrir enlace custom-handler:?',
-        detail: 'Esto abrirá: custom-handler:resource',
+        buttons: ['Cancel', 'Open'],
+        title: 'Open External Link',
+        message: 'Open custom-handler: link?',
+        detail: 'This will open: custom-handler:resource',
       })
     );
   });

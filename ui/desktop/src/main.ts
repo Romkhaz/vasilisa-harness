@@ -76,82 +76,80 @@ function shouldSetupUpdater(): boolean {
 // -----------------------------------------------------------------------
 // Electron's main process can't use react-intl (which runs in the renderer),
 // so the native menu bar is translated here with a small hand-maintained
-// dictionary. Only Simplified Chinese is filled in right now; other locales
-// fall through to the original English labels. Keep the keys in sync with
-// the raw label strings used below.
+// dictionary. Василиса поставляется на русском, поэтому русский словарь —
+// основной; при любой другой локали остаются английские подписи Electron.
+// Keep the keys in sync with the raw label strings used below.
 // =======================================================================
 
-const MENU_TRANSLATIONS_ZH_CN: Record<string, string> = {
+const MENU_TRANSLATIONS_RU: Record<string, string> = {
   // Top-level
-  File: '文件',
-  Edit: '编辑',
-  View: '视图',
-  Window: '窗口',
-  Help: '帮助',
+  File: 'Файл',
+  Edit: 'Правка',
+  View: 'Вид',
+  Window: 'Окно',
+  Help: 'Справка',
   // Context menu
-  'Add to dictionary': '添加到词典',
-  Cut: '剪切',
-  Copy: '复制',
-  Paste: '粘贴',
-  // Goose-added items
-  'New Window': '新建窗口',
-  Settings: '设置',
-  'Find…': '查找…',
-  'Find Next': '查找下一个',
-  'Find Previous': '查找上一个',
-  'Use Selection for Find': '用所选内容查找',
-  Find: '查找',
-  'New Chat': '新建聊天',
-  'New Chat Window': '新建聊天窗口',
-  'Open Directory...': '打开目录…',
-  'Recent Directories': '最近的目录',
-  'Focus Goose Window': '聚焦 Goose 窗口',
-  'Quick Launcher': '快速启动器',
-  'Always on Top': '窗口置顶',
-  'Toggle Navigation': '切换导航',
-  'About Goose': '关于 Goose',
+  'Add to dictionary': 'Добавить в словарь',
+  Cut: 'Вырезать',
+  Copy: 'Копировать',
+  Paste: 'Вставить',
+  // Пункты, добавленные приложением
+  'New Window': 'Новое окно',
+  Settings: 'Настройки',
+  'Find…': 'Найти…',
+  'Find Next': 'Найти далее',
+  'Find Previous': 'Найти ранее',
+  'Use Selection for Find': 'Искать выделенное',
+  Find: 'Поиск',
+  'New Chat': 'Новый чат',
+  'New Chat Window': 'Новое окно чата',
+  'Open Directory...': 'Открыть папку…',
+  'Recent Directories': 'Недавние папки',
+  'Focus Goose Window': 'Показать окно Василисы',
+  'Quick Launcher': 'Быстрый запуск',
+  'Always on Top': 'Поверх всех окон',
+  'Toggle Navigation': 'Показать или скрыть навигацию',
+  'About Goose': 'О Василисе',
   // Electron's default role-based labels we want to translate as well.
   // (The menu role itself still provides the correct behaviour; only the
   // display string is overridden.)
-  Undo: '撤销',
-  Redo: '重做',
-  'Select All': '全选',
-  Delete: '删除',
-  Speech: '语音',
-  Reload: '重新加载',
-  'Force Reload': '强制重新加载',
-  'Toggle Developer Tools': '切换开发者工具',
-  'Actual Size': '实际大小',
-  'Reset Zoom': '重置缩放',
-  'Zoom In': '放大',
-  'Zoom Out': '缩小',
-  'Toggle Full Screen': '切换全屏',
-  'Toggle Fullscreen': '切换全屏',
-  Minimize: '最小化',
-  Close: '关闭',
-  'Close Window': '关闭窗口',
-  Quit: '退出',
-  Exit: '退出',
-  'Bring All to Front': '全部置于最前',
-  'Emoji & Symbols': '表情符号',
-  'Start Dictation…': '开始听写…',
-  'Hide Goose': '隐藏 Goose',
-  'Hide Others': '隐藏其他',
-  'Show All': '全部显示',
-  Services: '服务',
+  Undo: 'Отменить',
+  Redo: 'Повторить',
+  'Select All': 'Выделить всё',
+  Delete: 'Удалить',
+  Speech: 'Речь',
+  Reload: 'Обновить',
+  'Force Reload': 'Обновить принудительно',
+  'Toggle Developer Tools': 'Инструменты разработчика',
+  'Actual Size': 'Фактический размер',
+  'Reset Zoom': 'Сбросить масштаб',
+  'Zoom In': 'Увеличить',
+  'Zoom Out': 'Уменьшить',
+  'Toggle Full Screen': 'Во весь экран',
+  'Toggle Fullscreen': 'Во весь экран',
+  Minimize: 'Свернуть',
+  Close: 'Закрыть',
+  'Close Window': 'Закрыть окно',
+  Quit: 'Завершить',
+  Exit: 'Выход',
+  'Bring All to Front': 'Все окна на передний план',
+  'Emoji & Symbols': 'Эмодзи и символы',
+  'Start Dictation…': 'Начать диктовку…',
+  'Hide Goose': 'Скрыть Василису',
+  'Hide Others': 'Скрыть остальные',
+  'Show All': 'Показать все',
+  Services: 'Службы',
 };
 
 function detectMenuLocale(): string {
-  return getConfiguredGooseLocale() ?? 'en';
+  return getConfiguredGooseLocale() ?? 'ru';
 }
 
 function menuT(label: string): string {
-  // Normalize underscores to hyphens so POSIX-style tags like "zh_CN" work.
+  // Normalize underscores to hyphens so POSIX-style tags like "ru_RU" work.
   const lower = detectMenuLocale().replace(/_/g, '-').toLowerCase();
-  const isTraditional = /^zh-(hant|tw|hk|mo)\b/.test(lower);
-  const isSimplifiedChinese = !isTraditional && (lower === 'zh' || lower.startsWith('zh-'));
-  if (isSimplifiedChinese) {
-    return MENU_TRANSLATIONS_ZH_CN[label] ?? label;
+  if (lower === 'ru' || lower.startsWith('ru-')) {
+    return MENU_TRANSLATIONS_RU[label] ?? label;
   }
   return label;
 }
@@ -180,25 +178,7 @@ function translateMenuLabels(items: MenuItem[]): void {
 // Settings management
 const SETTINGS_FILE = path.join(app.getPath('userData'), 'settings.json');
 const STARTUP_LOGS_DIR = path.join(app.getPath('userData'), 'logs', 'startup');
-const validLanguageSettings = new Set<Settings['language']>([
-  'system',
-  'en',
-  'es',
-  'fr',
-  'de',
-  'it',
-  'pt',
-  'id',
-  'ms',
-  'vi',
-  'hi',
-  'ja',
-  'ko',
-  'ru',
-  'tr',
-  'zh-CN',
-  'zh-TW',
-]);
+const validLanguageSettings = new Set<Settings['language']>(['ru', 'en']);
 
 function isValidLanguageSetting(value: unknown): value is Settings['language'] {
   return typeof value === 'string' && validLanguageSettings.has(value as Settings['language']);
@@ -238,7 +218,7 @@ function updateSettings(modifier: (settings: Settings) => void): void {
 
 function getConfiguredGooseLocale(): string | undefined {
   const language = getSettings().language;
-  if (isValidLanguageSetting(language) && language !== 'system') {
+  if (isValidLanguageSetting(language)) {
     return language;
   }
 
@@ -409,7 +389,7 @@ app.whenReady().then(() => {
 // Main-process net.fetch and renderer WebSockets: pin to the exact cert once known.
 app.whenReady().then(() => {
   installBackendCertificateVerifiers(
-    [session.defaultSession, session.fromPartition('persist:goose')],
+    [session.defaultSession, session.fromPartition('persist:vasilisa')],
     {
       has: isTrustedHost,
       verify: verifyBackendCertificate,
@@ -427,13 +407,13 @@ if (process.env.ENABLE_PLAYWRIGHT) {
 // In production, register normally
 if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
   // Development mode - force registration
-  console.log('[Main] Development mode: Forcing protocol registration for goose://');
-  app.setAsDefaultProtocolClient('goose');
+  console.log('[Main] Development mode: Forcing protocol registration for vasilisa://');
+  app.setAsDefaultProtocolClient('vasilisa');
 
   if (process.platform === 'darwin') {
     try {
       // Reset the default handler to ensure dev version takes precedence
-      spawn('open', ['-a', process.execPath, '--args', '--reset-protocol-handler', 'goose'], {
+      spawn('open', ['-a', process.execPath, '--args', '--reset-protocol-handler', 'vasilisa'], {
         detached: true,
         stdio: 'ignore',
       });
@@ -443,7 +423,7 @@ if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
   }
 } else {
   // Production mode - normal registration
-  app.setAsDefaultProtocolClient('goose');
+  app.setAsDefaultProtocolClient('vasilisa');
 }
 
 // Apply single instance lock on Windows and Linux where it's needed for deep links
@@ -457,7 +437,7 @@ if (process.platform !== 'darwin') {
     app.quit();
   } else {
     app.on('second-instance', (_event, commandLine) => {
-      const protocolUrl = commandLine.find((arg) => arg.startsWith('goose://'));
+      const protocolUrl = commandLine.find((arg) => arg.startsWith('vasilisa://'));
       if (protocolUrl) {
         const parsedUrl = new URL(protocolUrl);
         // If it's a bot/recipe URL, handle it directly by creating a new window
@@ -526,7 +506,7 @@ if (process.platform !== 'darwin') {
   }
 
   // Handle protocol URLs on Windows and Linux startup
-  const protocolUrl = process.argv.find((arg) => arg.startsWith('goose://'));
+  const protocolUrl = process.argv.find((arg) => arg.startsWith('vasilisa://'));
   if (protocolUrl) {
     app.whenReady().then(async () => {
       let parsedUrl: URL;
@@ -624,7 +604,7 @@ function getResumeSessionId(parsedUrl: URL): string | null {
 async function createResumeChatWindow(parsedUrl: URL, dir?: string): Promise<boolean> {
   const resumeSessionId = getResumeSessionId(parsedUrl);
   if (!resumeSessionId) {
-    log.warn('[Main] Ignoring goose://resume URL without a session id');
+    log.warn('[Main] Ignoring vasilisa://resume URL without a session id');
     return false;
   }
 
@@ -778,7 +758,7 @@ app.on('open-url', async (_event, url) => {
 app.on('will-finish-launching', () => {
   if (process.platform === 'darwin') {
     app.setAboutPanelOptions({
-      applicationName: 'Goose',
+      applicationName: 'Агент Василиса',
       applicationVersion: app.getVersion(),
     });
   }
@@ -833,8 +813,8 @@ async function handleFileOpen(filePath: string) {
 
     // Show user-friendly error notification
     new Notification({
-      title: 'Goose',
-      body: `Could not open directory: ${path.basename(filePath)}`,
+      title: 'Василиса',
+      body: `Не удалось открыть папку: ${path.basename(filePath)}`,
     }).show();
   }
 }
@@ -1066,10 +1046,10 @@ const createChat = async (
   } catch (error) {
     dialog.showMessageBoxSync({
       type: 'error',
-      title: 'External Backend Misconfigured',
-      message: 'The external backend environment is invalid.',
+      title: 'Внешний сервер настроен неверно',
+      message: 'Настройки внешнего сервера некорректны.',
       detail: errorMessage(error),
-      buttons: ['Quit'],
+      buttons: ['Выйти'],
     });
     app.quit();
     return;
@@ -1088,10 +1068,10 @@ const createChat = async (
     if (!usesHttps) {
       const response = dialog.showMessageBoxSync({
         type: 'error',
-        title: 'External Backend Misconfigured',
-        message: 'Certificate fingerprint requires an HTTPS external backend URL.',
-        detail: 'Use an https:// URL or remove the configured certificate fingerprint.',
-        buttons: ['Disable External Backend & Retry', 'Quit'],
+        title: 'Внешний сервер настроен неверно',
+        message: 'Отпечаток сертификата требует адреса внешнего сервера по HTTPS.',
+        detail: 'Укажите адрес, начинающийся с https://, либо удалите отпечаток сертификата из настроек.',
+        buttons: ['Отключить внешний сервер и повторить', 'Выйти'],
         defaultId: 0,
         cancelId: 1,
       });
@@ -1137,13 +1117,13 @@ const createChat = async (
         const canDisableExternalBackend = externalBackend.source === 'settings';
         const response = dialog.showMessageBoxSync({
           type: 'error',
-          title: 'External Backend Unreachable',
-          message: `Could not connect to external backend at ${externalBaseUrl}`,
+          title: 'Внешний сервер недоступен',
+          message: `Не удалось подключиться к внешнему серверу по адресу ${externalBaseUrl}`,
           detail:
-            'The external backend must be running and the configured secret must match GOOSE_SERVER__SECRET_KEY on the server.',
+            'Внешний сервер должен быть запущен, а заданный секрет — совпадать со значением GOOSE_SERVER__SECRET_KEY на сервере.',
           buttons: canDisableExternalBackend
-            ? ['Disable External Backend & Retry', 'Quit']
-            : ['Quit'],
+            ? ['Отключить внешний сервер и повторить', 'Выйти']
+            : ['Выйти'],
           defaultId: 0,
           cancelId: canDisableExternalBackend ? 1 : 0,
         });
@@ -1174,12 +1154,12 @@ const createChat = async (
       const canDisableExternalBackend = externalBackend.source === 'settings';
       const response = dialog.showMessageBoxSync({
         type: 'error',
-        title: 'External Backend Misconfigured',
-        message: 'The external backend URL is invalid.',
+        title: 'Внешний сервер настроен неверно',
+        message: 'Адрес внешнего сервера указан неверно.',
         detail: errorMessage(error),
         buttons: canDisableExternalBackend
-          ? ['Disable External Backend & Retry', 'Quit']
-          : ['Quit'],
+          ? ['Отключить внешний сервер и повторить', 'Выйти']
+          : ['Выйти'],
         defaultId: 0,
         cancelId: canDisableExternalBackend ? 1 : 0,
       });
@@ -1238,14 +1218,14 @@ const createChat = async (
       log.error('goose serve failed to start', error);
       dialog.showMessageBoxSync({
         type: 'error',
-        title: 'Goose Failed to Start',
-        message: 'The backend server failed to start.',
+        title: 'Василиса не смогла запуститься',
+        message: 'Не удалось запустить серверную часть приложения.',
         detail: [
-          'Backend: goose serve',
-          'Readiness check: HTTPS GET /status',
-          `Startup error:\n${errorMessage(error)}`,
+          'Серверная часть: goose serve',
+          'Проверка готовности: HTTPS GET /status',
+          `Ошибка запуска:\n${errorMessage(error)}`,
         ].join('\n\n'),
-        buttons: ['OK'],
+        buttons: ['ОК'],
       });
       app.quit();
       return;
@@ -1322,7 +1302,7 @@ const createChat = async (
               process.env.SECURITY_COMMAND_CLASSIFIER_ENABLED_OVERRIDE,
           }),
         ],
-        partition: 'persist:goose',
+        partition: 'persist:vasilisa',
       },
     });
   } catch (error) {
@@ -1583,7 +1563,7 @@ const createLauncher = () => {
           GOOSE_LOCALE: getConfiguredGooseLocale(),
         }),
       ],
-      partition: 'persist:goose',
+      partition: 'persist:vasilisa',
     },
     skipTaskbar: true,
     alwaysOnTop: true,
@@ -2242,7 +2222,7 @@ ipcMain.handle('select-recipe-file', async (event) => {
   const pathRoot = appConfig.GOOSE_PATH_ROOT as string | undefined;
   const recipeDirectory = pathRoot
     ? path.join(pathRoot, 'config', 'recipes')
-    : path.join(os.homedir(), '.config', 'goose', 'recipes');
+    : path.join(os.homedir(), '.config', 'vasilisa', 'recipes');
   let defaultPath = os.homedir();
   try {
     if ((await fs.stat(recipeDirectory)).isDirectory()) {
@@ -2253,10 +2233,10 @@ ipcMain.handle('select-recipe-file', async (event) => {
   }
 
   const result = await dialog.showOpenDialog(senderWindow, {
-    title: 'Select a recipe',
+    title: 'Выберите рецепт',
     defaultPath,
     properties: ['openFile'],
-    filters: [{ name: 'YAML recipes', extensions: ['yaml', 'yml'] }],
+    filters: [{ name: 'Рецепты YAML', extensions: ['yaml', 'yml'] }],
   });
   if (result.canceled || result.filePaths.length === 0) {
     return null;
@@ -2280,12 +2260,12 @@ ipcMain.handle('write-goosehints', async (event, content) => {
 // need a separate read step.
 ipcMain.handle('select-import-session-file', async () => {
   const result = (await dialog.showOpenDialog({
-    title: 'Import session',
+    title: 'Импорт сессии',
     defaultPath: os.homedir(),
     properties: ['openFile', 'showHiddenFiles'],
     filters: [
-      { name: 'Session files', extensions: ['json', 'jsonl'] },
-      { name: 'All files', extensions: ['*'] },
+      { name: 'Файлы сессий', extensions: ['json', 'jsonl'] },
+      { name: 'Все файлы', extensions: ['*'] },
     ],
   })) as unknown as OpenDialogReturnValue;
 
@@ -2560,7 +2540,8 @@ async function appMain() {
 
   const shortcuts = getKeyboardShortcuts(settings);
 
-  const appMenu = menu?.items.find((item) => item.label === 'Goose');
+  // Метка меню приложения — это productName из package.json.
+  const appMenu = menu?.items.find((item) => item.label === app.getName());
   if (appMenu?.submenu) {
     appMenu.submenu.insert(1, new MenuItem({ type: 'separator' }));
     if (shortcuts.settings) {
@@ -3063,7 +3044,7 @@ async function appMain() {
               GOOSE_VERSION: version,
             }),
           ],
-          partition: 'persist:goose',
+          partition: 'persist:vasilisa',
         },
       });
 
@@ -3138,7 +3119,7 @@ app.whenReady().then(async () => {
   try {
     await appMain();
   } catch (error) {
-    dialog.showErrorBox('Goose Error', `Failed to create main window: ${error}`);
+    dialog.showErrorBox('Ошибка Василисы', `Не удалось создать главное окно: ${error}`);
     app.quit();
   }
 });

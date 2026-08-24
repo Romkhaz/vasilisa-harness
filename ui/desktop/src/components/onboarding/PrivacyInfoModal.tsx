@@ -8,7 +8,8 @@ const i18n = defineMessages({
   },
   description: {
     id: 'privacyInfoModal.description',
-    defaultMessage: 'Anonymous usage data helps us understand how goose is used and identify areas for improvement.',
+    defaultMessage:
+      'Anonymous usage data helps us understand how Vasilisa is used and identify areas for improvement.',
   },
   whatWeCollect: {
     id: 'privacyInfoModal.whatWeCollect',
@@ -20,7 +21,7 @@ const i18n = defineMessages({
   },
   collectVersion: {
     id: 'privacyInfoModal.collectVersion',
-    defaultMessage: 'goose version and install method',
+    defaultMessage: 'Vasilisa version and install method',
   },
   collectProvider: {
     id: 'privacyInfoModal.collectProvider',
@@ -40,7 +41,8 @@ const i18n = defineMessages({
   },
   neverCollect: {
     id: 'privacyInfoModal.neverCollect',
-    defaultMessage: 'We never collect your conversations, code, tool arguments, error messages, or any personal data. You can change this setting anytime in Settings.',
+    defaultMessage:
+      'We never collect your conversations, code, tool arguments, error messages, or any personal data. You can change this setting anytime in Settings.',
   },
 });
 

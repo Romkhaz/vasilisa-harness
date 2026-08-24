@@ -12,7 +12,7 @@
     "defaultMessage": "Понятно!"
   },
   "appLayout.collapseNavigation": {
-    "defaultMessage": "Collapse navigation"
+    "defaultMessage": "Свернуть навигацию"
   },
   "appLayout.openNavigation": {
     "defaultMessage": "Открыть навигацию"
@@ -21,19 +21,19 @@
     "defaultMessage": "Пользовательское приложение"
   },
   "appsView.deleteApp": {
-    "defaultMessage": "Delete app"
+    "defaultMessage": "Удалить приложение"
   },
   "appsView.deleteConfirm": {
-    "defaultMessage": "Delete \"{name}\"? This cannot be undone."
+    "defaultMessage": "Удалить «{name}»? Это действие необратимо."
   },
   "appsView.description": {
-    "defaultMessage": "Приложения с ваших MCP-серверов и приложения, созданные самим goose. Вы можете попросить его создать новые приложения через чат, и они появятся здесь."
+    "defaultMessage": "Приложения с ваших MCP-серверов и приложения, созданные самой Василисой. Вы можете попросить её создать новые приложения через чат — они появятся здесь."
   },
   "appsView.errorLoading": {
     "defaultMessage": "Ошибка загрузки приложений: {error}"
   },
   "appsView.errorPrefix": {
-    "defaultMessage": "Error: {error}"
+    "defaultMessage": "Ошибка: {error}"
   },
   "appsView.importApp": {
     "defaultMessage": "Импортировать приложение"
@@ -45,16 +45,16 @@
     "defaultMessage": "Загрузка приложений..."
   },
   "appsView.noAppsDescription": {
-    "defaultMessage": "Откройте чат и попросите goose создать нужное приложение. Он может собрать его для вас, после чего оно появится здесь. Если кто-то поделился приложением, импортируйте его кнопкой выше."
+    "defaultMessage": "Откройте чат и попросите Василису создать нужное приложение. Она соберёт его для вас, и оно появится здесь. Если кто-то поделился приложением, импортируйте его кнопкой выше."
   },
   "appsView.noAppsTitle": {
     "defaultMessage": "Нет доступных приложений"
   },
   "appsView.retiredChatApp": {
-    "defaultMessage": "Chat app retired"
+    "defaultMessage": "Чат-приложение отключено"
   },
   "appsView.retiredChatAppDetail": {
-    "defaultMessage": "We removed this feature because MCP sampling is no longer supported."
+    "defaultMessage": "Мы убрали эту возможность: сэмплирование MCP больше не поддерживается."
   },
   "appsView.retry": {
     "defaultMessage": "Повторить"
@@ -84,7 +84,7 @@
     "defaultMessage": "Учетные данные удалены"
   },
   "authSettings.description": {
-    "defaultMessage": "Управляйте учетными данными провайдеров, сохраненными локально в goose."
+    "defaultMessage": "Управляйте учётными данными провайдеров, которые Василиса хранит локально."
   },
   "authSettings.empty": {
     "defaultMessage": "Локально сохраненные учетные данные провайдеров не найдены."
@@ -171,10 +171,10 @@
     "defaultMessage": "Запустить"
   },
   "chat.notification.taskComplete.body": {
-    "defaultMessage": "Нажмите здесь, чтобы сфокусироваться на Goose."
+    "defaultMessage": "Нажмите здесь, чтобы вернуться к Василисе."
   },
   "chat.notification.taskComplete.title": {
-    "defaultMessage": "Goose завершил задачу."
+    "defaultMessage": "Василиса завершила задачу."
   },
   "chatInput.contextWindow": {
     "defaultMessage": "Контекстное окно"
@@ -225,13 +225,13 @@
     "defaultMessage": "Ожидание сохранения изображений..."
   },
   "chatSettings.modeDescription": {
-    "defaultMessage": "Настройте как Goose взаимодействует с инструментами и расширениями"
+    "defaultMessage": "Выберите режим, который Василиса использует для новых сеансов. Уже открытые сеансы сохранят текущий режим."
   },
   "chatSettings.modeTitle": {
     "defaultMessage": "Режим"
   },
   "chatSettings.responseStylesDescription": {
-    "defaultMessage": "Выберите как Goose должен форматировать и оформлять ответы"
+    "defaultMessage": "Выберите, как Василиса форматирует и оформляет ответы"
   },
   "chatSettings.responseStylesTitle": {
     "defaultMessage": "Стили ответов"
@@ -252,10 +252,10 @@
     "defaultMessage": "Редактор конфигурации"
   },
   "configSettings.description": {
-    "defaultMessage": "Измените настройки конфигурации goose"
+    "defaultMessage": "Измените настройки конфигурации Василисы"
   },
   "configSettings.descriptionWithProvider": {
-    "defaultMessage": "Измените настройки конфигурации goose (текущие настройки для {provider})"
+    "defaultMessage": "Измените настройки конфигурации Василисы (текущие настройки для {provider})"
   },
   "configSettings.done": {
     "defaultMessage": "Готово"
@@ -780,7 +780,7 @@
     "defaultMessage": "Изменить параметры {name}"
   },
   "defaultCardButtons.getStarted": {
-    "defaultMessage": "Начните работу с goose!"
+    "defaultMessage": "Начните работу с Василисой!"
   },
   "defaultProviderSetupForm.apiHostLabel": {
     "defaultMessage": "Хост API"
@@ -792,7 +792,7 @@
     "defaultMessage": "API-ключ"
   },
   "defaultProviderSetupForm.apiKeyPlaceholder": {
-    "defaultMessage": "Ваш API-ключ"
+    "defaultMessage": "Выданный вам ключ"
   },
   "defaultProviderSetupForm.hideOptions": {
     "defaultMessage": "Скрыть {count} параметров"
@@ -921,7 +921,7 @@
     "defaultMessage": "Не удалось обновить рабочий каталог"
   },
   "dirSwitcher.gitWorktrees": {
-    "defaultMessage": "Git worktrees"
+    "defaultMessage": "Рабочие деревья Git"
   },
   "dirSwitcher.noWorktreesFound": {
     "defaultMessage": "Git worktrees не найдены"
@@ -951,7 +951,7 @@
     "defaultMessage": "Запрос на информацию был отменен."
   },
   "elicitationRequest.defaultMessage": {
-    "defaultMessage": "Goose нужна от вас дополнительная информация."
+    "defaultMessage": "Василисе нужна от вас дополнительная информация."
   },
   "elicitationRequest.expired": {
     "defaultMessage": "Срок действия запроса истек. Расширению нужно будет запросить его снова."
@@ -960,7 +960,7 @@
     "defaultMessage": "Отправить"
   },
   "elicitationRequest.submitError": {
-    "defaultMessage": "This request is no longer active. The extension will need to ask again."
+    "defaultMessage": "Этот запрос больше не активен — расширению придётся спросить снова."
   },
   "elicitationRequest.submitted": {
     "defaultMessage": "Информация отправлена"
@@ -996,7 +996,7 @@
     "defaultMessage": "Произошла ошибка."
   },
   "errorBoundary.errorWithVersion": {
-    "defaultMessage": "Произошла ошибка в Goose v{version}."
+    "defaultMessage": "Произошла ошибка в Василисе v{version}."
   },
   "errorBoundary.heading": {
     "defaultMessage": "Га-га!"
@@ -1008,7 +1008,7 @@
     "defaultMessage": "Команда"
   },
   "extensionConfigFields.commandPlaceholder": {
-    "defaultMessage": "e.g. npx -y @modelcontextprotocol/my-extension [filepath]"
+    "defaultMessage": "например, npx -y @modelcontextprotocol/my-extension [путь к файлу]"
   },
   "extensionConfigFields.commandRequired": {
     "defaultMessage": "Требуется команда"
@@ -1182,7 +1182,7 @@
     "defaultMessage": "Расширения, включенные здесь, используются по умолчанию для новых чатов. Активные расширения также можно переключать во время чата."
   },
   "extensionsView.description": {
-    "defaultMessage": "Эти расширения используют Model Context Protocol (MCP). Они расширяют возможности Goose с помощью трех основных компонентов: промптов, ресурсов и инструментов. {searchShortcut} для поиска."
+    "defaultMessage": "Эти расширения используют Model Context Protocol (MCP). Они расширяют возможности Василисы тремя основными компонентами: промпты, ресурсы и инструменты. {searchShortcut} для поиска."
   },
   "extensionsView.heading": {
     "defaultMessage": "Расширения"
@@ -1197,22 +1197,22 @@
     "defaultMessage": "Закрепите конкретный отпечаток TLS-сертификата. Если не указано, сертификат будет доверен при первом использовании (TOFU)."
   },
   "externalBackendSection.certFingerprintPlaceholder": {
-    "defaultMessage": "AA:BB:CC:... or sha256/base64"
+    "defaultMessage": "AA:BB:CC:… или sha256/base64"
   },
   "externalBackendSection.description": {
-    "defaultMessage": "По умолчанию goose запускает сервер за вас; используйте это для подключения к внешнему серверу goose"
+    "defaultMessage": "По умолчанию Василиса запускает серверную часть локально. Здесь можно подключиться к внешнему ACP-совместимому серверу."
   },
   "externalBackendSection.fingerprintRequiresHttps": {
-    "defaultMessage": "Certificate fingerprint requires an https URL"
+    "defaultMessage": "Отпечаток сертификата требует адреса https"
   },
   "externalBackendSection.restartNote": {
-    "defaultMessage": "Чтобы изменения вступили в силу, требуется перезапуск Goose. Новые окна чата будут подключаться к внешнему серверу."
+    "defaultMessage": "Изменения действуют для новых окон чата. Перезапустите Василису, чтобы обновить уже открытые окна."
   },
   "externalBackendSection.secretKey": {
     "defaultMessage": "Секретный ключ"
   },
   "externalBackendSection.secretKeyHelp": {
-    "defaultMessage": "Секретный ключ, настроенный на сервере Goose (GOOSE_SERVER__SECRET_KEY)"
+    "defaultMessage": "Секретный ключ, настроенный на внешнем сервере (GOOSE_SERVER__SECRET_KEY)."
   },
   "externalBackendSection.secretKeyPlaceholder": {
     "defaultMessage": "Введите секретный ключ сервера"
@@ -1221,13 +1221,13 @@
     "defaultMessage": "URL сервера"
   },
   "externalBackendSection.serverUrlHelp": {
-    "defaultMessage": "Enter the HTTP(S) base URL. Goose checks /status and connects to /acp under this base."
+    "defaultMessage": "Укажите базовый адрес HTTP(S). Василиса проверит /status и подключится к /acp по этому адресу."
   },
   "externalBackendSection.title": {
-    "defaultMessage": "Сервер Goose"
+    "defaultMessage": "Внешний сервер (ACP)"
   },
   "externalBackendSection.urlBaseError": {
-    "defaultMessage": "URL must be the backend base URL before /acp, without query parameters or fragments"
+    "defaultMessage": "Укажите базовый адрес сервера до /acp, без параметров запроса и якоря"
   },
   "externalBackendSection.urlFormatError": {
     "defaultMessage": "Неверный формат URL"
@@ -1239,7 +1239,7 @@
     "defaultMessage": "Использовать внешний сервер"
   },
   "externalBackendSection.useExternalServerDescription": {
-    "defaultMessage": "Подключиться к серверу goose, запущенному в другом месте (требуется перезапуск приложения)"
+    "defaultMessage": "Подключиться к ACP-совместимому серверу, запущенному в другом месте."
   },
   "externalBackendSection.workingDir": {
     "defaultMessage": "Удалённый рабочий каталог (необязательно)"
@@ -1248,7 +1248,7 @@
     "defaultMessage": "Абсолютный путь на внешнем бэкенде. Оставьте пустым, чтобы передать локальный рабочий каталог."
   },
   "externalBackendSection.workingDirPlaceholder": {
-    "defaultMessage": "/home/goose/workspace"
+    "defaultMessage": "/home/user/workspace"
   },
   "goosehintsModal.close": {
     "defaultMessage": "Закрыть"
@@ -1257,7 +1257,7 @@
     "defaultMessage": "Разработчик"
   },
   "goosehintsModal.dialogDescription": {
-    "defaultMessage": "Предоставьте дополнительный контекст о проекте, чтобы улучшить взаимодействие с Goose"
+    "defaultMessage": "Дайте дополнительный контекст о проекте, чтобы Василиса лучше понимала задачу"
   },
   "goosehintsModal.dialogTitle": {
     "defaultMessage": "Настроить подсказки проекта (.goosehints)"
@@ -1278,7 +1278,7 @@
     "defaultMessage": "Файл .goosehints найден по пути: {filePath}"
   },
   "goosehintsModal.helpText1": {
-    "defaultMessage": ".goosehints — это текстовый файл для дополнительного контекста о проекте и улучшения взаимодействия с Goose."
+    "defaultMessage": ".goosehints — текстовый файл с дополнительным контекстом о проекте: он помогает Василисе лучше понимать задачу."
   },
   "goosehintsModal.helpText2": {
     "defaultMessage": "Убедитесь, что расширение {bold} включено на странице расширений. Оно необходимо для использования .goosehints. Чтобы обновления .goosehints вступили в силу, перезапустите сеанс."
@@ -1305,13 +1305,13 @@
     "defaultMessage": "Настроить"
   },
   "goosehintsSection.description": {
-    "defaultMessage": "Настройте файл .goosehints вашего проекта, чтобы предоставить Goose дополнительный контекст"
+    "defaultMessage": "Настройте файл .goosehints вашего проекта, чтобы дать Василисе дополнительный контекст"
   },
   "goosehintsSection.title": {
     "defaultMessage": "Подсказки проекта (.goosehints)"
   },
   "groupedExtensionLoadingToast.askGoose": {
-    "defaultMessage": "Спросить goose"
+    "defaultMessage": "Спросить Василису"
   },
   "groupedExtensionLoadingToast.collapseDetails": {
     "defaultMessage": "Свернуть детали"
@@ -1431,7 +1431,7 @@
     "defaultMessage": "Hugging Face"
   },
   "imagePreview.altText": {
-    "defaultMessage": "изображение goose"
+    "defaultMessage": "изображение из Василисы"
   },
   "imagePreview.clickToCollapse": {
     "defaultMessage": "Нажмите, чтобы свернуть"
@@ -1446,10 +1446,10 @@
     "defaultMessage": "Отмена"
   },
   "importRecipeForm.deeplinkHint": {
-    "defaultMessage": "Вставьте диплинк рецепта, начинающийся с «goose://recipe?config=»"
+    "defaultMessage": "Вставьте диплинк рецепта, начинающийся с «vasilisa://recipe?config=»"
   },
   "importRecipeForm.deeplinkPlaceholder": {
-    "defaultMessage": "Вставьте сюда ваш диплинк goose://recipe?config=..."
+    "defaultMessage": "Вставьте сюда ваш диплинк vasilisa://recipe?config=..."
   },
   "importRecipeForm.example": {
     "defaultMessage": "пример"
@@ -1479,7 +1479,7 @@
     "defaultMessage": "Файл рецепта"
   },
   "importRecipeForm.reviewWarning": {
-    "defaultMessage": "Проверяйте содержимое файлов рецептов перед добавлением в интерфейс goose."
+    "defaultMessage": "Проверяйте содержимое файлов рецептов перед добавлением их в Василису."
   },
   "importRecipeForm.schemaDescription": {
     "defaultMessage": "Ваш YAML- или JSON-файл должен соответствовать этой структуре. Обязательные поля: title, description и instructions или prompt."
@@ -1590,13 +1590,13 @@
     "defaultMessage": "Горячие клавиши приложения"
   },
   "keyboardShortcuts.categoryApplicationDescription": {
-    "defaultMessage": "Эти сочетания работают, когда Goose является активным приложением"
+    "defaultMessage": "Эти сочетания работают, когда Василиса — активное приложение"
   },
   "keyboardShortcuts.categoryGlobal": {
     "defaultMessage": "Глобальные горячие клавиши"
   },
   "keyboardShortcuts.categoryGlobalDescription": {
-    "defaultMessage": "Эти сочетания работают во всей системе, даже когда Goose не в фокусе"
+    "defaultMessage": "Эти сочетания работают во всей системе, даже когда Василиса не в фокусе"
   },
   "keyboardShortcuts.categorySearch": {
     "defaultMessage": "Горячие клавиши поиска"
@@ -1638,10 +1638,10 @@
     "defaultMessage": "Найти предыдущее"
   },
   "keyboardShortcuts.focusWindowDescription": {
-    "defaultMessage": "Вывести окно Goose на передний план из любого места"
+    "defaultMessage": "Вывести окно Василисы на передний план из любого места"
   },
   "keyboardShortcuts.focusWindowLabel": {
-    "defaultMessage": "Сфокусировать окно Goose"
+    "defaultMessage": "Показать окно Василисы"
   },
   "keyboardShortcuts.loading": {
     "defaultMessage": "Загрузка..."
@@ -1653,7 +1653,7 @@
     "defaultMessage": "Новый чат"
   },
   "keyboardShortcuts.newChatWindowDescription": {
-    "defaultMessage": "Открыть новое окно Goose"
+    "defaultMessage": "Открыть новое окно Василисы"
   },
   "keyboardShortcuts.newChatWindowLabel": {
     "defaultMessage": "Новое окно чата"
@@ -1692,7 +1692,7 @@
     "defaultMessage": "Сбросить к значениям по умолчанию"
   },
   "keyboardShortcuts.restartDescription": {
-    "defaultMessage": "Чтобы изменения сочетаний приложения (например, Новый чат, Настройки и т. д.) вступили в силу, требуется перезапуск Goose. Глобальные сочетания (Фокус окна, Быстрый запуск) работают сразу."
+    "defaultMessage": "Чтобы изменения сочетаний приложения (например, «Новый чат», «Настройки») вступили в силу, перезапустите Василису. Глобальные сочетания («Показать окно», «Быстрый запуск») работают сразу."
   },
   "keyboardShortcuts.restartRequired": {
     "defaultMessage": "Требуется перезапуск"
@@ -1722,13 +1722,13 @@
     "defaultMessage": "Переключить навигацию"
   },
   "launcher.placeholder": {
-    "defaultMessage": "Спросите goose о чем угодно..."
+    "defaultMessage": "Спросите Василису о чём угодно…"
   },
   "loadingGoose.compacting": {
-    "defaultMessage": "goose сжимает разговор..."
+    "defaultMessage": "Василиса сжимает переписку…"
   },
   "loadingGoose.idle": {
-    "defaultMessage": "goose работает над этим…"
+    "defaultMessage": "Василиса работает над этим…"
   },
   "loadingGoose.loadingConversation": {
     "defaultMessage": "загрузка разговора..."
@@ -1737,13 +1737,13 @@
     "defaultMessage": "перезапуск сеанса..."
   },
   "loadingGoose.streaming": {
-    "defaultMessage": "goose работает над этим…"
+    "defaultMessage": "Василиса работает над этим…"
   },
   "loadingGoose.thinking": {
-    "defaultMessage": "goose думает…"
+    "defaultMessage": "Василиса думает…"
   },
   "loadingGoose.waiting": {
-    "defaultMessage": "goose ждет…"
+    "defaultMessage": "Василиса ждёт…"
   },
   "localInferenceSettings.deleteConfirm": {
     "defaultMessage": "Удалить эту модель? Позже ее можно скачать снова."
@@ -1773,7 +1773,7 @@
     "defaultMessage": "Скачивание"
   },
   "localInferenceSettings.evictFromMemory": {
-    "defaultMessage": "Evict from memory"
+    "defaultMessage": "Выгрузить из памяти"
   },
   "localInferenceSettings.featuredModels": {
     "defaultMessage": "Рекомендуемые модели"
@@ -1782,7 +1782,7 @@
     "defaultMessage": "Войдите, чтобы увеличить лимиты запросов при поиске и загрузке моделей, а также получить доступ к приватным или ограниченным репозиториям Hugging Face."
   },
   "localInferenceSettings.loadedInMemory": {
-    "defaultMessage": "Loaded in memory"
+    "defaultMessage": "Загружено в память"
   },
   "localInferenceSettings.modelSettings": {
     "defaultMessage": "Настройки модели"
@@ -2391,19 +2391,19 @@
     "defaultMessage": "Сервер может запускаться или быть временно недоступен."
   },
   "onboardingGuard.checkProviderErrorTitle": {
-    "defaultMessage": "Не удалось подключиться к серверу Goose"
+    "defaultMessage": "Не удалось подключиться к серверу Василисы"
   },
   "onboardingGuard.retry": {
     "defaultMessage": "Повторить"
   },
   "onboardingGuard.welcomeDescription": {
-    "defaultMessage": "Ваш локальный ИИ-агент. Подключите провайдера ИИ-модели, чтобы начать."
+    "defaultMessage": "Введите выданные вам ключ доступа и адрес сервиса инференса, чтобы начать."
   },
   "onboardingGuard.welcomeTitle": {
-    "defaultMessage": "Добро пожаловать в goose"
+    "defaultMessage": "Добро пожаловать в Василису"
   },
   "onboardingSuccess.allSet": {
-    "defaultMessage": "Все готово для начала работы с goose."
+    "defaultMessage": "Всё готово — можно начинать работу с Василисой."
   },
   "onboardingSuccess.connectedTo": {
     "defaultMessage": "Подключено к {providerName}"
@@ -2418,7 +2418,7 @@
     "defaultMessage": "Локальная модель готова"
   },
   "onboardingSuccess.privacyDescription": {
-    "defaultMessage": "Анонимные данные об использовании помогают улучшать goose. Мы никогда не собираем ваши разговоры, код или персональные данные."
+    "defaultMessage": "Анонимные данные об использовании помогают улучшать Василису. Мы никогда не собираем ваши переписки, код и персональные данные."
   },
   "onboardingSuccess.privacyTitle": {
     "defaultMessage": "Конфиденциальность"
@@ -2496,7 +2496,7 @@
     "defaultMessage": "Введите значение для {key}..."
   },
   "parameterInputModal.false": {
-    "defaultMessage": "False"
+    "defaultMessage": "Ложь"
   },
   "parameterInputModal.recipeParameters": {
     "defaultMessage": "Параметры рецепта"
@@ -2514,7 +2514,7 @@
     "defaultMessage": "Запустить рецепт"
   },
   "parameterInputModal.true": {
-    "defaultMessage": "True"
+    "defaultMessage": "Истина"
   },
   "parameterInputModal.whatToDo": {
     "defaultMessage": "Что вы хотите сделать?"
@@ -2586,10 +2586,10 @@
     "defaultMessage": "Метрики сеанса (длительность, число взаимодействий, использование токенов)"
   },
   "privacyInfoModal.collectVersion": {
-    "defaultMessage": "Версия goose и способ установки"
+    "defaultMessage": "Версия Василисы и способ установки"
   },
   "privacyInfoModal.description": {
-    "defaultMessage": "Анонимные данные об использовании помогают понять как используется goose и найти области для улучшения."
+    "defaultMessage": "Анонимные данные об использовании помогают понять, как используется Василиса, и найти, что улучшить."
   },
   "privacyInfoModal.neverCollect": {
     "defaultMessage": "Мы никогда не собираем ваши разговоры, код, аргументы инструментов, сообщения об ошибках или персональные данные. Эту настройку можно изменить в любое время в настройках."
@@ -2658,7 +2658,7 @@
     "defaultMessage": "Не удалось сохранить промпт"
   },
   "promptsSettings.promptEditingDescription": {
-    "defaultMessage": "Настраивайте промпты, определяющие поведение goose в разных контекстах. Эти промпты используют синтаксис шаблонов Jinja2. Будьте осторожны при изменении переменных шаблона: неверные изменения могут нарушить работу. Делитесь улучшениями с сообществом."
+    "defaultMessage": "Настраивайте промпты, определяющие поведение Василисы в разных контекстах. Промпты используют синтаксис шаблонов Jinja2. Будьте осторожны с переменными шаблона: неверные изменения ломают работу."
   },
   "promptsSettings.promptEditingTitle": {
     "defaultMessage": "Редактирование промптов"
@@ -2745,7 +2745,7 @@
     "defaultMessage": "Откроется окно браузера. Код подтверждения появится здесь — введите его, чтобы завершить вход."
   },
   "providerConfigForm.noApiKey": {
-    "defaultMessage": "Нет API-ключа?"
+    "defaultMessage": "Как подключиться?"
   },
   "providerConfigForm.signInWith": {
     "defaultMessage": "Войти через {providerName}"
@@ -2754,7 +2754,7 @@
     "defaultMessage": "Вход..."
   },
   "providerConfigurationModal.addApiKeyDescription": {
-    "defaultMessage": "Добавьте API-ключи для этого провайдера, чтобы интегрировать его в goose"
+    "defaultMessage": "Добавьте ключ доступа для этого провайдера, чтобы подключить его к Василисе"
   },
   "providerConfigurationModal.browserWindowHint": {
     "defaultMessage": "Откроется окно браузера для завершения входа."
@@ -2790,7 +2790,7 @@
     "defaultMessage": "Ошибка"
   },
   "providerConfigurationModal.externalSetupIntro": {
-    "defaultMessage": "Этот провайдер настраивается вне goose. Выполните следующие шаги:"
+    "defaultMessage": "Этот провайдер настраивается вне Василисы. Выполните следующие шаги:"
   },
   "providerConfigurationModal.goBack": {
     "defaultMessage": "Назад"
@@ -2819,9 +2819,6 @@
   "providerConfigurationModal.signingIn": {
     "defaultMessage": "Вход..."
   },
-  "providerGrid.addProvider": {
-    "defaultMessage": "Добавить провайдера"
-  },
   "providerGrid.addProviderTitle": {
     "defaultMessage": "Добавить провайдера"
   },
@@ -2834,9 +2831,6 @@
   "providerGrid.editProvider": {
     "defaultMessage": "Изменить провайдера"
   },
-  "providerGrid.fromTemplateOrManual": {
-    "defaultMessage": "Из шаблона или вручную"
-  },
   "providerGrid.noMatch": {
     "defaultMessage": "Нет провайдеров, соответствующих \"{query}\""
   },
@@ -2846,17 +2840,11 @@
   "providerLogo.alt": {
     "defaultMessage": "Логотип {providerName}"
   },
-  "providerSelector.addCustomProvider": {
-    "defaultMessage": "Добавить пользовательского провайдера"
-  },
-  "providerSelector.addCustomProviderTitle": {
-    "defaultMessage": "Добавить пользовательского провайдера"
-  },
   "providerSelector.connectProvider": {
     "defaultMessage": "Подключиться к провайдеру"
   },
   "providerSelector.connectProviderDescription": {
-    "defaultMessage": "Подключите OpenAI, Anthropic, Google и т. д."
+    "defaultMessage": "Введите выданные вам ключ доступа и адрес сервиса инференса"
   },
   "providerSelector.localModelDescription": {
     "defaultMessage": "Скачайте модель и запускайте её полностью на своем компьютере. Без API-ключей и учетных записей."
@@ -2874,7 +2862,7 @@
     "defaultMessage": "Загрузка провайдеров..."
   },
   "providerSettings.onboardingDescription": {
-    "defaultMessage": "Выберите провайдера ИИ-модели, чтобы начать работу с goose. Понадобятся API-ключи, созданные каждым провайдером; они будут зашифрованы и сохранены локально. Провайдера можно изменить в настройках в любое время."
+    "defaultMessage": "Укажите ключ доступа и адрес сервиса инференса, чтобы начать работу с Василисой. Ключ шифруется и хранится локально; изменить его можно в настройках в любое время."
   },
   "providerSettings.otherProviders": {
     "defaultMessage": "Другие провайдеры"
@@ -3219,7 +3207,7 @@
     "defaultMessage": "Задайте slash-команду, чтобы быстро запускать этот рецепт из любого чата"
   },
   "recipesView.slashCommandPlaceholder": {
-    "defaultMessage": "command-name"
+    "defaultMessage": "имя-команды"
   },
   "recipesView.slashCommandRemovedMsg": {
     "defaultMessage": "Slash-команда рецепта удалена"
@@ -3447,7 +3435,7 @@
     "defaultMessage": "Диплинк"
   },
   "scheduleModal.deepLinkPlaceholder": {
-    "defaultMessage": "Вставьте ссылку goose://recipe сюда..."
+    "defaultMessage": "Вставьте ссылку vasilisa://recipe сюда..."
   },
   "scheduleModal.editSchedule": {
     "defaultMessage": "Изменить расписание"
@@ -3462,7 +3450,7 @@
     "defaultMessage": "Не удалось прочитать выбранный файл."
   },
   "scheduleModal.invalidDeepLink": {
-    "defaultMessage": "Неверный диплинк. Используйте ссылку goose://recipe."
+    "defaultMessage": "Неверный диплинк. Используйте ссылку vasilisa://recipe."
   },
   "scheduleModal.invalidFileType": {
     "defaultMessage": "Неверный тип файла: выберите YAML-файл (.yaml или .yml)"
@@ -3687,82 +3675,82 @@
     "defaultMessage": "Обнаружение внедрения команд работает лучше всего при подключении к WARP (требуется для доступа к сервису классификации)."
   },
   "sessionActionsHeader.actionsLabel": {
-    "defaultMessage": "Session actions"
+    "defaultMessage": "Действия с сеансом"
   },
   "sessionActionsHeader.cancel": {
-    "defaultMessage": "Cancel"
+    "defaultMessage": "Отмена"
   },
   "sessionActionsHeader.close": {
-    "defaultMessage": "Close"
+    "defaultMessage": "Закрыть"
   },
   "sessionActionsHeader.copiedJson": {
-    "defaultMessage": "Session JSON copied"
+    "defaultMessage": "JSON сеанса скопирован"
   },
   "sessionActionsHeader.copiedModelInteractions": {
-    "defaultMessage": "Recent model interactions copied"
+    "defaultMessage": "Недавние обращения к модели скопированы"
   },
   "sessionActionsHeader.copiedText": {
-    "defaultMessage": "Text copied"
+    "defaultMessage": "Текст скопирован"
   },
   "sessionActionsHeader.copyJson": {
-    "defaultMessage": "Copy JSON"
+    "defaultMessage": "Копировать JSON"
   },
   "sessionActionsHeader.copyText": {
-    "defaultMessage": "Copy text"
+    "defaultMessage": "Копировать текст"
   },
   "sessionActionsHeader.duplicateFailed": {
-    "defaultMessage": "Failed to duplicate session: {error}"
+    "defaultMessage": "Не удалось продублировать сеанс: {error}"
   },
   "sessionActionsHeader.duplicateSession": {
-    "defaultMessage": "Duplicate session"
+    "defaultMessage": "Дублировать сеанс"
   },
   "sessionActionsHeader.duplicated": {
-    "defaultMessage": "Session duplicated"
+    "defaultMessage": "Сеанс продублирован"
   },
   "sessionActionsHeader.fullTextTitle": {
-    "defaultMessage": "Text value"
+    "defaultMessage": "Текстовое значение"
   },
   "sessionActionsHeader.jsonFailed": {
-    "defaultMessage": "Failed to load session JSON: {error}"
+    "defaultMessage": "Не удалось загрузить JSON сеанса: {error}"
   },
   "sessionActionsHeader.jsonTitle": {
-    "defaultMessage": "Session JSON"
+    "defaultMessage": "JSON сеанса"
   },
   "sessionActionsHeader.loadingJson": {
-    "defaultMessage": "Loading JSON..."
+    "defaultMessage": "Загрузка JSON…"
   },
   "sessionActionsHeader.modelInteractionsFailed": {
-    "defaultMessage": "Failed to load model interactions: {error}"
+    "defaultMessage": "Не удалось загрузить обращения к модели: {error}"
   },
   "sessionActionsHeader.modelInteractionsTitle": {
-    "defaultMessage": "Recent model interactions"
+    "defaultMessage": "Недавние обращения к модели"
   },
   "sessionActionsHeader.renameFailed": {
-    "defaultMessage": "Failed to rename session: {error}"
+    "defaultMessage": "Не удалось переименовать сеанс: {error}"
   },
   "sessionActionsHeader.renamePlaceholder": {
-    "defaultMessage": "Enter session name"
+    "defaultMessage": "Введите название сеанса"
   },
   "sessionActionsHeader.renameSession": {
-    "defaultMessage": "Rename session"
+    "defaultMessage": "Переименовать сеанс"
   },
   "sessionActionsHeader.renameTitle": {
-    "defaultMessage": "Rename Session"
+    "defaultMessage": "Переименование сеанса"
   },
   "sessionActionsHeader.renamed": {
-    "defaultMessage": "Session renamed"
+    "defaultMessage": "Сеанс переименован"
   },
   "sessionActionsHeader.save": {
-    "defaultMessage": "Save"
+    "defaultMessage": "Сохранить"
   },
   "sessionActionsHeader.saving": {
-    "defaultMessage": "Saving..."
+    "defaultMessage": "Сохранение…"
   },
   "sessionActionsHeader.viewJson": {
-    "defaultMessage": "View session JSON"
+    "defaultMessage": "Посмотреть JSON сеанса"
   },
   "sessionActionsHeader.viewModelInteractions": {
-    "defaultMessage": "View recent model interactions"
+    "defaultMessage": "Посмотреть недавние обращения к модели"
   },
   "sessionIndicators.error": {
     "defaultMessage": "В сеансе возникла ошибка"
@@ -3804,7 +3792,7 @@
     "defaultMessage": "История чатов"
   },
   "sessions.chatHistoryDesc": {
-    "defaultMessage": "Просматривайте и ищите прошлые разговоры с Goose. {shortcut} для поиска."
+    "defaultMessage": "Просматривайте и ищите прошлые переписки с Василисой. {shortcut} для поиска."
   },
   "sessions.close": {
     "defaultMessage": "Закрыть"
@@ -3840,10 +3828,10 @@
     "defaultMessage": "Импортировать ссылку"
   },
   "sessions.importNostr.description": {
-    "defaultMessage": "Вставьте ссылку общего доступа Goose Nostr, чтобы получить, расшифровать и импортировать сеанс."
+    "defaultMessage": "Вставьте ссылку Nostr, чтобы получить, расшифровать и импортировать сеанс."
   },
   "sessions.importNostr.placeholder": {
-    "defaultMessage": "goose://sessions/nostr?nevent=...&key=..."
+    "defaultMessage": "vasilisa://sessions/nostr?nevent=...&key=..."
   },
   "sessions.importNostr.title": {
     "defaultMessage": "Импортировать сеанс Nostr"
@@ -3861,10 +3849,10 @@
     "defaultMessage": "Сохранение..."
   },
   "sessions.scheduledJobs": {
-    "defaultMessage": "Scheduled Jobs"
+    "defaultMessage": "Запланированные задачи"
   },
   "sessions.scheduledJobsCount": {
-    "defaultMessage": "{count,plural,one{{count} job} other{{count} jobs}}"
+    "defaultMessage": "{count,plural,one{{count} задача} few{{count} задачи} many{{count} задач} other{{count} задачи}}"
   },
   "sessions.search.noResults": {
     "defaultMessage": "Подходящие сеансы не найдены"
@@ -3921,7 +3909,7 @@
     "defaultMessage": "Описание сеанса успешно обновлено"
   },
   "settings.appearance.description": {
-    "defaultMessage": "Настройте, как goose отображается в вашей системе"
+    "defaultMessage": "Настройте, как Василиса выглядит в системе"
   },
   "settings.appearance.title": {
     "defaultMessage": "Внешний вид"
@@ -3936,13 +3924,13 @@
     "defaultMessage": "Отслеживание стоимости"
   },
   "settings.dockIcon.description": {
-    "defaultMessage": "Показывать goose в Dock"
+    "defaultMessage": "Показывать Василису в Dock"
   },
   "settings.dockIcon.title": {
     "defaultMessage": "Значок Dock"
   },
   "settings.help.description": {
-    "defaultMessage": "Помогите улучшить goose: сообщайте о проблемах или запрашивайте новые функции"
+    "defaultMessage": "Помогите улучшить Василису: сообщайте о проблемах или предлагайте новые возможности"
   },
   "settings.help.reportBug": {
     "defaultMessage": "Сообщить об ошибке"
@@ -3954,64 +3942,19 @@
     "defaultMessage": "Помощь и отзывы"
   },
   "settings.language.description": {
-    "defaultMessage": "Выберите язык интерфейса goose"
+    "defaultMessage": "Выберите язык интерфейса Василисы"
   },
   "settings.language.english": {
     "defaultMessage": "Английский"
   },
-  "settings.language.french": {
-    "defaultMessage": "Французский"
-  },
-  "settings.language.german": {
-    "defaultMessage": "Немецкий"
-  },
-  "settings.language.hindi": {
-    "defaultMessage": "Хинди"
-  },
-  "settings.language.indonesian": {
-    "defaultMessage": "Индонезийский"
-  },
-  "settings.language.italian": {
-    "defaultMessage": "Итальянский"
-  },
-  "settings.language.japanese": {
-    "defaultMessage": "Японский"
-  },
-  "settings.language.korean": {
-    "defaultMessage": "Корейский"
-  },
-  "settings.language.malay": {
-    "defaultMessage": "Малайский"
-  },
-  "settings.language.portuguese": {
-    "defaultMessage": "Португальский"
-  },
   "settings.language.russian": {
     "defaultMessage": "Русский"
-  },
-  "settings.language.spanish": {
-    "defaultMessage": "Испанский"
-  },
-  "settings.language.systemDefault": {
-    "defaultMessage": "Системный язык"
   },
   "settings.language.title": {
     "defaultMessage": "Язык"
   },
-  "settings.language.turkish": {
-    "defaultMessage": "Турецкий"
-  },
-  "settings.language.vietnamese": {
-    "defaultMessage": "Вьетнамский"
-  },
-  "settings.language.zhCN": {
-    "defaultMessage": "Китайский (упрощенный)"
-  },
-  "settings.language.zhTW": {
-    "defaultMessage": "Китайский (традиционный)"
-  },
   "settings.menuBarIcon.description": {
-    "defaultMessage": "Показывать goose в строке меню"
+    "defaultMessage": "Показывать Василису в строке меню"
   },
   "settings.menuBarIcon.title": {
     "defaultMessage": "Значок строки меню"
@@ -4032,7 +3975,7 @@
     "defaultMessage": "Нажмите «Уведомления»"
   },
   "settings.notifications.modal.macStep3": {
-    "defaultMessage": "Найдите и выберите goose в списке приложений"
+    "defaultMessage": "Найдите и выберите Василису в списке приложений"
   },
   "settings.notifications.modal.macStep4": {
     "defaultMessage": "Включите уведомления и настройте параметры по желанию"
@@ -4050,7 +3993,7 @@
     "defaultMessage": "Перейдите в Система > Уведомления"
   },
   "settings.notifications.modal.winStep3": {
-    "defaultMessage": "Найдите и выберите goose в списке приложений"
+    "defaultMessage": "Найдите и выберите Василису в списке приложений"
   },
   "settings.notifications.modal.winStep4": {
     "defaultMessage": "Включите уведомления и настройте параметры по желанию"
@@ -4059,7 +4002,7 @@
     "defaultMessage": "Откройте «Параметры»"
   },
   "settings.notifications.task.description": {
-    "defaultMessage": "Уведомлять, когда Goose завершает задачу, пока окно в фоне"
+    "defaultMessage": "Уведомлять, когда Василиса завершает задачу, а окно в фоне"
   },
   "settings.notifications.task.title": {
     "defaultMessage": "Уведомления о завершении задач"
@@ -4068,19 +4011,19 @@
     "defaultMessage": "Уведомления"
   },
   "settings.preventSleep.description": {
-    "defaultMessage": "Не давать компьютеру засыпать, пока goose выполняет задачу (экран все равно может блокироваться)"
+    "defaultMessage": "Не давать компьютеру засыпать, пока Василиса выполняет задачу (экран всё равно может блокироваться)"
   },
   "settings.preventSleep.title": {
     "defaultMessage": "Запретить сон"
   },
   "settings.theme.description": {
-    "defaultMessage": "Настройте внешний вид и ощущения goose"
+    "defaultMessage": "Настройте внешний вид Василисы"
   },
   "settings.theme.title": {
     "defaultMessage": "Тема"
   },
   "settings.updates.description": {
-    "defaultMessage": "Проверяйте и устанавливайте обновления, чтобы goose работал оптимально"
+    "defaultMessage": "Проверяйте и устанавливайте обновления, чтобы Василиса работала как надо"
   },
   "settings.updates.title": {
     "defaultMessage": "Обновления"
@@ -4155,7 +4098,7 @@
     "defaultMessage": "Поиск навыков..."
   },
   "skillsView.skillsDescription": {
-    "defaultMessage": "Просматривайте установленные навыки, расширяющие возможности Goose. {shortcut} для поиска."
+    "defaultMessage": "Просматривайте установленные навыки, расширяющие возможности Василисы. {shortcut} для поиска."
   },
   "skillsView.skillsTitle": {
     "defaultMessage": "Навыки"
@@ -4398,10 +4341,10 @@
     "defaultMessage": "Использовать другого провайдера"
   },
   "telemetryConsentPrompt.description": {
-    "defaultMessage": "Хотите поделиться анонимными данными об использовании, чтобы помочь улучшить goose? Мы никогда не собираем ваши разговоры, код или персональные данные."
+    "defaultMessage": "Поделиться анонимными данными об использовании, чтобы помочь улучшить Василису? Мы никогда не собираем ваши переписки, код и персональные данные."
   },
   "telemetryConsentPrompt.heading": {
-    "defaultMessage": "Помогите улучшить goose"
+    "defaultMessage": "Помогите улучшить Василису"
   },
   "telemetryConsentPrompt.learnMore": {
     "defaultMessage": "Подробнее"
@@ -4428,7 +4371,7 @@
     "defaultMessage": "Конфиденциальность"
   },
   "telemetrySettings.toggleDescription": {
-    "defaultMessage": "Помогите улучшить goose, делясь анонимной статистикой использования."
+    "defaultMessage": "Помогите улучшить Василису, делясь анонимной статистикой использования."
   },
   "telemetrySettings.toggleLabel": {
     "defaultMessage": "Анонимные данные об использовании"
@@ -4476,7 +4419,7 @@
     "defaultMessage": "Отклонить"
   },
   "toolApprovalButtons.staleApprovalRequest": {
-    "defaultMessage": "This approval request is no longer active."
+    "defaultMessage": "Этот запрос на подтверждение больше не активен."
   },
   "toolCallStatusIndicator.toolStatus": {
     "defaultMessage": "Статус инструмента: {status}"
@@ -4509,7 +4452,7 @@
     "defaultMessage": "Разрешить {toolName}?"
   },
   "toolConfirmation.gooseWouldLikeToCallWithName": {
-    "defaultMessage": "Goose хочет вызвать {toolName}. Разрешить?"
+    "defaultMessage": "Василиса хочет вызвать {toolName}. Разрешить?"
   },
   "updateSection.autoDownload": {
     "defaultMessage": "Обновление будет автоматически скачано в фоновом режиме."
@@ -4536,7 +4479,7 @@
     "defaultMessage": "Отключить автоматическую загрузку обновлений"
   },
   "updateSection.disableAutoDownloadDesc": {
-    "defaultMessage": "Когда включено, Goose будет уведомлять о новых версиях, но не будет загружать их автоматически."
+    "defaultMessage": "Когда включено, Василиса уведомляет о новых версиях, но не загружает их автоматически."
   },
   "updateSection.downloadNow": {
     "defaultMessage": "Скачать сейчас"
@@ -4569,7 +4512,7 @@
     "defaultMessage": "Для этого способа обновления требуется ручная установка."
   },
   "updateSection.readyInstallAuto": {
-    "defaultMessage": "✓ Обновление готово! Оно будет установлено при выходе из Goose."
+    "defaultMessage": "✓ Обновление готово. Перезапустите Василису, чтобы завершить установку, или выйдите, когда закончите."
   },
   "updateSection.readyInstallManual": {
     "defaultMessage": "✓ Обновление готово! Нажмите «Установить и перезапустить», чтобы получить инструкции по установке."

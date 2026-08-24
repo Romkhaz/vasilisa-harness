@@ -18,10 +18,16 @@ describe('getLocale', () => {
     vi.restoreAllMocks();
   });
 
-  it('returns "en" as the default fallback', () => {
+  it('returns "ru" as the default fallback', () => {
     // navigator.languages contains only unsupported tags
     vi.stubGlobal('navigator', { languages: ['xx-XX'] });
-    expect(getLocale()).toEqual({ locale: 'en', messageLocale: 'en' });
+    expect(getLocale()).toEqual({ locale: 'ru', messageLocale: 'ru' });
+  });
+
+  it('falls back to Russian for a language with no catalog', () => {
+    // Vasilisa ships ru and en catalogs only.
+    vi.stubGlobal('navigator', { languages: ['ja-JP'] });
+    expect(getLocale()).toEqual({ locale: 'ru', messageLocale: 'ru' });
   });
 
   it('preserves regional tag for formatting when base language is supported', () => {
@@ -36,7 +42,7 @@ describe('getLocale', () => {
 
   it('respects GOOSE_LOCALE over navigator.languages', () => {
     mockAppConfig({ GOOSE_LOCALE: 'en' });
-    vi.stubGlobal('navigator', { languages: ['xx-XX'] });
+    vi.stubGlobal('navigator', { languages: ['ru'] });
     expect(getLocale()).toEqual({ locale: 'en', messageLocale: 'en' });
   });
 
@@ -62,65 +68,16 @@ describe('getLocale', () => {
     expect(getLocale()).toEqual({ locale: 'ru-RU', messageLocale: 'ru' });
   });
 
-  it('supports Turkish from navigator.languages', () => {
-    vi.stubGlobal('navigator', { languages: ['tr-TR'] });
-    expect(getLocale()).toEqual({ locale: 'tr-TR', messageLocale: 'tr' });
+  it('supports explicit Russian locale', () => {
+    mockAppConfig({ GOOSE_LOCALE: 'ru' });
+    vi.stubGlobal('navigator', { languages: ['en-US'] });
+    expect(getLocale()).toEqual({ locale: 'ru', messageLocale: 'ru' });
   });
 
-  it('supports explicit Turkish locale', () => {
-    mockAppConfig({ GOOSE_LOCALE: 'tr' });
+  it('supports POSIX-style Russian locale from GOOSE_LOCALE', () => {
+    mockAppConfig({ GOOSE_LOCALE: 'ru_RU' });
     vi.stubGlobal('navigator', { languages: ['xx-XX'] });
-    expect(getLocale()).toEqual({ locale: 'tr', messageLocale: 'tr' });
-  });
-
-  it('supports Korean from navigator.languages', () => {
-    vi.stubGlobal('navigator', { languages: ['ko-KR'] });
-    expect(getLocale()).toEqual({ locale: 'ko-KR', messageLocale: 'ko' });
-  });
-
-  it('supports explicit Korean locale', () => {
-    mockAppConfig({ GOOSE_LOCALE: 'ko' });
-    vi.stubGlobal('navigator', { languages: ['xx-XX'] });
-    expect(getLocale()).toEqual({ locale: 'ko', messageLocale: 'ko' });
-  });
-
-  it('supports POSIX-style Korean locale from GOOSE_LOCALE', () => {
-    mockAppConfig({ GOOSE_LOCALE: 'ko_KR' });
-    vi.stubGlobal('navigator', { languages: ['xx-XX'] });
-    expect(getLocale()).toEqual({ locale: 'ko-KR', messageLocale: 'ko' });
-  });
-
-  it('supports Japanese from navigator.languages', () => {
-    vi.stubGlobal('navigator', { languages: ['ja-JP'] });
-    expect(getLocale()).toEqual({ locale: 'ja-JP', messageLocale: 'ja' });
-  });
-
-  it('supports POSIX-style Japanese locale from GOOSE_LOCALE', () => {
-    mockAppConfig({ GOOSE_LOCALE: 'ja_JP' });
-    vi.stubGlobal('navigator', { languages: ['xx-XX'] });
-    expect(getLocale()).toEqual({ locale: 'ja-JP', messageLocale: 'ja' });
-  });
-
-  it('supports Hindi from navigator.languages', () => {
-    vi.stubGlobal('navigator', { languages: ['hi-IN'] });
-    expect(getLocale()).toEqual({ locale: 'hi-IN', messageLocale: 'hi' });
-  });
-
-  it('supports explicit Hindi locale', () => {
-    mockAppConfig({ GOOSE_LOCALE: 'hi' });
-    vi.stubGlobal('navigator', { languages: ['xx-XX'] });
-    expect(getLocale()).toEqual({ locale: 'hi', messageLocale: 'hi' });
-  });
-
-  it('supports Spanish from navigator.languages', () => {
-    vi.stubGlobal('navigator', { languages: ['es-ES'] });
-    expect(getLocale()).toEqual({ locale: 'es-ES', messageLocale: 'es' });
-  });
-
-  it('supports explicit Spanish locale', () => {
-    mockAppConfig({ GOOSE_LOCALE: 'es' });
-    vi.stubGlobal('navigator', { languages: ['xx-XX'] });
-    expect(getLocale()).toEqual({ locale: 'es', messageLocale: 'es' });
+    expect(getLocale()).toEqual({ locale: 'ru-RU', messageLocale: 'ru' });
   });
 
   it('falls back to base language when locale tag is invalid BCP 47', () => {

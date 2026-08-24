@@ -1,1 +1,1 @@
-export const QUICKSTART_GUIDE_URL = 'https://goose-docs.ai/docs/quickstart';
+export const QUICKSTART_GUIDE_URL = 'https://github.com/Romkhaz/vasilisa-harness';

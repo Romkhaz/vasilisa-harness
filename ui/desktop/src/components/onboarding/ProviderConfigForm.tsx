@@ -36,7 +36,7 @@ const i18n = defineMessages({
   },
   noApiKey: {
     id: 'providerConfigForm.noApiKey',
-    defaultMessage: "Don't have an API key?",
+    defaultMessage: 'How do I connect?',
   },
   configuring: {
     id: 'providerConfigForm.configuring',

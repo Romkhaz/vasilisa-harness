@@ -4,36 +4,22 @@
  * Locale resolution order:
  *   1. GOOSE_LOCALE config value (manual setting or environment variable, passed through appConfig)
  *   2. navigator.languages (full accept-language list from OS/browser)
- *   3. "en" (fallback)
- *
- * For Chinese: any Simplified Chinese tag (zh, zh-CN, zh-Hans, zh-Hans-CN, zh-SG, zh-MY)
- * maps to the "zh-CN" catalog; Traditional variants (zh-TW, zh-HK, zh-MO, zh-Hant) map to
- * the "zh-TW" catalog.
+ *   3. "ru" (fallback)
  */
 
 // Re-export react-intl utilities that components use directly
 export { defineMessages, useIntl } from 'react-intl';
 
-/** The set of locales that have translation catalogs. */
+/**
+ * The set of locales that have translation catalogs.
+ *
+ * Василиса поставляется на русском; английский оставлен как запасной вариант, потому что
+ * react-intl использует его при отсутствующем ключе перевода.
+ */
 // prettier-ignore
-export const SUPPORTED_LOCALES = [
-  'en', 'es', 'fr', 'de', 'it', 'pt', 'id', 'ms', 'vi', 'hi', 'ja', 'ko', 'ru', 'tr', 'zh-CN', 'zh-TW',
-] as const;
+export const SUPPORTED_LOCALES = ['ru', 'en'] as const;
 export type SupportedLocale = (typeof SUPPORTED_LOCALES)[number];
 const SUPPORTED_LOCALE_SET = new Set<string>(SUPPORTED_LOCALES);
-
-/**
- * Map Simplified Chinese aliases (zh, zh-Hans*, zh-SG, zh-MY) to "zh-CN" and Traditional
- * variants (zh-Hant*, zh-TW, zh-HK, zh-MO) to "zh-TW". Non-Chinese tags pass through unchanged.
- */
-function resolveChineseAlias(tag: string): string {
-  const lower = tag.toLowerCase();
-  // Traditional Chinese variants (zh-Hant*, zh-TW, zh-HK, zh-MO) → "zh-TW".
-  if (/^zh-(hant|tw|hk|mo)(-|$)/.test(lower)) return 'zh-TW';
-  // Remaining Chinese tags (zh, zh-CN, zh-Hans*, zh-SG, zh-MY) → "zh-CN".
-  if (lower === 'zh' || lower.startsWith('zh-')) return 'zh-CN';
-  return tag;
-}
 
 /**
  * Detect the user's preferred locale.
@@ -63,9 +49,9 @@ export function getLocale(): { locale: string; messageLocale: string } {
   }
 
   for (const rawTag of candidates) {
-    // Normalize underscores to hyphens so POSIX-style tags like "zh_CN" work.
-    const normalized = rawTag.replace(/_/g, '-');
-    const tag = resolveChineseAlias(normalized);
+    // Normalize underscores to hyphens so POSIX-style tags like "ru_RU" work.
+    const tag = rawTag.replace(/_/g, '-');
+    const normalized = tag;
 
     // Exact match first
     if (SUPPORTED_LOCALE_SET.has(tag)) return { locale: tag, messageLocale: tag };
@@ -87,7 +73,8 @@ export function getLocale(): { locale: string; messageLocale: string } {
     }
   }
 
-  return { locale: 'en', messageLocale: 'en' };
+  // Василиса по умолчанию говорит по-русски, даже если система настроена на другой язык.
+  return { locale: 'ru', messageLocale: 'ru' };
 }
 
 /** Resolved locales — computed once at module load. */

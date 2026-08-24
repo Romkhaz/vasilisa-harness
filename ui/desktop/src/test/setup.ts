@@ -67,7 +67,7 @@ const mockSettings: Record<string, unknown> = {
   },
   theme: 'light',
   useSystemTheme: true,
-  language: 'system',
+  language: 'ru',
   responseStyle: 'concise',
   showPricing: true,
   seenAnnouncementIds: [],
