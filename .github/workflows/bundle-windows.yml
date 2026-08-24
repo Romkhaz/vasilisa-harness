@@ -68,7 +68,7 @@ permissions:
 
 jobs:
   build-goose-windows:
-    name: Build Goose (Windows)
+    name: Build Vasilisa (Windows)
     runs-on: ${{ inputs.windows_variant == 'cuda' && 'windows-2022' || 'windows-latest' }}
     steps:
       - name: Checkout repository
@@ -266,11 +266,11 @@ jobs:
         shell: bash
         run: |
           cd ui/desktop
-          mkdir -p ./out/Goose-win32-x64/resources/bin
-          cp -r src/bin/* out/Goose-win32-x64/resources/bin/
+          mkdir -p ./out/Vasilisa-win32-x64/resources/bin
+          cp -r src/bin/* out/Vasilisa-win32-x64/resources/bin/
 
           mkdir -p ./dist-windows
-          cp -r ./out/Goose-win32-x64/* ./dist-windows/
+          cp -r ./out/Vasilisa-win32-x64/* ./dist-windows/
 
           ls -la ./dist-windows/
           ls -la ./dist-windows/resources/bin/
@@ -282,6 +282,16 @@ jobs:
           path: ui/desktop/dist-windows/
           if-no-files-found: error
           retention-days: 1
+          overwrite: true
+
+      # Squirrel-установщик собирается тем же `pnpm run make`; выкладываем его
+      # отдельным артефактом, чтобы пользователю не нужно было распаковывать архив.
+      - name: Upload Windows installer
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
+        with:
+          name: Vasilisa-win32-x64-setup${{ inputs.windows_variant == 'cuda' && '-cuda' || '' }}
+          path: ui/desktop/out/make/squirrel.windows/x64/*.exe
+          if-no-files-found: error
           overwrite: true
 
   sign-desktop-windows:
@@ -313,14 +323,14 @@ jobs:
           trusted-signing-account-name: ${{ secrets.AZURE_SIGNING_ACCOUNT_NAME }}
           certificate-profile-name: ${{ secrets.AZURE_CERTIFICATE_PROFILE_NAME }}
           files: |
-            ${{ github.workspace }}/dist-windows/Goose.exe
+            ${{ github.workspace }}/dist-windows/Vasilisa.exe
             ${{ github.workspace }}/dist-windows/resources/bin/goose.exe
 
       - name: Verify signed executables
         shell: pwsh
         run: |
           $files = @(
-            "dist-windows/Goose.exe",
+            "dist-windows/Vasilisa.exe",
             "dist-windows/resources/bin/goose.exe"
           )
           foreach ($file in $files) {
@@ -334,13 +344,13 @@ jobs:
         shell: bash
         env:
           VARIANT_SUFFIX: ${{ inputs.windows_variant == 'cuda' && '-cuda' || '' }}
-        run: 7z a -tzip "Goose-win32-x64${VARIANT_SUFFIX}.zip" dist-windows/
+        run: 7z a -tzip "Vasilisa-win32-x64${VARIANT_SUFFIX}.zip" dist-windows/
 
       - name: Upload signed Windows build
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
         with:
-          name: Goose-win32-x64${{ inputs.windows_variant == 'cuda' && '-cuda' || '' }}
-          path: Goose-win32-x64${{ inputs.windows_variant == 'cuda' && '-cuda' || '' }}.zip
+          name: Vasilisa-win32-x64${{ inputs.windows_variant == 'cuda' && '-cuda' || '' }}
+          path: Vasilisa-win32-x64${{ inputs.windows_variant == 'cuda' && '-cuda' || '' }}.zip
           if-no-files-found: error
           overwrite: true
 
@@ -360,12 +370,12 @@ jobs:
         shell: bash
         env:
           VARIANT_SUFFIX: ${{ inputs.windows_variant == 'cuda' && '-cuda' || '' }}
-        run: 7z a -tzip "Goose-win32-x64${VARIANT_SUFFIX}.zip" dist-windows/
+        run: 7z a -tzip "Vasilisa-win32-x64${VARIANT_SUFFIX}.zip" dist-windows/
 
       - name: Upload Windows build
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
         with:
-          name: Goose-win32-x64${{ inputs.windows_variant == 'cuda' && '-cuda' || '' }}
-          path: Goose-win32-x64${{ inputs.windows_variant == 'cuda' && '-cuda' || '' }}.zip
+          name: Vasilisa-win32-x64${{ inputs.windows_variant == 'cuda' && '-cuda' || '' }}
+          path: Vasilisa-win32-x64${{ inputs.windows_variant == 'cuda' && '-cuda' || '' }}.zip
           if-no-files-found: error
           overwrite: true

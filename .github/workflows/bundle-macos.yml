@@ -65,7 +65,7 @@ name: "Bundle CLI and Desktop (macOS)"
 
 jobs:
   build-goose:
-    name: Build Goose (macOS)
+    name: Build Vasilisa (macOS)
     runs-on: ${{ inputs.target == 'x86_64-apple-darwin' && 'macos-15-intel' || 'macos-latest' }}
     env:
       MACOSX_DEPLOYMENT_TARGET: "12.0"
@@ -288,7 +288,7 @@ jobs:
 
       - name: Verify macOS updater resources
         env:
-          APP_PATH: ${{ inputs.target == 'x86_64-apple-darwin' && 'out/Goose-darwin-x64/Goose.app' || 'out/Goose-darwin-arm64/Goose.app' }}
+          APP_PATH: ${{ inputs.target == 'x86_64-apple-darwin' && 'out/Vasilisa-darwin-x64/Vasilisa.app' || 'out/Vasilisa-darwin-arm64/Vasilisa.app' }}
         run: node scripts/verify-mac-update-resources.js "$APP_PATH"
         working-directory: ui/desktop
 
@@ -308,24 +308,24 @@ jobs:
         id: upload-app-bundle
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
         with:
-          name: ${{ inputs.target == 'x86_64-apple-darwin' && 'Goose-darwin-x64' || 'Goose-darwin-arm64' }}
-          path: ${{ inputs.target == 'x86_64-apple-darwin' && 'ui/desktop/out/Goose-darwin-x64/Goose_intel_mac.zip' || 'ui/desktop/out/Goose-darwin-arm64/Goose.zip' }}
+          name: ${{ inputs.target == 'x86_64-apple-darwin' && 'Vasilisa-darwin-x64' || 'Vasilisa-darwin-arm64' }}
+          path: ${{ inputs.target == 'x86_64-apple-darwin' && 'ui/desktop/out/Vasilisa-darwin-x64/Vasilisa_intel_mac.zip' || 'ui/desktop/out/Vasilisa-darwin-arm64/Vasilisa.zip' }}
           if-no-files-found: error
           overwrite: true
 
       - name: Quick launch test (macOS)
         env:
-          APP_PATH: ${{ inputs.target == 'x86_64-apple-darwin' && 'ui/desktop/out/Goose-darwin-x64/Goose.app' || 'ui/desktop/out/Goose-darwin-arm64/Goose.app' }}
+          APP_PATH: ${{ inputs.target == 'x86_64-apple-darwin' && 'ui/desktop/out/Vasilisa-darwin-x64/Vasilisa.app' || 'ui/desktop/out/Vasilisa-darwin-arm64/Vasilisa.app' }}
         run: |
           xattr -cr "$APP_PATH"
-          echo "Opening Goose.app..."
+          echo "Opening Vasilisa.app..."
           open -g "$APP_PATH"
           sleep 5
 
-          if pgrep -f "Goose.app/Contents/MacOS/Goose" > /dev/null; then
+          if pgrep -f "Vasilisa.app/Contents/MacOS/Vasilisa" > /dev/null; then
             echo "App appears to be running."
           else
             echo "App did not stay open. Possible crash or startup error."
             exit 1
           fi
-          pkill -f "Goose.app/Contents/MacOS/Goose"
+          pkill -f "Vasilisa.app/Contents/MacOS/Vasilisa"

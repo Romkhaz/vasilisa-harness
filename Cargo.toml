@@ -8,12 +8,12 @@ resolver = "2"
 
 [workspace.package]
 edition = "2021"
-version = "1.47.0"
+version = "1.0.0"
 rust-version = "1.94.1"
 authors = ["AAIF <ai-oss-tools@block.xyz>"]
 license = "Apache-2.0"
-repository = "https://github.com/aaif-goose/goose"
-description = "An AI agent"
+repository = "https://github.com/Romkhaz/vasilisa-harness"
+description = "Агент Василиса — десктоп-агент для работы с кодом"
 
 [workspace.lints.clippy]
 uninlined_format_args = "allow"

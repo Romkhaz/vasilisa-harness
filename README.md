@@ -1,63 +1,97 @@
-<div align="center">
+# Агент Василиса
 
-# goose
+Десктоп-агент для работы с кодом. Запускается на компьютере пользователя, читает и правит
+файлы в рабочей папке, запускает команды. К модели ходит через один OpenAI-совместимый
+сервис инференса: пользователь вводит выданные ему ключ доступа и адрес, других провайдеров
+в интерфейсе нет. Интерфейс, системные промпты и ответы агента — на русском.
 
-_your native open source AI agent — desktop app, CLI, and API — for code, workflows, and everything in between_
+Версия 1.0.0. Проект — форк [goose](https://github.com/aaif-goose/goose) (Rust + приложение
+на Electron); всё, что не перечислено ниже, унаследовано от оригинала.
 
-<p align="center">
-  <a href="https://opensource.org/licenses/Apache-2.0"
-    ><img src="https://img.shields.io/badge/License-Apache_2.0-blue.svg"></a>
-  <a href="https://discord.gg/n8R5VaWDAn"
-    ><img src="https://img.shields.io/discord/1287729918100246654?logo=discord&logoColor=white&label=Join+Us&color=blueviolet" alt="Discord"></a>
-  <a href="https://github.com/aaif-goose/goose/actions/workflows/ci.yml"
-     ><img src="https://img.shields.io/github/actions/workflow/status/aaif-goose/goose/ci.yml?branch=main" alt="CI"></a>
-  <a href="https://insights.linuxfoundation.org/project/goose"><img src="https://insights.linuxfoundation.org/api/badge/health-score?project=goose"></a>
-  <a href="https://repology.org/project/goose-cli/versions"><img src="https://repology.org/badge/tiny-repos/goose-cli.svg" alt="Packaging status"></a>
-</p>
+## Что изменено относительно goose
 
-<a href="https://trendshift.io/repositories/25298?utm_source=repository-badge&amp;utm_medium=badge&amp;utm_campaign=badge-repository-25298" target="_blank" rel="noopener noreferrer"><img src="https://trendshift.io/api/badge/repositories/25298" alt="aaif-goose%2Fgoose | Trendshift" width="250" height="55"/></a>
+| Область | Что сделано |
+|---|---|
+| Провайдеры | В реестре остаётся один провайдер — OpenAI-совместимый сервис. В форме два поля: ключ доступа и адрес. Локальный инференс и провайдеры AWS исключены из сборки |
+| Язык | Русский по умолчанию: интерфейс, нативное меню, системные диалоги, ответы модели. Английский оставлен запасным вариантом |
+| Данные | Свои каталоги конфигурации и своё хранилище секретов — оригинальный goose и Василиса не мешают друг другу |
+| Диплинки | URL-схема `vasilisa://` вместо `goose://` |
+| Оформление | Логотип и иконки по брендбуку (Дизайн-студия Ростелекома) |
+| Сборка | Неподписанные установщики под Windows, macOS и Linux |
 
-</div>
+Переменные окружения и ключи `config.yaml` сохраняют имена `GOOSE_*`, имена крейтов, файл
+`.goosehints` и протокол ACP не тронуты — так проще подтягивать изменения из upstream.
 
+## Установка
 
-goose is a general-purpose AI agent that runs on your machine. Not just for code — use it for research, writing, automation, data analysis, or anything you need to get done.
+Готовые файлы берутся из релиза или из артефактов сборки:
 
-A native desktop app for macOS, Linux, and Windows. A full CLI for terminal workflows. An API to embed it anywhere. Built in Rust for performance and portability.
+| Платформа | Файл |
+|---|---|
+| Windows | `Vasilisa-setup.exe` — установщик; `Vasilisa-win32-x64-1.0.0.zip` — портативный вариант |
+| macOS | `Vasilisa-darwin-arm64-1.0.0.zip` (Apple Silicon) или `-x64-` (Intel), внутри `Vasilisa.app` |
+| Linux | `vasilisa_1.0.0_amd64.deb`, `vasilisa-1.0.0-1.x86_64.rpm`, `ru.vasilisa.Agent.flatpak` |
 
-goose works with 15+ providers — Anthropic, OpenAI, Google, Ollama, OpenRouter, Azure, Bedrock, and more. Use API keys or your existing Claude, ChatGPT, or Gemini subscriptions via [ACP](https://goose-docs.ai/docs/guides/acp-providers). Connect to 70+ extensions via the [Model Context Protocol](https://modelcontextprotocol.io/) open standard.
+Сборки не подписаны, поэтому при первом запуске Windows SmartScreen и macOS Gatekeeper
+потребуют подтверждения — порядок действий описан в
+[руководстве пользователя](docs/РУКОВОДСТВО.md).
 
-goose is part of the [Agentic AI Foundation (AAIF)](https://aaif.io/) at the Linux Foundation.
+Что вводить при первом запуске: ключ доступа и адрес сервиса инференса вида
+`https://inference.example.ru/v1` — их выдаёт администратор.
 
-# Get started
+## Сборка из исходников
 
-**[Download the desktop app](https://goose-docs.ai/docs/getting-started/installation)** for macOS, Linux, and Windows.
+Нужны Rust (версия закреплена в `rust-toolchain.toml`), Node.js 24.10+ и pnpm 10.30+.
+Пакет под каждую платформу собирается на этой же платформе — подробный порядок с командами
+и списком системных зависимостей в [docs/СБОРКА.md](docs/СБОРКА.md).
 
-Or install the CLI:
+Коротко:
 
 ```bash
-curl -fsSL https://github.com/aaif-goose/goose/releases/download/stable/download_cli.sh | bash
+cargo build --release -p goose-cli --bin goose
 ```
 
-# Quick links
-- [Quickstart](https://goose-docs.ai/docs/quickstart)
-- [Installation](https://goose-docs.ai/docs/getting-started/installation)
-- [Tutorials](https://goose-docs.ai/docs/category/tutorials)
-- [Documentation](https://goose-docs.ai/docs/category/getting-started)
-- [Governance](https://github.com/aaif-goose/goose/blob/main/GOVERNANCE.md)
-- [Custom Distributions](https://github.com/aaif-goose/goose/blob/main/CUSTOM_DISTROS.md) — build your own goose distro with preconfigured providers, extensions, and branding
+```bash
+cd ui/desktop && pnpm install --frozen-lockfile && pnpm run make
+```
 
-## Need help?
-- [Diagnostics & Reporting](https://goose-docs.ai/docs/troubleshooting/diagnostics-and-reporting)
-- [Known Issues](https://goose-docs.ai/docs/troubleshooting/known-issues)
+Запуск из исходников для разработки:
 
-# a little goose humor 🪿
+```bash
+cd ui/desktop && pnpm start-gui
+```
 
-> Why did the developer choose goose as their AI agent?
-> 
-> Because it always helps them "migrate" their code to production! 🚀
+## Проверки
 
-# goose around with us
-- [Discord](https://discord.gg/n8R5VaWDAn)
-- [YouTube](https://www.youtube.com/@goose-oss)
-- [LinkedIn](https://www.linkedin.com/company/goose-oss)
-- [Twitter/X](https://x.com/goose_oss)
+```bash
+cargo test -p goose
+```
+
+```bash
+cd ui/desktop && pnpm lint:check && pnpm test:run
+```
+
+`pnpm lint:check` — это `tsc --noEmit`, eslint и `i18n:check`. Последний падает, если после
+правки `defaultMessage` в исходниках не пересобран каталог `src/i18n/messages/en.json`
+(`pnpm i18n:extract`), либо если в `ru.json` нарушен синтаксис ICU.
+
+## Устройство репозитория
+
+| Путь | Что внутри |
+|---|---|
+| `crates/` | Rust-часть: агент, провайдеры, CLI, серверная часть `goose serve` |
+| `crates/goose/src/providers/init.rs` | Реестр провайдеров — здесь оставлен единственный |
+| `crates/goose/src/prompts/system.md` | Системный промпт, включая указание отвечать по-русски |
+| `ui/desktop/` | Приложение на Electron |
+| `ui/desktop/src/i18n/` | Каталоги переводов и правила выбора языка |
+| `ui/desktop/src/images/` | Иконки приложения, собранные из брендбука |
+| `.github/workflows/` | Сборка в CI |
+
+## Документация
+
+- [docs/РУКОВОДСТВО.md](docs/РУКОВОДСТВО.md) — для пользователя: установка, первый запуск,
+  ввод ключа и адреса, выбор модели, режимы подтверждения, диагностика.
+- [docs/СБОРКА.md](docs/СБОРКА.md) — как собрать пакеты под macOS, Linux и Windows и выложить
+  их в релиз.
+- [I18N.md](I18N.md) — как устроена локализация интерфейса.
+- [AGENTS.md](AGENTS.md) — соглашения по коду, унаследованные от upstream.
