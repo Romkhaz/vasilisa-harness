@@ -13,8 +13,31 @@ function shortToolName(name: string): string {
   return parts[parts.length - 1] ?? name;
 }
 
-/** Идентификаторы сообщений: ключ — id вызова, значение — имя инструмента. */
-export function findActiveToolName(messages: Message[]): string | null {
+export type ActiveTool = {
+  /** Имя инструмента без префикса расширения. */
+  name: string;
+  /** Над чем он работает: путь к файлу, команда, поисковый запрос. */
+  target?: string;
+};
+
+/** Достаёт из аргументов вызова то, что понятно человеку. */
+function extractTarget(args: unknown): string | undefined {
+  if (!args || typeof args !== 'object') {
+    return undefined;
+  }
+  const record = args as Record<string, unknown>;
+  for (const key of ['path', 'file_path', 'filename', 'command', 'query', 'pattern', 'url', 'uri']) {
+    const value = record[key];
+    if (typeof value === 'string' && value.trim()) {
+      const [trimmed] = value.trim().split(/\r?\n/);
+      return trimmed.length > 80 ? `${trimmed.slice(0, 77)}…` : trimmed;
+    }
+  }
+  return undefined;
+}
+
+/** Инструмент, который выполняется прямо сейчас: запрос есть, ответа ещё нет. */
+export function findActiveTool(messages: Message[]): ActiveTool | null {
   const answered = new Set<string>();
   for (const message of messages) {
     for (const response of getToolResponses(message)) {
@@ -32,10 +55,10 @@ export function findActiveToolName(messages: Message[]): string | null {
       }
       const data = request.toolCall as Record<string, unknown>;
       const call = (data?.status === 'success' ? data.value : data) as
-        | { name?: string }
+        | { name?: string; arguments?: unknown }
         | undefined;
       if (call?.name) {
-        return shortToolName(call.name);
+        return { name: shortToolName(call.name), target: extractTarget(call.arguments) };
       }
     }
   }

@@ -1749,7 +1749,7 @@
     "defaultMessage": "Vasilisa is executing code…"
   },
   "loadingGoose.activityEditFile": {
-    "defaultMessage": "Vasilisa is editing a file…"
+    "defaultMessage": "Vasilisa is writing the file"
   },
   "loadingGoose.activityGeneric": {
     "defaultMessage": "Vasilisa is calling {tool}…"
@@ -1758,13 +1758,13 @@
     "defaultMessage": "Vasilisa is working with memory…"
   },
   "loadingGoose.activityReadFile": {
-    "defaultMessage": "Vasilisa is reading files…"
+    "defaultMessage": "Vasilisa is reading"
   },
   "loadingGoose.activitySearch": {
-    "defaultMessage": "Vasilisa is searching the project…"
+    "defaultMessage": "Vasilisa is searching for"
   },
   "loadingGoose.activityShell": {
-    "defaultMessage": "Vasilisa is running a command…"
+    "defaultMessage": "Vasilisa is running:"
   },
   "loadingGoose.activitySubagent": {
     "defaultMessage": "Vasilisa delegated a subtask…"

@@ -501,7 +501,8 @@ function ToolCallView({
   isStreamingMessage = false,
 }: ToolCallViewProps) {
   const intl = useIntl();
-  const [responseStyle, setResponseStyle] = useState<string>('concise');
+  // До ответа настроек показываем то же, что стоит по умолчанию в самих настройках.
+  const [responseStyle, setResponseStyle] = useState<string>('detailed');
 
   useEffect(() => {
     // Load initial value from settings

@@ -2,12 +2,12 @@ import GooseLogo from './GooseLogo';
 import AnimatedIcons from './AnimatedIcons';
 import FlyingBird from './FlyingBird';
 import { ChatState } from '../types/chatState';
-import { ActivityKind, describeToolActivity } from '../utils/activityDescription';
+import { ActiveTool, ActivityKind, describeToolActivity } from '../utils/activityDescription';
 import { defineMessages, useIntl } from '../i18n';
 
 interface LoadingGooseProps {
-  /** Инструмент, который выполняется прямо сейчас (без префикса расширения). */
-  activeTool?: string | null;
+  /** Инструмент, который выполняется прямо сейчас. */
+  activeTool?: ActiveTool | null;
   message?: string;
   chatState?: ChatState;
 }
@@ -39,19 +39,19 @@ const i18n = defineMessages({
   },
   activityShell: {
     id: 'loadingGoose.activityShell',
-    defaultMessage: 'Vasilisa is running a command…',
+    defaultMessage: 'Vasilisa is running:',
   },
   activityEditFile: {
     id: 'loadingGoose.activityEditFile',
-    defaultMessage: 'Vasilisa is editing a file…',
+    defaultMessage: 'Vasilisa is writing the file',
   },
   activityReadFile: {
     id: 'loadingGoose.activityReadFile',
-    defaultMessage: 'Vasilisa is reading files…',
+    defaultMessage: 'Vasilisa is reading',
   },
   activitySearch: {
     id: 'loadingGoose.activitySearch',
-    defaultMessage: 'Vasilisa is searching the project…',
+    defaultMessage: 'Vasilisa is searching for',
   },
   activityWeb: {
     id: 'loadingGoose.activityWeb',
@@ -123,9 +123,14 @@ const LoadingGoose = ({ message, chatState = ChatState.Idle, activeTool }: Loadi
   // Приоритет: сообщение о ходе работы от сервера, затем текущий инструмент, затем
   // общая подпись состояния.
   const activityMessage = activeTool
-    ? intl.formatMessage(i18n[ACTIVITY_MESSAGE_KEYS[describeToolActivity(activeTool)]], {
-        tool: activeTool,
-      })
+    ? [
+        intl.formatMessage(i18n[ACTIVITY_MESSAGE_KEYS[describeToolActivity(activeTool.name)]], {
+          tool: activeTool.name,
+        }),
+        activeTool.target,
+      ]
+        .filter(Boolean)
+        .join(' ')
     : null;
   const displayMessage =
     message || activityMessage || intl.formatMessage(i18n[STATE_MESSAGE_KEYS[chatState]]);

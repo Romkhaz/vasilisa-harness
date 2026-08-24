@@ -4,7 +4,7 @@ import { defineMessages, useIntl } from '../i18n';
 import { useLocation, useNavigate } from 'react-router';
 import { SearchView } from './conversation/SearchView';
 import LoadingGoose from './LoadingGoose';
-import { findActiveToolName } from '../utils/activityDescription';
+import { findActiveTool } from '../utils/activityDescription';
 import ProgressiveMessageList from './ProgressiveMessageList';
 import { MainPanelLayout } from './Layout/MainPanelLayout';
 import ChatInput from './ChatInput';
@@ -125,7 +125,7 @@ export default function BaseChat({
   });
 
   // Показываем в индикаторе, какой инструмент выполняется прямо сейчас.
-  const activeTool = useMemo(() => findActiveToolName(messages), [messages]);
+  const activeTool = useMemo(() => findActiveTool(messages), [messages]);
 
   const handleWorkingDirChange = useCallback(
     async (newDir: string) => {

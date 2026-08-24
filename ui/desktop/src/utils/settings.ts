@@ -95,7 +95,7 @@ export const defaultSettings: Settings = {
   theme: 'light',
   useSystemTheme: true,
   language: 'ru',
-  responseStyle: 'concise',
+  responseStyle: 'detailed',
   showPricing: true,
   seenAnnouncementIds: [],
   recentModels: [],

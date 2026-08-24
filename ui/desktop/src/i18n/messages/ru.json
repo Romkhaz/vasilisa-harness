@@ -1749,7 +1749,7 @@
     "defaultMessage": "Василиса выполняет код…"
   },
   "loadingGoose.activityEditFile": {
-    "defaultMessage": "Василиса правит файл…"
+    "defaultMessage": "Василиса пишет файл"
   },
   "loadingGoose.activityGeneric": {
     "defaultMessage": "Василиса вызывает {tool}…"
@@ -1758,13 +1758,13 @@
     "defaultMessage": "Василиса работает с памятью…"
   },
   "loadingGoose.activityReadFile": {
-    "defaultMessage": "Василиса читает файлы…"
+    "defaultMessage": "Василиса читает"
   },
   "loadingGoose.activitySearch": {
-    "defaultMessage": "Василиса ищет по проекту…"
+    "defaultMessage": "Василиса ищет"
   },
   "loadingGoose.activityShell": {
-    "defaultMessage": "Василиса выполняет команду…"
+    "defaultMessage": "Василиса выполняет:"
   },
   "loadingGoose.activitySubagent": {
     "defaultMessage": "Василиса передала подзадачу помощнику…"
