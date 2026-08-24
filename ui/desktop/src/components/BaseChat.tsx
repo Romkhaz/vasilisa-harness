@@ -4,6 +4,7 @@ import { defineMessages, useIntl } from '../i18n';
 import { useLocation, useNavigate } from 'react-router';
 import { SearchView } from './conversation/SearchView';
 import LoadingGoose from './LoadingGoose';
+import { findActiveToolName } from '../utils/activityDescription';
 import ProgressiveMessageList from './ProgressiveMessageList';
 import { MainPanelLayout } from './Layout/MainPanelLayout';
 import ChatInput from './ChatInput';
@@ -122,6 +123,9 @@ export default function BaseChat({
     sessionId,
     onStreamFinish,
   });
+
+  // Показываем в индикаторе, какой инструмент выполняется прямо сейчас.
+  const activeTool = useMemo(() => findActiveToolName(messages), [messages]);
 
   const handleWorkingDirChange = useCallback(
     async (newDir: string) => {
@@ -486,7 +490,11 @@ export default function BaseChat({
 
           {chatState !== ChatState.Idle && (
             <div className="absolute bottom-1 left-4 z-20 pointer-events-none">
-              <LoadingGoose chatState={chatState} message={progressMessage} />
+              <LoadingGoose
+                chatState={chatState}
+                message={progressMessage}
+                activeTool={activeTool}
+              />
             </div>
           )}
         </div>

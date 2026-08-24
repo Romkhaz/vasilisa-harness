@@ -134,12 +134,10 @@ function GooseMessage({
         {thinkingContent && (
           <ThinkingContent
             content={thinkingContent}
-            isExpanded={
-              isStreaming &&
-              !displayText.trim() &&
-              imagePaths.length === 0 &&
-              toolRequests.length === 0
-            }
+            // Пока идёт работа, рассуждения остаются раскрытыми: по ним видно, что
+            // именно агент делает. Раньше блок схлопывался, как только появлялся
+            // первый вызов инструмента, и работа выглядела молчанием.
+            isExpanded={isStreaming}
           />
         )}
 

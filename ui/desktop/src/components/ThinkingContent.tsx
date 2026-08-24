@@ -2,6 +2,14 @@ import { useState, useEffect, useRef } from 'react';
 import MarkdownContent from './MarkdownContent';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from './ui/collapsible';
 import Expand from './ui/Expand';
+import { defineMessages, useIntl } from '../i18n';
+
+const i18n = defineMessages({
+  title: {
+    id: 'thinkingContent.title',
+    defaultMessage: 'Reasoning',
+  },
+});
 
 interface ThinkingContentProps {
   content: string;
@@ -9,6 +17,7 @@ interface ThinkingContentProps {
 }
 
 export default function ThinkingContent({ content, isExpanded }: ThinkingContentProps) {
+  const intl = useIntl();
   const [manualToggle, setManualToggle] = useState<boolean | null>(null);
   const prevIsExpanded = useRef(isExpanded);
 
@@ -25,7 +34,7 @@ export default function ThinkingContent({ content, isExpanded }: ThinkingContent
     <Collapsible open={expanded} onOpenChange={(open) => setManualToggle(open)} className="mb-2">
       <CollapsibleTrigger className="flex items-center gap-1.5 text-xs text-text-secondary hover:text-text-primary transition-colors cursor-pointer">
         <Expand size={3} isExpanded={expanded} />
-        <span className="italic">Thinking</span>
+        <span className="italic">{intl.formatMessage(i18n.title)}</span>
       </CollapsibleTrigger>
       <CollapsibleContent>
         <div className="mt-1 ml-[18px] text-xs text-text-secondary italic">

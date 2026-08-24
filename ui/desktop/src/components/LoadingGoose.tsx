@@ -2,9 +2,12 @@ import GooseLogo from './GooseLogo';
 import AnimatedIcons from './AnimatedIcons';
 import FlyingBird from './FlyingBird';
 import { ChatState } from '../types/chatState';
+import { ActivityKind, describeToolActivity } from '../utils/activityDescription';
 import { defineMessages, useIntl } from '../i18n';
 
 interface LoadingGooseProps {
+  /** Инструмент, который выполняется прямо сейчас (без префикса расширения). */
+  activeTool?: string | null;
   message?: string;
   chatState?: ChatState;
 }
@@ -34,6 +37,46 @@ const i18n = defineMessages({
     id: 'loadingGoose.idle',
     defaultMessage: 'Vasilisa is working on it…',
   },
+  activityShell: {
+    id: 'loadingGoose.activityShell',
+    defaultMessage: 'Vasilisa is running a command…',
+  },
+  activityEditFile: {
+    id: 'loadingGoose.activityEditFile',
+    defaultMessage: 'Vasilisa is editing a file…',
+  },
+  activityReadFile: {
+    id: 'loadingGoose.activityReadFile',
+    defaultMessage: 'Vasilisa is reading files…',
+  },
+  activitySearch: {
+    id: 'loadingGoose.activitySearch',
+    defaultMessage: 'Vasilisa is searching the project…',
+  },
+  activityWeb: {
+    id: 'loadingGoose.activityWeb',
+    defaultMessage: 'Vasilisa is working with an external source…',
+  },
+  activityCode: {
+    id: 'loadingGoose.activityCode',
+    defaultMessage: 'Vasilisa is executing code…',
+  },
+  activityTodo: {
+    id: 'loadingGoose.activityTodo',
+    defaultMessage: 'Vasilisa is updating the task list…',
+  },
+  activityMemory: {
+    id: 'loadingGoose.activityMemory',
+    defaultMessage: 'Vasilisa is working with memory…',
+  },
+  activitySubagent: {
+    id: 'loadingGoose.activitySubagent',
+    defaultMessage: 'Vasilisa delegated a subtask…',
+  },
+  activityGeneric: {
+    id: 'loadingGoose.activityGeneric',
+    defaultMessage: 'Vasilisa is calling {tool}…',
+  },
   restartingAgent: {
     id: 'loadingGoose.restartingAgent',
     defaultMessage: 'restarting session...',
@@ -62,9 +105,30 @@ const STATE_MESSAGE_KEYS: Record<ChatState, keyof typeof i18n> = {
   [ChatState.RestartingAgent]: 'restartingAgent',
 };
 
-const LoadingGoose = ({ message, chatState = ChatState.Idle }: LoadingGooseProps) => {
+const ACTIVITY_MESSAGE_KEYS: Record<ActivityKind, keyof typeof i18n> = {
+  shell: 'activityShell',
+  editFile: 'activityEditFile',
+  readFile: 'activityReadFile',
+  search: 'activitySearch',
+  web: 'activityWeb',
+  code: 'activityCode',
+  todo: 'activityTodo',
+  memory: 'activityMemory',
+  subagent: 'activitySubagent',
+  generic: 'activityGeneric',
+};
+
+const LoadingGoose = ({ message, chatState = ChatState.Idle, activeTool }: LoadingGooseProps) => {
   const intl = useIntl();
-  const displayMessage = message || intl.formatMessage(i18n[STATE_MESSAGE_KEYS[chatState]]);
+  // Приоритет: сообщение о ходе работы от сервера, затем текущий инструмент, затем
+  // общая подпись состояния.
+  const activityMessage = activeTool
+    ? intl.formatMessage(i18n[ACTIVITY_MESSAGE_KEYS[describeToolActivity(activeTool)]], {
+        tool: activeTool,
+      })
+    : null;
+  const displayMessage =
+    message || activityMessage || intl.formatMessage(i18n[STATE_MESSAGE_KEYS[chatState]]);
   const icon = STATE_ICONS[chatState];
 
   return (

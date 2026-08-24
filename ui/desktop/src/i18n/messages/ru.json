@@ -1745,6 +1745,36 @@
   "launcher.placeholder": {
     "defaultMessage": "Спросите Василису о чём угодно…"
   },
+  "loadingGoose.activityCode": {
+    "defaultMessage": "Василиса выполняет код…"
+  },
+  "loadingGoose.activityEditFile": {
+    "defaultMessage": "Василиса правит файл…"
+  },
+  "loadingGoose.activityGeneric": {
+    "defaultMessage": "Василиса вызывает {tool}…"
+  },
+  "loadingGoose.activityMemory": {
+    "defaultMessage": "Василиса работает с памятью…"
+  },
+  "loadingGoose.activityReadFile": {
+    "defaultMessage": "Василиса читает файлы…"
+  },
+  "loadingGoose.activitySearch": {
+    "defaultMessage": "Василиса ищет по проекту…"
+  },
+  "loadingGoose.activityShell": {
+    "defaultMessage": "Василиса выполняет команду…"
+  },
+  "loadingGoose.activitySubagent": {
+    "defaultMessage": "Василиса передала подзадачу помощнику…"
+  },
+  "loadingGoose.activityTodo": {
+    "defaultMessage": "Василиса обновляет список задач…"
+  },
+  "loadingGoose.activityWeb": {
+    "defaultMessage": "Василиса работает с внешним источником…"
+  },
   "loadingGoose.compacting": {
     "defaultMessage": "Василиса сжимает переписку…"
   },
@@ -4453,6 +4483,9 @@
   },
   "themeSelector.theme": {
     "defaultMessage": "Тема"
+  },
+  "thinkingContent.title": {
+    "defaultMessage": "Рассуждения"
   },
   "toolApprovalButtons.allowOnce": {
     "defaultMessage": "Разрешить один раз"

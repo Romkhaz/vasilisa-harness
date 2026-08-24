@@ -1745,6 +1745,36 @@
   "launcher.placeholder": {
     "defaultMessage": "Ask Vasilisa anything..."
   },
+  "loadingGoose.activityCode": {
+    "defaultMessage": "Vasilisa is executing code…"
+  },
+  "loadingGoose.activityEditFile": {
+    "defaultMessage": "Vasilisa is editing a file…"
+  },
+  "loadingGoose.activityGeneric": {
+    "defaultMessage": "Vasilisa is calling {tool}…"
+  },
+  "loadingGoose.activityMemory": {
+    "defaultMessage": "Vasilisa is working with memory…"
+  },
+  "loadingGoose.activityReadFile": {
+    "defaultMessage": "Vasilisa is reading files…"
+  },
+  "loadingGoose.activitySearch": {
+    "defaultMessage": "Vasilisa is searching the project…"
+  },
+  "loadingGoose.activityShell": {
+    "defaultMessage": "Vasilisa is running a command…"
+  },
+  "loadingGoose.activitySubagent": {
+    "defaultMessage": "Vasilisa delegated a subtask…"
+  },
+  "loadingGoose.activityTodo": {
+    "defaultMessage": "Vasilisa is updating the task list…"
+  },
+  "loadingGoose.activityWeb": {
+    "defaultMessage": "Vasilisa is working with an external source…"
+  },
   "loadingGoose.compacting": {
     "defaultMessage": "Vasilisa is compacting the conversation..."
   },
@@ -4453,6 +4483,9 @@
   },
   "themeSelector.theme": {
     "defaultMessage": "Theme"
+  },
+  "thinkingContent.title": {
+    "defaultMessage": "Reasoning"
   },
   "toolApprovalButtons.allowOnce": {
     "defaultMessage": "Allow Once"
