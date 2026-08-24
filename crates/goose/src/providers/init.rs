@@ -124,7 +124,6 @@ pub async fn create_with_named_model(
     create(provider_name, extensions).await
 }
 
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -132,7 +131,10 @@ mod tests {
     #[tokio::test]
     async fn test_only_openai_provider_is_registered() {
         let providers_list = providers().await;
-        let names: Vec<&str> = providers_list.iter().map(|(m, _)| m.name.as_str()).collect();
+        let names: Vec<&str> = providers_list
+            .iter()
+            .map(|(m, _)| m.name.as_str())
+            .collect();
         assert_eq!(
             names,
             vec!["openai"],
@@ -152,7 +154,10 @@ mod tests {
             vec!["OPENAI_API_KEY", "OPENAI_BASE_URL"],
             "пользователь вводит только ключ и адрес для инференса"
         );
-        assert!(meta.config_keys[0].secret, "ключ должен храниться как секрет");
+        assert!(
+            meta.config_keys[0].secret,
+            "ключ должен храниться как секрет"
+        );
         assert!(meta.config_keys[0].required, "ключ обязателен");
         assert!(meta.config_keys[1].required, "адрес обязателен");
     }
