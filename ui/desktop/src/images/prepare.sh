@@ -1,8 +1,13 @@
 #!/usr/bin/env sh
 
+# Source files come from the Vasilisa brand book:
+#   icon.svg      - main mark, dark plate + brand gradient
+#   icon-mono.svg - same mark as a monochrome silhouette (menu bar template icon)
+#   glyph.svg     - mark alone, no plate, currentColor
+
 # Create template icons for the menu bar
-convert -background none -resize 22x22 glyph.svg iconTemplate.png
-convert -background none -resize 44x44 glyph.svg iconTemplate@2x.png
+convert -background none -resize 22x22 icon-mono.svg iconTemplate.png
+convert -background none -resize 44x44 icon-mono.svg iconTemplate@2x.png
 
 # Create main application icons from icon.svg
 convert -background none -resize 1024x1024 icon.svg icon.png
