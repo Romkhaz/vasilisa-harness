@@ -1,7 +1,7 @@
 {
   "name": "vasilisa-app",
   "productName": "Vasilisa",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Агент Василиса — десктоп-приложение",
   "engines": {
     "node": "^24.10.0",
