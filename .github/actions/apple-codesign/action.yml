@@ -32,12 +32,14 @@ runs:
 
         echo "$APPLE_CERTIFICATE_BASE64" | base64 --decode > "$CERTIFICATE_PATH"
 
-        # Разбираем контейнер до импорта: security на любую беду отвечает
-        # «Unknown format in import», по которой не понять, что именно не так
-        # с секретом. openssl называет причину.
-        if ! openssl pkcs12 -in "$CERTIFICATE_PATH" -noout -passin env:APPLE_CERTIFICATE_PASSWORD; then
-          echo "::error::APPLE_CERTIFICATE_BASE64 не разбирается как .p12 ($(wc -c < "$CERTIFICATE_PATH") байт после base64). Проверьте, что в секрете лежит base64 файла .p12 с приватным ключом, а APPLE_CERTIFICATE_PASSWORD — пароль от него."
-          exit 1
+        # security на любую беду отвечает «Unknown format in import», по которой
+        # не понять, что именно не так с секретом. Заглядываем в контейнер сами,
+        # но решение оставляем за security: openssl 3 без -legacy не берёт
+        # RC2-40-CBC, которым Keychain Access шифрует экспорт, поэтому его отказ
+        # ещё не означает, что файл плохой.
+        if ! openssl pkcs12 -in "$CERTIFICATE_PATH" -noout -passin env:APPLE_CERTIFICATE_PASSWORD 2>/dev/null \
+          && ! openssl pkcs12 -in "$CERTIFICATE_PATH" -noout -legacy -passin env:APPLE_CERTIFICATE_PASSWORD 2>/dev/null; then
+          echo "::warning::openssl не разобрал APPLE_CERTIFICATE_BASE64 как .p12 ($(wc -c < "$CERTIFICATE_PATH") байт после base64). Если импорт ниже упадёт — в секрете лежит не тот файл либо не тот пароль."
         fi
 
         security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
