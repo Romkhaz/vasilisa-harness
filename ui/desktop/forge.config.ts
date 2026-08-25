@@ -4,6 +4,8 @@ const { resolve } = require('path');
 
 const isLinuxVulkanBuild = process.env.GOOSE_DESKTOP_LINUX_VARIANT === 'vulkan';
 
+const packagedApps = [];
+
 let cfg = {
   asar: true,
   // Явный bundle id: иначе Electron вывел бы его из имени пакета и он совпал бы
@@ -89,10 +91,42 @@ module.exports = {
         for (const entry of readdirSync(dir)) {
           if (!entry.endsWith('.app')) continue;
           const app = resolve(dir, entry);
+          packagedApps.push(app);
           console.log(`Ad-hoc подпись ${app}`);
           execFileSync('codesign', ['--force', '--deep', '--sign', '-', app], { stdio: 'inherit' });
         }
       }
+    },
+    // Установщик для macOS: образ с приложением и ярлыком «Программы» рядом, куда
+    // его перетаскивают. Собран на hdiutil из состава системы, а не мейкером
+    // @electron-forge/maker-dmg: тот тянет appdmg с нативными fs-xattr и
+    // macos-alias, а fs-xattr (у него в манифесте `os: ['!win32']`) при чистой
+    // установке pnpm просто не ставит, и сборка падает на раннере.
+    postMake: async (_forgeConfig, results) => {
+      if (process.platform !== 'darwin' || packagedApps.length === 0) return results;
+      const { execFileSync, execSync } = require('child_process');
+      const { mkdtempSync, mkdirSync, rmSync, symlinkSync, existsSync } = require('fs');
+      const { tmpdir } = require('os');
+      const outDir = resolve(__dirname, 'out', 'make');
+      mkdirSync(outDir, { recursive: true });
+      for (const app of packagedApps) {
+        const staging = mkdtempSync(resolve(tmpdir(), 'vasilisa-dmg-'));
+        const dmg = resolve(outDir, 'Vasilisa.dmg');
+        try {
+          execFileSync('cp', ['-R', app, staging], { stdio: 'inherit' });
+          symlinkSync('/Applications', resolve(staging, 'Applications'));
+          if (existsSync(dmg)) rmSync(dmg);
+          console.log(`Собираю образ ${dmg}`);
+          execFileSync(
+            'hdiutil',
+            ['create', '-volname', 'Агент Василиса', '-srcfolder', staging, '-ov', '-format', 'UDZO', dmg],
+            { stdio: 'inherit' }
+          );
+        } finally {
+          rmSync(staging, { recursive: true, force: true });
+        }
+      }
+      return results;
     },
   },
   publishers: [
@@ -121,18 +155,6 @@ module.exports = {
         setupIcon: 'src/images/icon.ico',
         setupExe: 'Vasilisa-setup.exe',
         noMsi: true,
-      },
-    },
-    {
-      // Установщик для macOS: окно с иконкой приложения и ярлыком «Программы»,
-      // куда её перетаскивают. Zip оставлен рядом — им пользуется автообновление.
-      name: '@electron-forge/maker-dmg',
-      platforms: ['darwin'],
-      config: {
-        name: 'Vasilisa',
-        title: 'Агент Василиса',
-        icon: 'src/images/icon.icns',
-        overwrite: true,
       },
     },
     {
