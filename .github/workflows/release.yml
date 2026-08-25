@@ -35,12 +35,11 @@ jobs:
       # CLI пока не выпускаем — в релиз идут только три приложения.
       package_cli: false
       package_desktop: true
-      # Подпись Developer ID и нотаризация включаются вместе: поставить signing: true
-      # и environment: release, когда в окружении release появятся секреты
-      # APPLE_CERTIFICATE_BASE64, APPLE_CERTIFICATE_PASSWORD, APPLE_TEAM_ID и
-      # ключ notarytool (APPLE_API_KEY_BASE64 + APPLE_API_KEY_ID + APPLE_API_ISSUER
-      # либо APPLE_ID + APPLE_ID_PASSWORD). Без них сборка выходит неподписанной.
-      signing: false
+      # Подпись Developer ID и нотаризация. Сертификат и ключ notarytool лежат
+      # в окружении release: доступ к ним получает только эта джоба и только
+      # после правил защиты окружения.
+      signing: true
+      environment: release
     secrets: inherit
 
   # ------------------------------------------------------------
