@@ -37,6 +37,11 @@ in your tool specification.
 No extensions are defined. You should let the user know that they should add extensions.
 {% endif %}
 {% endif %}
+{% if skills_instructions is defined %}
+
+# Skills
+{{ skills_instructions }}
+{% endif %}
 
 # Response Guidelines
 

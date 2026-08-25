@@ -38,6 +38,11 @@ struct SystemPromptContext {
     enable_subagents: bool,
     code_execution_mode: bool,
     include_extensions: bool,
+    /// Список навыков отдельно от секции расширений: в Code Mode она не
+    /// рендерится целиком, а без перечня навыков модель о них не узнаёт —
+    /// описание load_skill отсылает ровно к системному промпту.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    skills_instructions: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     moim_system_prompt_block: Option<String>,
     /// Язык, на котором Василиса должна отвечать пользователю. Берётся из GOOSE_LOCALE,
@@ -158,6 +163,16 @@ impl<'a> SystemPromptBuilder<'a, PromptManager> {
             .goose_mode
             .unwrap_or_else(|| Config::global().get_goose_mode().unwrap_or_default());
 
+        let skills_instructions = (self.code_execution_mode && self.include_extensions)
+            .then(|| {
+                sanitized_extensions_info
+                    .iter()
+                    .find(|ext| ext.name == crate::skills::EXTENSION_NAME)
+                    .map(|ext| ext.instructions.clone())
+                    .filter(|instructions| !instructions.trim().is_empty())
+            })
+            .flatten();
+
         let context = SystemPromptContext {
             extensions: sanitized_extensions_info,
             current_date_time: self.manager.current_date_timestamp.clone(),
@@ -166,6 +181,7 @@ impl<'a> SystemPromptBuilder<'a, PromptManager> {
             enable_subagents: self.subagents_enabled,
             code_execution_mode: self.code_execution_mode,
             include_extensions: self.include_extensions,
+            skills_instructions,
             moim_system_prompt_block: moim::system_prompt_block(),
             response_language: response_language_from_env(),
         };
@@ -491,6 +507,44 @@ mod tests {
             .build();
 
         assert_snapshot!(system_prompt)
+    }
+
+    // Регрессия: Code Mode убирает из промпта всю секцию расширений, и вместе с
+    // ней исчезал перечень навыков — при том, что описание load_skill отсылает
+    // модель именно к системному промпту.
+    #[test]
+    fn test_skills_survive_code_execution_mode() {
+        let manager = PromptManager::with_timestamp(DateTime::<Utc>::from_timestamp(0, 0).unwrap());
+
+        let build = |code_execution_mode: bool| {
+            manager
+                .builder()
+                .with_extension(ExtensionInfo::new(
+                    crate::skills::EXTENSION_NAME,
+                    "\n\nYou have these skills at your disposal:\n• test-skill - does the thing",
+                    false,
+                ))
+                .with_extension(ExtensionInfo::new("other", "other instructions", false))
+                .with_code_execution_mode(code_execution_mode)
+                .build()
+        };
+
+        let with_code_mode = build(true);
+        assert!(with_code_mode.contains("test-skill - does the thing"));
+        assert!(
+            !with_code_mode.contains("other instructions"),
+            "Code Mode по-прежнему не должен тянуть в промпт инструкции остальных расширений"
+        );
+
+        let without_code_mode = build(false);
+        assert!(without_code_mode.contains("test-skill - does the thing"));
+        assert_eq!(
+            without_code_mode
+                .matches("test-skill - does the thing")
+                .count(),
+            1,
+            "без Code Mode навыки приходят из секции расширений и не должны дублироваться"
+        );
     }
 
     #[test]
