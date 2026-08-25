@@ -2,8 +2,6 @@ const { FusesPlugin } = require('@electron-forge/plugin-fuses');
 const { FuseV1Options, FuseVersion } = require('@electron/fuses');
 const { basename, resolve } = require('path');
 
-const isLinuxVulkanBuild = process.env.GOOSE_DESKTOP_LINUX_VARIANT === 'vulkan';
-
 const packagedApps = [];
 
 let cfg = {
@@ -232,77 +230,6 @@ module.exports = {
         options: {
           icon: 'src/images/icon.png',
           prefix: '/opt',
-          ...(isLinuxVulkanBuild ? { depends: ['libvulkan1'] } : {}),
-        },
-      },
-    },
-    {
-      name: '@electron-forge/maker-rpm',
-      config: {
-        name: 'Vasilisa',
-        bin: 'Vasilisa',
-        maintainer: 'Агент Василиса',
-        homepage: 'https://github.com/Romkhaz/vasilisa-harness',
-        categories: ['Development'],
-        desktopTemplate: './forge.rpm.desktop',
-        options: {
-          icon: 'src/images/icon.png',
-          prefix: '/opt',
-          ...(isLinuxVulkanBuild ? { requires: ['vulkan-loader'] } : {}),
-        },
-      },
-    },
-    {
-      name: '@electron-forge/maker-flatpak',
-      config: {
-        options: {
-          id: 'ru.vasilisa.Agent',
-          categories: ['Development'],
-          mimeType: ['x-scheme-handler/vasilisa'],
-          icon: {
-            scalable: 'src/images/icon.svg',
-            '512x512': 'src/images/icon-512.png',
-          },
-          homepage: 'https://github.com/Romkhaz/vasilisa-harness',
-          runtimeVersion: '25.08',
-          baseVersion: '25.08',
-          bin: 'Vasilisa',
-          modules: [
-            {
-              name: 'libbz2-shim',
-              buildsystem: 'simple',
-              'build-commands': [
-                // Create the lib directory in the app bundle
-                'mkdir -p /app/lib',
-                // Point to the actual library in the 25.08 runtime
-                // We use a wildcard to handle multi-arch paths (x86_64-linux-gnu, etc)
-                'ln -s $(find /usr/lib -name "libbz2.so.1" | head -n 1) /app/lib/libbz2.so.1.0',
-              ],
-            },
-            {
-              name: 'git',
-              buildsystem: 'simple',
-              'build-commands': [
-                'mkdir -p /app/bin /app/libexec/git-core',
-                'cp /usr/bin/git /app/bin/git',
-                'cp /usr/libexec/git-core/git-remote-https /app/libexec/git-core/git-remote-https 2>/dev/null || true',
-              ],
-            },
-          ],
-          finishArgs: [
-            '--share=ipc',
-            '--socket=x11',
-            '--socket=wayland',
-            '--device=dri',
-            '--share=network',
-            '--filesystem=home',
-            '--talk-name=org.freedesktop.Notifications',
-            '--socket=session-bus',
-            '--socket=system-bus',
-            // This ensures the app looks in our shim folder first
-            '--env=LD_LIBRARY_PATH=/app/lib',
-            '--env=GIT_EXEC_PATH=/app/libexec/git-core',
-          ],
         },
       },
     },

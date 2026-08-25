@@ -24,16 +24,8 @@ permissions:
 
 jobs:
   build-desktop-linux:
-    name: Build Desktop (Linux, ${{ matrix.variant }})
-    runs-on: ${{ matrix.build-on }}
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          # Vulkan-вариант собирался ради локального инференса на GPU; в Василисе
-          # локального инференса нет, поэтому вторая сборка только тратит время.
-          - variant: standard
-            build-on: ubuntu-22.04
+    name: Build Desktop (Linux)
+    runs-on: ubuntu-22.04
 
     steps:
       - name: Checkout repository
@@ -82,32 +74,10 @@ jobs:
             libxrandr2 \
             libgbm1 \
             libxss1 \
-            rpm \
             fakeroot \
             dpkg-dev \
             protobuf-compiler \
-            flatpak \
-            flatpak-builder \
-            elfutils
-
-          if [ "${{ matrix.variant }}" = "vulkan" ]; then
-            sudo apt-get install -y \
-              libasound2t64 \
-              libvulkan-dev \
-              libvulkan1 \
-              glslc
-          else
-            sudo apt-get install -y libasound2
-          fi
-
-      - name: Configure RPM packaging
-        run: |
-          echo '%_build_id_links none' > ~/.rpmmacros
-          test "$(rpm --eval '%{_build_id_links}')" = "none"
-
-      - name: Setup Flatpak Runtimes
-        run: |
-          flatpak remote-add --if-not-exists --user flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+            libasound2
 
       - name: Activate hermit and set CARGO_HOME
         run: |
@@ -118,7 +88,7 @@ jobs:
       - name: Cache Rust dependencies
         uses: Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6  # v2.9.2
         with:
-          key: linux-${{ matrix.build-on }}-${{ matrix.variant }}
+          key: linux-desktop
 
       - name: Build desktop backend binary
         env:
@@ -128,12 +98,7 @@ jobs:
           source ./bin/activate-hermit
           export TARGET="x86_64-unknown-linux-gnu"
           rustup target add "${TARGET}"
-          FEATURE_ARGS=()
-          if [ "${{ matrix.variant }}" = "vulkan" ]; then
-            FEATURE_ARGS=(--features vulkan)
-          fi
-
-          cargo build --release --target ${TARGET} -p goose-cli --bin goose "${FEATURE_ARGS[@]}"
+          cargo build --release --target ${TARGET} -p goose-cli --bin goose
 
       - name: Copy backend binary into Electron folder
         run: |
@@ -144,11 +109,6 @@ jobs:
           cp target/$TARGET/release/goose ui/desktop/src/bin/
           chmod +x ui/desktop/src/bin/goose
           ls -la ui/desktop/src/bin/
-
-      - name: Free Rust build artifacts before packaging
-        run: |
-          source ./bin/activate-hermit
-          cargo clean
 
       - name: Cache pnpm dependencies
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9  # v6.1.0
@@ -169,92 +129,16 @@ jobs:
           ls -la node_modules/.bin/ | head -5
 
       - name: Build Linux packages
-        env:
-          GOOSE_DESKTOP_LINUX_VARIANT: ${{ matrix.variant }}
         run: |
           source ./bin/activate-hermit
+          df -h
           cd ui/desktop
-          echo "Building Linux packages (.deb, .rpm, and .flatpak) for ${{ matrix.variant }}..."
-
-          # Build all configured packages
           pnpm run make --platform=linux --arch=x64
-
-          if [ "${{ matrix.variant }}" = "vulkan" ]; then
-            for package in out/make/deb/x64/*.deb out/make/rpm/x64/*.rpm out/make/flatpak/x86_64/*.flatpak; do
-              [ -e "$package" ] || continue
-              extension="${package##*.}"
-              base="${package%.*}"
-              mv "$package" "${base}-vulkan.${extension}"
-            done
-          fi
-
-          for package in out/make/rpm/x64/*.rpm; do
-            package_contents="$(rpm -qlp "$package")"
-            if grep -qE '^/usr/lib/\.build-id(/|$)' <<< "$package_contents"; then
-              echo "::error file=$package::RPM contains build-id links"
-              exit 1
-            fi
-          done
-
-          echo "Build completed. Checking output..."
-          ls -la out/
-          find out/ -name "*.deb" -o -name "*.rpm" -o -name "*.flatpak" | head -10
-
-      - name: List generated files
-        run: |
-          echo "=== All files in out/ directory ==="
-          find ui/desktop/out/ -type f | head -20
-          echo ""
-          echo "=== Package files specifically ==="
-          find ui/desktop/out/ -name "*.deb" -o -name "*.rpm" -o -name "*.flatpak"
-          echo ""
-          echo "=== File sizes ==="
-          find ui/desktop/out/ -name "*.deb" -o -name "*.rpm" -o -name "*.flatpak" -exec ls -lh {} \;
+          ls -lh out/make/deb/x64/*.deb
 
       - name: Upload .deb package
-        if: matrix.variant == 'standard'
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
         with:
           name: Vasilisa-linux-x64-deb
           path: ui/desktop/out/make/deb/x64/*.deb
-          if-no-files-found: error
-
-      - name: Upload .deb package (Vulkan)
-        if: matrix.variant == 'vulkan'
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
-        with:
-          name: Vasilisa-linux-x64-vulkan-deb
-          path: ui/desktop/out/make/deb/x64/*-vulkan.deb
-          if-no-files-found: error
-
-      - name: Upload .rpm package
-        if: matrix.variant == 'standard'
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
-        with:
-          name: Vasilisa-linux-x64-rpm
-          path: ui/desktop/out/make/rpm/x64/*.rpm
-          if-no-files-found: error
-
-      - name: Upload .rpm package (Vulkan)
-        if: matrix.variant == 'vulkan'
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
-        with:
-          name: Vasilisa-linux-x64-vulkan-rpm
-          path: ui/desktop/out/make/rpm/x64/*-vulkan.rpm
-          if-no-files-found: error
-
-      - name: Upload .flatpak package
-        if: matrix.variant == 'standard'
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
-        with:
-          name: Vasilisa-linux-x64-flatpak
-          path: ui/desktop/out/make/flatpak/x86_64/*.flatpak
-          if-no-files-found: error
-
-      - name: Upload .flatpak package (Vulkan)
-        if: matrix.variant == 'vulkan'
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
-        with:
-          name: Vasilisa-linux-x64-vulkan-flatpak
-          path: ui/desktop/out/make/flatpak/x86_64/*-vulkan.flatpak
           if-no-files-found: error

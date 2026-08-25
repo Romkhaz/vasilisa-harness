@@ -110,8 +110,6 @@ jobs:
             Vasilisa*.dmg
             Vasilisa-setup*.exe
             *.deb
-            *.rpm
-            *.flatpak
 
       # Create/update the versioned release
       - name: Release versioned
@@ -123,8 +121,6 @@ jobs:
             Vasilisa*.dmg
             Vasilisa-setup*.exe
             *.deb
-            *.rpm
-            *.flatpak
           allowUpdates: true
           omitBody: true
           omitPrereleaseDuringUpdate: true
@@ -141,8 +137,6 @@ jobs:
             Vasilisa*.dmg
             Vasilisa-setup*.exe
             *.deb
-            *.rpm
-            *.flatpak
           allowUpdates: true
           omitBody: true
           omitPrereleaseDuringUpdate: true

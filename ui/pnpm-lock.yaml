@@ -187,12 +187,6 @@ importers:
       '@electron-forge/maker-deb':
         specifier: ^7.11.2
         version: 7.11.2
-      '@electron-forge/maker-flatpak':
-        specifier: ^7.11.2
-        version: 7.11.2
-      '@electron-forge/maker-rpm':
-        specifier: ^7.11.2
-        version: 7.11.2
       '@electron-forge/maker-squirrel':
         specifier: ^7.11.2
         version: 7.11.2
@@ -627,14 +621,6 @@ packages:
     resolution: {integrity: sha512-MYSdCTsqzKNmsmaq7CIFh2kJdBWUZ4njxnVGrIRClzueVITk5Kots3+eQo+e5QQLvXTVn2XTNDc2nYjvtBh+Mw==}
     engines: {node: '>= 16.4.0'}
 
-  '@electron-forge/maker-flatpak@7.11.2':
-    resolution: {integrity: sha512-tc/lw1NVB8AGIVEozccFK4BR1oj9GTdV2tH+HDD6WSqvB4mjBKVKWjeR+8En3I546dnI/qWodtSN/OiL2ZTqIQ==}
-    engines: {node: '>= 16.4.0'}
-
-  '@electron-forge/maker-rpm@7.11.2':
-    resolution: {integrity: sha512-BEj/DcW6bSpmOyKUa3UsOgT7Hm3ZuP0Wa6OuQEunjxeCWn7yoDTDtjuYA0xRvzk+T4NCyDO3RBGjy6nYNSPU2Q==}
-    engines: {node: '>= 16.4.0'}
-
   '@electron-forge/maker-squirrel@7.11.2':
     resolution: {integrity: sha512-4CILo57ZDEQH1mJxjhYCSXuv+WaU7oPq67KqiTLEUOEzmiPg9u9/z7FXE34H/Tn5aKWN3dy+ngAETzv6iERCGg==}
     engines: {node: '>= 16.4.0'}
@@ -716,7 +702,7 @@ packages:
     engines: {node: '>=22.12.0'}
 
   '@electron/node-gyp@https://codeload.github.com/electron/node-gyp/tar.gz/06b29aafb7708acef8b3669835c8a7857ebc92d2':
-    resolution: {gitHosted: true, tarball: https://codeload.github.com/electron/node-gyp/tar.gz/06b29aafb7708acef8b3669835c8a7857ebc92d2}
+    resolution: {tarball: https://codeload.github.com/electron/node-gyp/tar.gz/06b29aafb7708acef8b3669835c8a7857ebc92d2}
     version: 10.2.0-electron.1
     engines: {node: '>=12.13.0'}
     hasBin: true
@@ -1287,16 +1273,6 @@ packages:
   '@malept/cross-spawn-promise@2.0.0':
     resolution: {integrity: sha512-1DpKU0Z5ThltBwjNySMC14g0CkbyhCaz9FkhxqNsZI6uAPJXFS8cMXlBKo26FJ8ZuW6S9GCMcR9IO5k2X5/9Fg==}
     engines: {node: '>= 12.13.0'}
-
-  '@malept/electron-installer-flatpak@0.11.4':
-    resolution: {integrity: sha512-ZdwhT4WeeJWdnsmALUtQ7bn4pzYVh0Vg+4NnF1S3n3OACc9IWg+B+LxI5gT3XSXIrxogouqkjM6gD8S592awyA==}
-    engines: {node: '>= 10.0.0'}
-    os: [darwin, linux]
-    hasBin: true
-
-  '@malept/flatpak-bundler@0.4.0':
-    resolution: {integrity: sha512-9QOtNffcOF/c1seMCDnjckb3R9WHcG34tky+FHpNKKCW0wc/scYLwMtO+ptyGUfMW0/b/n4qRiALlaFHc9Oj7Q==}
-    engines: {node: '>= 10.0.0'}
 
   '@manypkg/find-root@1.1.0':
     resolution: {integrity: sha512-mki5uBvhHzO8kYYix/WRy2WX8S3B5wdVSc9D6KcU5lQNglP2yt58/VfLuAK49glRXChosY8ap2oJ1qgma3GUVA==}
@@ -3998,12 +3974,6 @@ packages:
 
   electron-installer-debian@3.2.0:
     resolution: {integrity: sha512-58ZrlJ1HQY80VucsEIG9tQ//HrTlG6sfofA3nRGr6TmkX661uJyu4cMPPh6kXW+aHdq/7+q25KyQhDrXvRL7jw==}
-    engines: {node: '>= 10.0.0'}
-    os: [darwin, linux]
-    hasBin: true
-
-  electron-installer-redhat@3.4.0:
-    resolution: {integrity: sha512-gEISr3U32Sgtj+fjxUAlSDo3wyGGq6OBx7rF5UdpIgbnpUvMN4W5uYb0ThpnAZ42VEJh/3aODQXHbFS4f5J3Iw==}
     engines: {node: '>= 10.0.0'}
     os: [darwin, linux]
     hasBin: true
@@ -7700,27 +7670,6 @@ snapshots:
       - bluebird
       - supports-color
 
-  '@electron-forge/maker-flatpak@7.11.2':
-    dependencies:
-      '@electron-forge/maker-base': 7.11.2
-      '@electron-forge/shared-types': 7.11.2
-      fs-extra: 10.1.0
-    optionalDependencies:
-      '@malept/electron-installer-flatpak': 0.11.4
-    transitivePeerDependencies:
-      - bluebird
-      - supports-color
-
-  '@electron-forge/maker-rpm@7.11.2':
-    dependencies:
-      '@electron-forge/maker-base': 7.11.2
-      '@electron-forge/shared-types': 7.11.2
-    optionalDependencies:
-      electron-installer-redhat: 3.4.0
-    transitivePeerDependencies:
-      - bluebird
-      - supports-color
-
   '@electron-forge/maker-squirrel@7.11.2':
     dependencies:
       '@electron-forge/maker-base': 7.11.2
@@ -8521,28 +8470,6 @@ snapshots:
   '@malept/cross-spawn-promise@2.0.0':
     dependencies:
       cross-spawn: 7.0.6
-
-  '@malept/electron-installer-flatpak@0.11.4':
-    dependencies:
-      '@malept/flatpak-bundler': 0.4.0
-      debug: 4.4.3
-      electron-installer-common: 0.10.4
-      lodash: 4.18.1
-      semver: 7.8.5
-      yargs: 16.2.2
-    transitivePeerDependencies:
-      - supports-color
-    optional: true
-
-  '@malept/flatpak-bundler@0.4.0':
-    dependencies:
-      debug: 4.4.3
-      fs-extra: 9.1.0
-      lodash: 4.18.1
-      tmp-promise: 3.0.3
-    transitivePeerDependencies:
-      - supports-color
-    optional: true
 
   '@manypkg/find-root@1.1.0':
     dependencies:
@@ -11351,19 +11278,6 @@ snapshots:
       electron-installer-common: 0.10.4
       fs-extra: 9.1.0
       get-folder-size: 2.0.1
-      lodash: 4.18.1
-      word-wrap: 1.2.5
-      yargs: 16.2.2
-    transitivePeerDependencies:
-      - supports-color
-    optional: true
-
-  electron-installer-redhat@3.4.0:
-    dependencies:
-      '@malept/cross-spawn-promise': 1.1.1
-      debug: 4.4.3
-      electron-installer-common: 0.10.4
-      fs-extra: 9.1.0
       lodash: 4.18.1
       word-wrap: 1.2.5
       yargs: 16.2.2
