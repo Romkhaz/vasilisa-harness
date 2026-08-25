@@ -74,6 +74,27 @@ if (process.env.APPLE_TEAM_ID) {
 module.exports = {
   packagerConfig: cfg,
   rebuildConfig: {},
+  // Без сертификата Apple бандл остаётся с подписью самого Electron, но packager
+  // и FusesPlugin правят его уже после неё: в Info.plist дописывается хеш asar,
+  // в бинаре переключаются fuse-биты. Подпись перестаёт сходиться, и скачанное
+  // приложение macOS считает повреждённым («переместите в Корзину») — правый клик
+  // → «Открыть» в этом случае не спасает. Подписываем бандл ad-hoc сами, последним
+  // шагом: тогда остаётся обычный Gatekeeper про неизвестного разработчика.
+  hooks: {
+    postPackage: async (_forgeConfig, options) => {
+      if (options.platform !== 'darwin' || process.env.APPLE_TEAM_ID) return;
+      const { execFileSync } = require('child_process');
+      const { readdirSync } = require('fs');
+      for (const dir of options.outputPaths) {
+        for (const entry of readdirSync(dir)) {
+          if (!entry.endsWith('.app')) continue;
+          const app = resolve(dir, entry);
+          console.log(`Ad-hoc подпись ${app}`);
+          execFileSync('codesign', ['--force', '--deep', '--sign', '-', app], { stdio: 'inherit' });
+        }
+      }
+    },
+  },
   publishers: [
     {
       name: '@electron-forge/publisher-github',
@@ -100,6 +121,18 @@ module.exports = {
         setupIcon: 'src/images/icon.ico',
         setupExe: 'Vasilisa-setup.exe',
         noMsi: true,
+      },
+    },
+    {
+      // Установщик для macOS: окно с иконкой приложения и ярлыком «Программы»,
+      // куда её перетаскивают. Zip оставлен рядом — им пользуется автообновление.
+      name: '@electron-forge/maker-dmg',
+      platforms: ['darwin'],
+      config: {
+        name: 'Vasilisa',
+        title: 'Агент Василиса',
+        icon: 'src/images/icon.icns',
+        overwrite: true,
       },
     },
     {
