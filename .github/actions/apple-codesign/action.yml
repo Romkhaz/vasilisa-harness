@@ -32,11 +32,20 @@ runs:
 
         echo "$APPLE_CERTIFICATE_BASE64" | base64 --decode > "$CERTIFICATE_PATH"
 
+        # Разбираем контейнер до импорта: security на любую беду отвечает
+        # «Unknown format in import», по которой не понять, что именно не так
+        # с секретом. openssl называет причину.
+        if ! openssl pkcs12 -in "$CERTIFICATE_PATH" -noout -passin env:APPLE_CERTIFICATE_PASSWORD; then
+          echo "::error::APPLE_CERTIFICATE_BASE64 не разбирается как .p12 ($(wc -c < "$CERTIFICATE_PATH") байт после base64). Проверьте, что в секрете лежит base64 файла .p12 с приватным ключом, а APPLE_CERTIFICATE_PASSWORD — пароль от него."
+          exit 1
+        fi
+
         security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
         security set-keychain-settings -lut 21600 "$KEYCHAIN_PATH"
         security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
 
         security import "$CERTIFICATE_PATH" \
+          -f pkcs12 \
           -k "$KEYCHAIN_PATH" \
           -P "$APPLE_CERTIFICATE_PASSWORD" \
           -T /usr/bin/codesign
@@ -46,6 +55,14 @@ runs:
           -s -k "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
 
         security list-keychains -d user -s "$KEYCHAIN_PATH" login.keychain-db
+
+        # Без Developer ID подпись всё равно не выйдет — лучше упасть здесь,
+        # чем через полчаса на codesign.
+        if ! security find-identity -v -p codesigning "$KEYCHAIN_PATH" | grep -q "Developer ID Application"; then
+          echo "::error::В связке нет сертификата Developer ID Application. Экспортируйте его из «Мои сертификаты» вместе с приватным ключом."
+          security find-identity -v -p codesigning "$KEYCHAIN_PATH" || true
+          exit 1
+        fi
 
         echo "keychain-path=$KEYCHAIN_PATH" >> "$GITHUB_OUTPUT"
         echo "KEYCHAIN_PATH=$KEYCHAIN_PATH" >> "$GITHUB_ENV"
