@@ -139,6 +139,7 @@ jobs:
             goose-*.tar.gz
             goose-*.zip
             Vasilisa*.zip
+            Vasilisa*.dmg
             Vasilisa-setup*.exe
             *.deb
             *.rpm
@@ -155,6 +156,7 @@ jobs:
             goose-*.tar.gz
             goose-*.zip
             Vasilisa*.zip
+            Vasilisa*.dmg
             Vasilisa-setup*.exe
             *.deb
             *.rpm
@@ -176,6 +178,7 @@ jobs:
             goose-*.tar.gz
             goose-*.zip
             Vasilisa*.zip
+            Vasilisa*.dmg
             Vasilisa-setup*.exe
             *.deb
             *.rpm

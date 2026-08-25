@@ -29,7 +29,7 @@
 | Платформа | Файл |
 |---|---|
 | Windows | `Vasilisa-setup.exe` — установщик; `Vasilisa-win32-x64-1.0.0.zip` — портативный вариант |
-| macOS | `Vasilisa-darwin-arm64-1.0.0.zip` (Apple Silicon) или `-x64-` (Intel), внутри `Vasilisa.app` |
+| macOS | `Vasilisa.dmg` (Apple Silicon) или `Vasilisa_intel_mac.dmg` (Intel) — образ с окном, куда перетаскивают приложение; рядом тот же `Vasilisa.app` архивом для автообновления |
 | Linux | `vasilisa_1.0.0_amd64.deb`, `vasilisa-1.0.0-1.x86_64.rpm`, `ru.vasilisa.Agent.flatpak` |
 
 Сборки не подписаны, поэтому при первом запуске Windows SmartScreen и macOS Gatekeeper
