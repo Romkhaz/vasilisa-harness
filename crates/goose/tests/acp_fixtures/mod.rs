@@ -728,7 +728,11 @@ impl Default for TestConnectionConfig {
         Self {
             mcp_servers: Vec::new(),
             builtins: Vec::new(),
-            goose_mode: GooseMode::default(),
+            // Тесты проверяют, как ходят вызовы инструментов, а не политику
+            // подтверждений: те, кому нужен запрос разрешения, ставят Approve сами.
+            // Продуктовый дефолт Василисы — SmartApprove, и наследовать его здесь
+            // значит ронять тесты каждый раз, когда он меняется.
+            goose_mode: GooseMode::Auto,
             cwd: None,
             data_root: PathBuf::new(),
             provider_factory: None,

@@ -80,8 +80,7 @@ fn acp_secret_mutations_and_inventory_refresh_invalidate_global_secret_cache() {
         ("ANTHROPIC_API_KEY", None),
         ("GROQ_API_KEY", None),
         ("OPENAI_API_KEY", None),
-        ("XAI_API_KEY", None),
-        ("XAI_HOST", None),
+        ("OPENAI_BASE_URL", None),
     ]);
 
     let config_dir = Paths::config_dir();
@@ -152,15 +151,15 @@ fn acp_secret_mutations_and_inventory_refresh_invalidate_global_secret_cache() {
             conn.cx(),
             "_goose/unstable/providers/config/save",
             serde_json::json!({
-                "providerId": "xai",
+                "providerId": "openai",
                 "fields": [
                     {
-                        "key": "XAI_API_KEY",
-                        "value": "xai-provider-config-key",
+                        "key": "OPENAI_API_KEY",
+                        "value": "openai-provider-config-key",
                     },
                     {
-                        "key": "XAI_HOST",
-                        "value": "https://api.x.ai/v1",
+                        "key": "OPENAI_BASE_URL",
+                        "value": "https://inference.example.ru/v1",
                     },
                 ],
             }),
@@ -170,7 +169,7 @@ fn acp_secret_mutations_and_inventory_refresh_invalidate_global_secret_cache() {
         assert_eq!(
             save_provider_config.get("status"),
             Some(&serde_json::json!({
-                "providerId": "xai",
+                "providerId": "openai",
                 "isConfigured": true,
             })),
             "provider config save should return the updated configured status"
@@ -178,16 +177,16 @@ fn acp_secret_mutations_and_inventory_refresh_invalidate_global_secret_cache() {
         assert_eq!(
             save_provider_config.get("refresh"),
             Some(&serde_json::json!({
-                "started": ["xai"],
+                "started": ["openai"],
                 "skipped": [],
             })),
             "provider config save should return the inventory refresh acknowledgement"
         );
         assert_eq!(
             Config::global()
-                .get_secret::<String>("XAI_API_KEY")
+                .get_secret::<String>("OPENAI_API_KEY")
                 .unwrap(),
-            "xai-provider-config-key",
+            "openai-provider-config-key",
             "provider config save should invalidate the global secrets cache"
         );
 
@@ -195,7 +194,7 @@ fn acp_secret_mutations_and_inventory_refresh_invalidate_global_secret_cache() {
             conn.cx(),
             "_goose/unstable/providers/config/read",
             serde_json::json!({
-                "providerId": "xai",
+                "providerId": "openai",
             }),
         )
         .await
@@ -206,12 +205,12 @@ fn acp_secret_mutations_and_inventory_refresh_invalidate_global_secret_cache() {
             .expect("provider config read should return fields");
         let api_key_field = fields
             .iter()
-            .find(|field| field.get("key") == Some(&serde_json::json!("XAI_API_KEY")))
+            .find(|field| field.get("key") == Some(&serde_json::json!("OPENAI_API_KEY")))
             .expect("provider config read should include the API key");
         assert_eq!(api_key_field.get("isSet"), Some(&serde_json::json!(true)));
         assert_ne!(
             api_key_field.get("value"),
-            Some(&serde_json::json!("xai-provider-config-key")),
+            Some(&serde_json::json!("openai-provider-config-key")),
             "provider config read should mask secret values"
         );
 
@@ -219,7 +218,7 @@ fn acp_secret_mutations_and_inventory_refresh_invalidate_global_secret_cache() {
             conn.cx(),
             "_goose/unstable/providers/config/delete",
             serde_json::json!({
-                "providerId": "xai",
+                "providerId": "openai",
             }),
         )
         .await
@@ -227,14 +226,17 @@ fn acp_secret_mutations_and_inventory_refresh_invalidate_global_secret_cache() {
         assert_eq!(
             delete_provider_config.get("status"),
             Some(&serde_json::json!({
-                "providerId": "xai",
-                "isConfigured": false,
+                "providerId": "openai",
+                // Провайдер остаётся настроенным: удаляются только его собственные
+                // ключи, а адрес мок-сервера фикстура кладёт в OPENAI_HOST,
+                // и его достаточно, чтобы подключение считалось заполненным.
+                "isConfigured": true,
             })),
             "provider config delete should return the updated configured status"
         );
         assert!(
             matches!(
-                Config::global().get_secret::<String>("XAI_API_KEY"),
+                Config::global().get_secret::<String>("OPENAI_API_KEY"),
                 Err(ConfigError::NotFound(_))
             ),
             "provider config delete should invalidate the global secrets cache"
@@ -242,24 +244,29 @@ fn acp_secret_mutations_and_inventory_refresh_invalidate_global_secret_cache() {
 
         Config::global().invalidate_secrets_cache();
         assert!(Config::global()
-            .get_secret::<String>("ANTHROPIC_API_KEY")
+            .get_secret::<String>("OPENAI_API_KEY")
             .is_err());
 
-        write_secrets(&config_dir, "ANTHROPIC_API_KEY: anthropic-key\n");
+        // Кладём ключ на диск в обход кэша: если обновление инвентаря не сбросит
+        // кэш, чтение ниже по-прежнему вернёт NotFound.
+        write_secrets(&config_dir, "OPENAI_API_KEY: openai-refresh-key\n");
 
         let refresh = send_custom(
             conn.cx(),
             "_goose/unstable/providers/inventory/refresh",
             serde_json::json!({
-                "providerIds": ["anthropic"],
+                "providerIds": ["openai"],
             }),
         )
         .await
         .expect("inventory refresh should succeed");
 
+        assert_eq!(refresh.get("started"), Some(&serde_json::json!(["openai"])));
         assert_eq!(
-            refresh.get("started"),
-            Some(&serde_json::json!(["anthropic"])),
+            Config::global()
+                .get_secret::<String>("OPENAI_API_KEY")
+                .unwrap(),
+            "openai-refresh-key",
             "inventory refresh should invalidate the global secrets cache before planning"
         );
 
