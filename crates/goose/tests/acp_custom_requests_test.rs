@@ -909,10 +909,8 @@ fn test_custom_defaults_read() {
 #[test]
 #[serial]
 fn test_custom_defaults_save_allows_unlisted_model() {
-    let _env = env_lock::lock_env([("ANTHROPIC_API_KEY", Some("test-key"))]);
-    let config_dir = write_acp_global_config(
-        "GOOSE_MODEL: claude-3-5-haiku-latest\nGOOSE_PROVIDER: anthropic\n",
-    );
+    let _env = env_lock::lock_env([("OPENAI_API_KEY", Some("test-key"))]);
+    let config_dir = write_acp_global_config(DEFAULT_ACP_TEST_CONFIG);
 
     run_test(async move {
         let openai = OpenAiFixture::new(vec![], Arc::new(EnforceSessionId::default())).await;
@@ -926,7 +924,7 @@ fn test_custom_defaults_save_allows_unlisted_model() {
             conn.cx(),
             "_goose/unstable/defaults/save",
             serde_json::json!({
-                "providerId": "anthropic",
+                "providerId": "openai",
                 "modelId": "custom-unlisted-model",
             }),
         )
@@ -936,7 +934,7 @@ fn test_custom_defaults_save_allows_unlisted_model() {
         assert_eq!(
             response,
             serde_json::json!({
-                "providerId": "anthropic",
+                "providerId": "openai",
                 "modelId": "custom-unlisted-model",
             })
         );
@@ -1066,7 +1064,6 @@ fn test_raw_config_and_secret_methods_are_removed() {
 #[test]
 #[serial]
 fn test_provider_switching_updates_session_state() {
-    let _env = env_lock::lock_env([("ANTHROPIC_API_KEY", Some("test-key"))]);
     write_acp_global_config(DEFAULT_ACP_TEST_CONFIG);
     run_test(async {
         let openai = OpenAiFixture::new(vec![], Arc::new(EnforceSessionId::default())).await;
@@ -1079,10 +1076,6 @@ fn test_provider_switching_updates_session_state() {
         let SessionData { session, .. } = conn.new_session().await.unwrap();
         let session_id = session.session_id().0.clone();
 
-        conn.set_config_option(&session_id, "provider", "anthropic")
-            .await
-            .expect("provider switch to anthropic should succeed");
-
         conn.set_config_option(&session_id, "provider", "openai")
             .await
             .expect("provider switch to openai should succeed");
@@ -1090,6 +1083,12 @@ fn test_provider_switching_updates_session_state() {
         conn.set_config_option(&session_id, "provider", "goose")
             .await
             .expect("provider reset to goose should succeed");
+
+        // Василиса регистрирует только openai, поэтому переключение на любой
+        // другой провайдер должно отклоняться.
+        conn.set_config_option(&session_id, "provider", "anthropic")
+            .await
+            .expect_err("switching to an unregistered provider should fail");
     });
 }
 
