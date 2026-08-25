@@ -1,6 +1,6 @@
 const { FusesPlugin } = require('@electron-forge/plugin-fuses');
 const { FuseV1Options, FuseVersion } = require('@electron/fuses');
-const { resolve } = require('path');
+const { basename, resolve } = require('path');
 
 const isLinuxVulkanBuild = process.env.GOOSE_DESKTOP_LINUX_VARIANT === 'vulkan';
 
@@ -58,33 +58,69 @@ let cfg = {
   },
 };
 
+const signingIdentity = process.env.APPLE_SIGNING_IDENTITY || 'Developer ID Application';
+
+// Учётные данные notarytool: ключ App Store Connect, если он выдан, иначе
+// Apple ID с паролем приложения. Тот же набор нужен и для образа .dmg, который
+// собирается уже после форджа, поэтому вынесен в функцию.
+function notarytoolArgs() {
+  if (process.env.APPLE_API_KEY_PATH) {
+    return [
+      '--key',
+      process.env.APPLE_API_KEY_PATH,
+      '--key-id',
+      process.env.APPLE_API_KEY_ID,
+      '--issuer',
+      process.env.APPLE_API_ISSUER,
+    ];
+  }
+  return [
+    '--apple-id',
+    process.env.APPLE_ID,
+    '--password',
+    process.env.APPLE_ID_PASSWORD,
+    '--team-id',
+    process.env.APPLE_TEAM_ID,
+  ];
+}
+
 // macOS code signing and notarization via Electron Forge
 // Activated when APPLE_TEAM_ID is set (CI signing builds)
 if (process.env.APPLE_TEAM_ID) {
   cfg.osxSign = {
     keychain: process.env.KEYCHAIN_PATH || undefined,
+    identity: process.env.APPLE_SIGNING_IDENTITY || undefined,
     entitlements: 'entitlements.plist',
     'entitlements-inherit': 'entitlements.plist',
   };
-  cfg.osxNotarize = {
-    appleId: process.env.APPLE_ID,
-    appleIdPassword: process.env.APPLE_ID_PASSWORD,
-    teamId: process.env.APPLE_TEAM_ID,
-  };
+  cfg.osxNotarize = process.env.APPLE_API_KEY_PATH
+    ? {
+        appleApiKey: process.env.APPLE_API_KEY_PATH,
+        appleApiKeyId: process.env.APPLE_API_KEY_ID,
+        appleApiIssuer: process.env.APPLE_API_ISSUER,
+      }
+    : {
+        appleId: process.env.APPLE_ID,
+        appleIdPassword: process.env.APPLE_ID_PASSWORD,
+        teamId: process.env.APPLE_TEAM_ID,
+      };
 }
 
 module.exports = {
   packagerConfig: cfg,
   rebuildConfig: {},
+  // Собираем список готовых бандлов для сборки .dmg в postMake.
+  //
   // Без сертификата Apple бандл остаётся с подписью самого Electron, но packager
   // и FusesPlugin правят его уже после неё: в Info.plist дописывается хеш asar,
   // в бинаре переключаются fuse-биты. Подпись перестаёт сходиться, и скачанное
   // приложение macOS считает повреждённым («переместите в Корзину») — правый клик
   // → «Открыть» в этом случае не спасает. Подписываем бандл ad-hoc сами, последним
   // шагом: тогда остаётся обычный Gatekeeper про неизвестного разработчика.
+  // С сертификатом бандл уже подписан и заверен самим форджем — трогать его не нужно.
   hooks: {
     postPackage: async (_forgeConfig, options) => {
-      if (options.platform !== 'darwin' || process.env.APPLE_TEAM_ID) return;
+      if (options.platform !== 'darwin') return;
       const { execFileSync } = require('child_process');
       const { readdirSync } = require('fs');
       for (const dir of options.outputPaths) {
@@ -92,6 +128,7 @@ module.exports = {
           if (!entry.endsWith('.app')) continue;
           const app = resolve(dir, entry);
           packagedApps.push(app);
+          if (process.env.APPLE_TEAM_ID) continue;
           console.log(`Ad-hoc подпись ${app}`);
           execFileSync('codesign', ['--force', '--deep', '--sign', '-', app], { stdio: 'inherit' });
         }
@@ -104,7 +141,7 @@ module.exports = {
     // установке pnpm просто не ставит, и сборка падает на раннере.
     postMake: async (_forgeConfig, results) => {
       if (process.platform !== 'darwin' || packagedApps.length === 0) return results;
-      const { execFileSync, execSync } = require('child_process');
+      const { execFileSync } = require('child_process');
       const { mkdtempSync, mkdirSync, rmSync, symlinkSync, existsSync } = require('fs');
       const { tmpdir } = require('os');
       const outDir = resolve(__dirname, 'out', 'make');
@@ -113,7 +150,9 @@ module.exports = {
         const staging = mkdtempSync(resolve(tmpdir(), 'vasilisa-dmg-'));
         const dmg = resolve(outDir, 'Vasilisa.dmg');
         try {
-          execFileSync('cp', ['-R', app, staging], { stdio: 'inherit' });
+          // ditto, а не cp: он переносит бандл со всеми расширенными атрибутами,
+          // включая тикет нотаризации, который прикрепляет stapler.
+          execFileSync('ditto', [app, resolve(staging, basename(app))], { stdio: 'inherit' });
           symlinkSync('/Applications', resolve(staging, 'Applications'));
           if (existsSync(dmg)) rmSync(dmg);
           console.log(`Собираю образ ${dmg}`);
@@ -122,6 +161,20 @@ module.exports = {
             ['create', '-volname', 'Агент Василиса', '-srcfolder', staging, '-ov', '-format', 'UDZO', dmg],
             { stdio: 'inherit' }
           );
+          if (process.env.APPLE_TEAM_ID) {
+            // Образ — самостоятельный артефакт: приложение внутри уже заверено,
+            // но сам .dmg скачивает пользователь, и Gatekeeper проверяет его
+            // отдельно. Поэтому подписываем и заверяем образ тоже, а тикет
+            // прикрепляем к файлу, чтобы проверка работала без сети.
+            const keychain = process.env.KEYCHAIN_PATH ? ['--keychain', process.env.KEYCHAIN_PATH] : [];
+            execFileSync('codesign', ['--force', '--timestamp', '--sign', signingIdentity, ...keychain, dmg], {
+              stdio: 'inherit',
+            });
+            execFileSync('xcrun', ['notarytool', 'submit', dmg, ...notarytoolArgs(), '--wait'], {
+              stdio: 'inherit',
+            });
+            execFileSync('xcrun', ['stapler', 'staple', dmg], { stdio: 'inherit' });
+          }
         } finally {
           rmSync(staging, { recursive: true, force: true });
         }
