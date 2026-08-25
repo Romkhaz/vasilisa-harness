@@ -146,19 +146,44 @@ module.exports = {
       mkdirSync(outDir, { recursive: true });
       for (const app of packagedApps) {
         const staging = mkdtempSync(resolve(tmpdir(), 'vasilisa-dmg-'));
+        const mountPoint = mkdtempSync(resolve(tmpdir(), 'vasilisa-mnt-'));
         const dmg = resolve(outDir, 'Vasilisa.dmg');
+        const rwDmg = resolve(outDir, 'Vasilisa-rw.dmg');
         try {
           // ditto, а не cp: он переносит бандл со всеми расширенными атрибутами,
           // включая тикет нотаризации, который прикрепляет stapler.
           execFileSync('ditto', [app, resolve(staging, basename(app))], { stdio: 'inherit' });
           symlinkSync('/Applications', resolve(staging, 'Applications'));
+
+          // Иконка тома. Finder рисует её и на самом файле .dmg, поэтому в
+          // «Загрузках» лежит Василиса, а не серая болванка образа.
+          const volumeIcon = resolve(staging, '.VolumeIcon.icns');
+          execFileSync('cp', [resolve(__dirname, 'src', 'images', 'icon.icns'), volumeIcon]);
+          execFileSync('SetFile', ['-c', 'icnC', volumeIcon]);
+
           if (existsSync(dmg)) rmSync(dmg);
+          if (existsSync(rwDmg)) rmSync(rwDmg);
           console.log(`Собираю образ ${dmg}`);
+          // Через промежуточный read-write образ: флаг «своя иконка» ставится на
+          // смонтированном томе, а с -srcfolder он до тома не доезжает —
+          // hdiutil переносит содержимое папки, но не её атрибуты Finder.
           execFileSync(
             'hdiutil',
-            ['create', '-volname', 'Агент Василиса', '-srcfolder', staging, '-ov', '-format', 'UDZO', dmg],
+            ['create', '-volname', 'Агент Василиса', '-srcfolder', staging, '-fs', 'HFS+', '-format', 'UDRW', '-ov', rwDmg],
             { stdio: 'inherit' }
           );
+          execFileSync('hdiutil', ['attach', rwDmg, '-nobrowse', '-mountpoint', mountPoint], {
+            stdio: 'inherit',
+          });
+          try {
+            execFileSync('SetFile', ['-a', 'C', mountPoint]);
+          } finally {
+            execFileSync('hdiutil', ['detach', mountPoint, '-quiet'], { stdio: 'inherit' });
+          }
+          execFileSync('hdiutil', ['convert', rwDmg, '-format', 'UDZO', '-o', dmg], {
+            stdio: 'inherit',
+          });
+          rmSync(rwDmg);
           if (process.env.APPLE_TEAM_ID) {
             // Образ — самостоятельный артефакт: приложение внутри уже заверено,
             // но сам .dmg скачивает пользователь, и Gatekeeper проверяет его
@@ -175,6 +200,8 @@ module.exports = {
           }
         } finally {
           rmSync(staging, { recursive: true, force: true });
+          rmSync(mountPoint, { recursive: true, force: true });
+          rmSync(rwDmg, { force: true });
         }
       }
       return results;
